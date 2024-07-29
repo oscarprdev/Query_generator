@@ -1,0 +1,80 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+  engineType = "library"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum PostgresType {
+    text
+    integer
+    bigint
+    real
+    boolean
+    date
+    json
+}
+
+enum MongoType {
+    string
+    number
+    boolean
+    date
+    object
+    array
+}
+
+enum PostgresConstraint {
+    primaryKey
+    foreignKey
+    notNull
+    unique
+}
+
+enum MongoConstraint {
+    primaryKey
+    unique
+}
+
+model PostgresTable {
+    id                String              @id @default(uuid()) @unique
+    title             String              @unique
+    createdAt         DateTime            @default(now()) @unique
+    updatedAt         DateTime            @updatedAt
+
+    rows              PostgresRow[]
+}
+
+model MongoTable {
+    id                String              @id @default(uuid()) @unique
+    title             String              @unique
+    createdAt         DateTime            @default(now()) @unique
+    updatedAt         DateTime            @updatedAt
+    
+    rows              MongoRow[]
+}
+
+model PostgresRow {
+    id                String              @id @default(uuid()) @unique
+    tableId           String              @unique
+    value             String              
+    type              PostgresType
+    constraints       PostgresConstraint
+
+    table             PostgresTable       @relation(fields: [tableId], references: [id], onDelete: Cascade)
+}
+
+model MongoRow {
+    id               String               @id @default(uuid()) @unique
+    tableId          String
+    value            String
+    type             MongoType
+    constraints      MongoConstraint
+
+    table            MongoTable          @relation(fields: [tableId], references: [id], onDelete: Cascade)
+}
