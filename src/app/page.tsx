@@ -1,5 +1,8 @@
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24"></main>
+    <main className="flex h-full flex-col items-center justify-between">
+      <div className="bg-background absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px]"></div>
+      main
+    </main>
   );
 }
