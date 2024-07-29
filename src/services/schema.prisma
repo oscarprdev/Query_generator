@@ -10,6 +10,11 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum Databases {
+    mongoDb
+    postgresSQL
+}
+
 enum PostgresType {
     text
     integer
@@ -41,6 +46,15 @@ enum MongoConstraint {
     unique
 }
 
+model Project {
+    id                String              @id @default(uuid()) @unique
+    title             String              @unique
+    createdAt         DateTime            @default(now()) @unique
+    updatedAt         DateTime            @updatedAt
+
+    database          Databases           
+}
+
 model PostgresTable {
     id                String              @id @default(uuid()) @unique
     title             String              @unique
@@ -55,7 +69,7 @@ model MongoTable {
     title             String              @unique
     createdAt         DateTime            @default(now()) @unique
     updatedAt         DateTime            @updatedAt
-    
+
     rows              MongoRow[]
 }
 

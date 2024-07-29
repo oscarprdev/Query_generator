@@ -5,19 +5,19 @@ export type Table = PostgresTable | MongoTable;
 
 export interface TablesStore {
   tables: Table[];
-  addTable: (table: Table) => void;
-  removeTable: (id: string) => void;
+  createTable: (table: Table) => void;
+  deleteTable: (id: string) => void;
   updateTable: (table: Table) => void;
 }
 
-export const useTables = create<TablesStore>((set) => ({
+export const useTablesStore = create<TablesStore>((set) => ({
   tables: [],
-  addTable: (table: Table) =>
+  createTable: (table: Table) =>
     set((state) => ({
       ...state,
       tables: [...state.tables, table],
     })),
-  removeTable: (id: string) =>
+  deleteTable: (id: string) =>
     set((state) => ({
       ...state,
       tables: state.tables.filter((table) => table.id !== id),
