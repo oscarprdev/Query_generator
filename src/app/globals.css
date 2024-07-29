@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: #191919;
+	:root {
+		--background: #191919;
 
-    --primary: #00db9a;
-    --primary-light: #96f2d6;
+		--primary: #00db9a;
+		--primary-light: #96f2d6;
 
-    --secondary: #8932f3;
-    --secondary-light: #bb86fc;
+		--secondary: #8932f3;
+		--secondary-light: #bb86fc;
 
-    --border: #5858587c;
-  }
+		--border: #5858587c;
+	}
 }
 
 html {
-  color: white;
+	color: white;
 }
