@@ -10,14 +10,6 @@ const config = {
   ],
   prefix: "",
   theme: {
-    colors: {
-      background: "var(--background)",
-      border: "var(--border)",
-      primary: "var(--primary)",
-      primaryLight: "var(--primary-light)",
-      secondary: "var(--secondary)",
-      secondaryLight: "var(--secondary-light)",
-    },
     container: {
       center: true,
       padding: "2rem",
@@ -26,6 +18,14 @@ const config = {
       },
     },
     extend: {
+      colors: {
+        background: "var(--background)",
+        border: "var(--border)",
+        primary: "var(--primary)",
+        primaryLight: "var(--primary-light)",
+        secondary: "var(--secondary)",
+        secondaryLight: "var(--secondary-light)",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
