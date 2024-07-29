@@ -1,7 +1,8 @@
-import { MongoTable, PostgresTable } from '@prisma/client';
+import { MongoTable, PostgreTable } from '@prisma/client';
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-export type Table = PostgresTable | MongoTable;
+export type Table = PostgreTable | MongoTable;
 
 export interface TablesStore {
 	tables: Table[];
@@ -10,27 +11,34 @@ export interface TablesStore {
 	updateTable: (table: Table) => void;
 }
 
-export const useTablesStore = create<TablesStore>(set => ({
-	tables: [],
-	createTable: (table: Table) =>
-		set(state => ({
-			...state,
-			tables: [...state.tables, table],
-		})),
-	deleteTable: (id: string) =>
-		set(state => ({
-			...state,
-			tables: state.tables.filter(table => table.id !== id),
-		})),
-	updateTable: (table: Table) =>
-		set(state => {
-			const tableIndex = state.tables.findIndex(tb => tb.id === table.id);
+export const useTablesStore = create<TablesStore>()(
+	persist(
+		set => ({
+			tables: [],
+			createTable: (table: Table) =>
+				set(state => ({
+					...state,
+					tables: [...state.tables, table],
+				})),
+			deleteTable: (id: string) =>
+				set(state => ({
+					...state,
+					tables: state.tables.filter(table => table.id !== id),
+				})),
+			updateTable: (table: Table) =>
+				set(state => {
+					const tableIndex = state.tables.findIndex(tb => tb.id === table.id);
 
-			const updatedTables = state.tables.map((tb, index) => (index === tableIndex ? table : tb));
+					const updatedTables = state.tables.map((tb, index) => (index === tableIndex ? table : tb));
 
-			return {
-				...state,
-				tables: updatedTables,
-			};
+					return {
+						...state,
+						tables: updatedTables,
+					};
+				}),
 		}),
-}));
+		{
+			name: 'tables',
+		}
+	)
+);

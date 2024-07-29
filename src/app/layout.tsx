@@ -20,7 +20,11 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={cn(inter.className, 'flex h-screen w-screen flex-col overflow-hidden bg-background')}>
+			<body
+				className={cn(
+					inter.className,
+					'flex h-screen w-screen flex-col overflow-hidden bg-background'
+				)}>
 				<Header />
 				<main className="flex h-screen w-full items-start">
 					<Aside />

@@ -1,14 +1,21 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Databases } from '@prisma/client';
 
-type CreateProjectFormValues = {
+export type CreateProjectFormValues = {
 	title: string;
 	database: Databases | null;
+};
+
+type CreateProjectFormProps = {
+	handleSubmit: (values: CreateProjectFormValues) => void;
 };
 
 const formSchema = z.object({
@@ -20,9 +27,10 @@ const formSchema = z.object({
 		.max(10, {
 			message: 'El titulo del proyecto no puede tener mas de 10 letras',
 		}),
+	database: z.nativeEnum(Databases, { message: 'La base de datos seleccionada no es valida' }),
 });
 
-const CreateProjectForm = () => {
+const CreateProjectForm = ({ handleSubmit }: CreateProjectFormProps) => {
 	const form = useForm<CreateProjectFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -31,13 +39,9 @@ const CreateProjectForm = () => {
 		},
 	});
 
-	const onSubmit = (values: CreateProjectFormValues) => {
-		console.log(values);
-	};
-
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+			<form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
 				<FormField
 					control={form.control}
 					name="title"
@@ -45,8 +49,29 @@ const CreateProjectForm = () => {
 						<FormItem>
 							<FormLabel>Titulo del proyecto</FormLabel>
 							<FormControl>
-								<Input placeholder="Proyecto" {...field} />
+								<Input required placeholder="Proyecto" {...field} />
 							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name="database"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Tipo de base de datos</FormLabel>
+							<Select onValueChange={field.onChange}>
+								<FormControl>
+									<SelectTrigger>
+										<SelectValue placeholder="Selecciona tu DB" />
+									</SelectTrigger>
+								</FormControl>
+								<SelectContent>
+									<SelectItem value={Databases.postgreSQL}>PostgreSQL</SelectItem>
+									<SelectItem value={Databases.mongoDb}>MongoDB</SelectItem>
+								</SelectContent>
+							</Select>
 							<FormMessage />
 						</FormItem>
 					)}

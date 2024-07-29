@@ -12,7 +12,7 @@ datasource db {
 
 enum Databases {
     mongoDb
-    postgresSQL
+    postgreSQL
 }
 
 enum PostgresType {
@@ -34,7 +34,7 @@ enum MongoType {
     array
 }
 
-enum PostgresConstraint {
+enum PostgreConstraint {
     primaryKey
     foreignKey
     notNull
@@ -55,13 +55,13 @@ model Project {
     database          Databases           
 }
 
-model PostgresTable {
+model PostgreTable {
     id                String              @id @default(uuid()) @unique
     title             String              @unique
     createdAt         DateTime            @default(now()) @unique
     updatedAt         DateTime            @updatedAt
 
-    rows              PostgresRow[]
+    rows              PostgreRow[]
 }
 
 model MongoTable {
@@ -73,14 +73,14 @@ model MongoTable {
     rows              MongoRow[]
 }
 
-model PostgresRow {
+model PostgreRow {
     id                String              @id @default(uuid()) @unique
     tableId           String              @unique
     value             String              
     type              PostgresType
-    constraints       PostgresConstraint
+    constraints       PostgreConstraint
 
-    table             PostgresTable       @relation(fields: [tableId], references: [id], onDelete: Cascade)
+    table             PostgreTable        @relation(fields: [tableId], references: [id], onDelete: Cascade)
 }
 
 model MongoRow {
