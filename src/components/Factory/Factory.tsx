@@ -2,16 +2,16 @@
 
 import { cn } from '@/lib/utils';
 import { IconBolt, IconChevronUp } from '@tabler/icons-react';
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 
 type FactoryProps = {
 	projectTitle: string;
+	isVisible: boolean;
+	toggleVisibility(): void;
 	children: ReactNode;
 };
 
-const Factory = ({ projectTitle, children }: FactoryProps) => {
-	const [isVisible, setIsVisible] = useState(true);
-
+const Factory = ({ isVisible, projectTitle, toggleVisibility, children }: FactoryProps) => {
 	return (
 		<section
 			className={cn(
@@ -32,7 +32,7 @@ const Factory = ({ projectTitle, children }: FactoryProps) => {
 					</div>
 				</div>
 				<IconChevronUp
-					onClick={() => setIsVisible(!isVisible)}
+					onClick={() => toggleVisibility()}
 					size={18}
 					className={cn('duration-300', isVisible ? 'rotate-180' : 'rotate-0')}
 				/>

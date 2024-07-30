@@ -12,7 +12,7 @@ interface CreateProjectInput {
 
 export const createProject = async ({ title, database }: CreateProjectInput) => {
 	const session = await auth();
-	const userId = session?.user?.id;
+	const userId = session?.user?.name;
 
 	if (!userId) return 'No se ha encontrado ningun usuario';
 

@@ -15,7 +15,7 @@ export type CreateProjectFormValues = {
 };
 
 type CreateProjectFormProps = {
-	handleSubmit: (values: CreateProjectFormValues) => void;
+	handleSubmit: (values: CreateProjectFormValues) => Promise<void>;
 };
 
 const formSchema = z.object({
@@ -76,7 +76,7 @@ const CreateProjectForm = ({ handleSubmit }: CreateProjectFormProps) => {
 						</FormItem>
 					)}
 				/>
-				<Button type="submit">Crear proyecto</Button>
+				<Button type="submit">{form.formState.isSubmitting ? 'Loading' : 'Crear proyecto'}</Button>
 			</form>
 		</Form>
 	);
