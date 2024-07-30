@@ -46,13 +46,22 @@ enum MongoConstraint {
     unique
 }
 
+model Users {
+    id                String              @id @default(uuid()) 
+    
+    projects         Project[]
+}
+
 model Project {
     id                String              @id @default(uuid()) @unique
-    title             String              @unique
+    title             String              
     createdAt         DateTime            @default(now()) @unique
     updatedAt         DateTime            @updatedAt
 
-    database          Databases           
+    database          Databases  
+
+    ownerId           String             @unique
+    owner             Users              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }
 
 model PostgreTable {

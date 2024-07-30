@@ -3,8 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Aside from '@/components/Aside/Aside';
 import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
 import { cn } from '@/lib/utils';
+import SessionStorage from '@/providers/SessionStorage';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,16 +20,14 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body
-				className={cn(
-					inter.className,
-					'flex h-screen w-screen flex-col overflow-hidden bg-background'
-				)}>
-				<Header />
-				<main className="flex h-screen w-full items-start">
-					<Aside />
-					{children}
-				</main>
+			<body className={cn(inter.className, 'flex h-screen w-screen flex-col overflow-hidden bg-background')}>
+				<SessionStorage>
+					<Header />
+					<main className="flex h-screen w-full items-start">
+						<Aside />
+						{children}
+					</main>
+				</SessionStorage>
 			</body>
 		</html>
 	);

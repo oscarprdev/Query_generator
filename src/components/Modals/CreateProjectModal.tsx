@@ -3,23 +3,17 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '../ui/button';
 import CreateProjectForm, { CreateProjectFormValues } from '../Form/CreateProjectForm';
-import { useProjectsStore } from '@/store/useProjectsStore';
 import { useRef } from 'react';
+import { IconPlus } from '@tabler/icons-react';
+import { createProject } from '@/app/actions/create-project';
 
 const CreateProjectModal = () => {
 	const dialogTrigger = useRef<HTMLButtonElement>(null);
-	const { createProject } = useProjectsStore();
 
-	const handleSubmit = (values: CreateProjectFormValues) => {
-		if (!values.database) return;
+	const handleSubmit = async ({ title, database }: CreateProjectFormValues) => {
+		if (!database) return;
 
-		createProject({
-			id: crypto.randomUUID().toString(),
-			createdAt: new Date(),
-			updatedAt: new Date(),
-			database: values.database,
-			title: values.title,
-		});
+		await createProject({ title, database });
 
 		dialogTrigger?.current?.click();
 	};
@@ -27,7 +21,10 @@ const CreateProjectModal = () => {
 	return (
 		<Dialog>
 			<DialogTrigger ref={dialogTrigger} asChild>
-				<Button className="absolute right-5 top-5 z-50">Crear proyecto</Button>
+				<Button className="absolute right-5 top-5 z-50 flex items-center gap-2 text-sm">
+					<IconPlus size={18} />
+					Crear proyecto
+				</Button>
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>

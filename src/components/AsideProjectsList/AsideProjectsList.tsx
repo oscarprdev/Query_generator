@@ -1,14 +1,14 @@
-'use client';
-
-import { useProjectsStore } from '@/store/useProjectsStore';
+import { auth } from '@/auth';
+import { getProjectsQuery } from '@/services/queries/get-project.query';
 import Link from 'next/link';
 
-const AsideProjectsList = () => {
-	const { projects } = useProjectsStore();
+const AsideProjectsList = async () => {
+	const session = await auth();
+	const projects = await getProjectsQuery({ ownerId: session?.user?.id });
 
 	return (
 		<div className="flex w-full flex-col gap-1">
-			{projects.length > 0 ? (
+			{projects && projects.length > 0 ? (
 				<>
 					<p className="text-xs uppercase text-zinc-500">Proyectos</p>
 					{projects.map(project => (
