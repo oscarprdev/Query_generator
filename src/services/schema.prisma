@@ -79,7 +79,7 @@ model PostgreTable {
     rows              PostgreRow[]
 
     projectId         String           
-    project           Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+    project           Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model MongoTable {
@@ -101,7 +101,7 @@ model PostgreRow {
     type              PostgresType
     constraints       PostgreConstraint
 
-    tableId           String              @unique
+    tableId           String              
     table             PostgreTable        @relation(fields: [tableId], references: [id], onDelete: Cascade)
 }
 

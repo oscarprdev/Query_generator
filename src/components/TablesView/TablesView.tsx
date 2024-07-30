@@ -7,7 +7,7 @@ type TablesViewProps = {
 };
 
 const TablesView = ({ isVisible, children }: TablesViewProps) => {
-	return <section className={cn('h-full duration-300', isVisible ? 'w-[590px]' : 'w-[70vw]')}>{children}</section>;
+	return <section className={cn('h-full duration-300', isVisible ? 'w-[495px]' : 'w-[70vw]')}>{children}</section>;
 };
 
 export default TablesView;

@@ -54,9 +54,15 @@ const CreateTableForm = ({ handleSubmit, type }: CreateTableFormProps) => {
 		name: 'rows',
 	});
 
+	const onSubmit = async (values: CreateTableFormValues) => {
+		await handleSubmit(values);
+
+		form.reset();
+	};
+
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(handleSubmit)} className="-mt-5 flex h-full w-full flex-col gap-5">
+			<form onSubmit={form.handleSubmit(onSubmit)} className="-mt-5 flex h-full w-full flex-col gap-5">
 				<FormField
 					control={form.control}
 					name="title"
