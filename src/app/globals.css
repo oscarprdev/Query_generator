@@ -8,6 +8,7 @@
 
 		--primary: #00db9a;
 		--primary-light: #96f2d6;
+		--primary-dark: #395c52;
 
 		--secondary: #8932f3;
 		--secondary-light: #bb86fc;
@@ -18,4 +19,26 @@
 
 html {
 	color: rgb(236, 236, 236);
+}
+
+::-webkit-scrollbar {
+	width: 3px;
+	height: 5px;
+	overflow: visible;
+	background: transparent;
+}
+
+::-webkit-scrollbar-track {
+	margin: 0;
+	border-radius: 0;
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background: transparent;
+}
+
+*[aria-label='scroll']:hover::-webkit-scrollbar-thumb {
+	background: var(--primary);
 }

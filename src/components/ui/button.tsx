@@ -12,13 +12,16 @@ const buttonVariants = cva(
 				default: 'bg-white text-slate-800 hover:bg-white/80',
 				destructive:
 					'bg-red-500 text-slate-50 hover:bg-red-500/90 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90',
-				outline: 'border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50',
-				secondary: 'bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80',
+				outline:
+					'border border-zinc-300 bg-transparent text-zinc-300 hover:text-zinc-100 hover:border-zinc-100 duration-300',
+				secondary:
+					'border-2 border-secondary bg-gradient-to-tr from-secondary to-secondaryLight hover:border-secondaryLight  text-zinc-200 hover:text-white duration-300',
 				ghost: 'hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50',
 				link: 'text-slate-900 underline-offset-4 hover:underline dark:text-slate-50',
+				none: 'bg-none border-none',
 			},
 			size: {
-				default: 'h-10 px-4 py-2',
+				default: 'h-10 px-4 py-2 rounded-lg',
 				sm: 'h-9 rounded-md px-3',
 				lg: 'h-11 rounded-md px-8',
 				icon: 'h-10 w-10',

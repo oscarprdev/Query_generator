@@ -1,15 +1,13 @@
 import prisma from '../db';
 
-interface GetProjectsQueryInput {
-	ownerId?: string;
+interface GetProjectByTitleQueryInput {
+	title: string;
 }
 
-export const getProjectsQuery = async ({ ownerId }: GetProjectsQueryInput) => {
-	if (!ownerId) return null;
-
-	return await prisma.project.findMany({
+export const getProjectByTitleQuery = async ({ title }: GetProjectByTitleQueryInput) => {
+	return await prisma.project.findFirst({
 		where: {
-			ownerId,
+			title,
 		},
 	});
 };

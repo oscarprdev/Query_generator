@@ -54,14 +54,20 @@ model Users {
 
 model Project {
     id                String              @id @default(uuid()) @unique
-    title             String              
+    title             String              @unique
     createdAt         DateTime            @default(now()) @unique
     updatedAt         DateTime            @updatedAt
 
     database          Databases  
 
-    ownerId           String             @unique
-    owner             Users              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    ownerId           String              @unique
+    owner             Users               @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+    postgreTableId    String?           
+    mongoTableId      String?
+
+    postgreTable      PostgreTable[]      
+    mongoTable        MongoTable[]         
 }
 
 model PostgreTable {
@@ -71,6 +77,9 @@ model PostgreTable {
     updatedAt         DateTime            @updatedAt
 
     rows              PostgreRow[]
+
+    projectId         String           
+    project           Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model MongoTable {
@@ -80,24 +89,29 @@ model MongoTable {
     updatedAt         DateTime            @updatedAt
 
     rows              MongoRow[]
+
+    projectId         String           
+    project           Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model PostgreRow {
     id                String              @id @default(uuid()) @unique
-    tableId           String              @unique
+    name              String
     value             String              
     type              PostgresType
     constraints       PostgreConstraint
 
+    tableId           String              @unique
     table             PostgreTable        @relation(fields: [tableId], references: [id], onDelete: Cascade)
 }
 
 model MongoRow {
     id               String               @id @default(uuid()) @unique
-    tableId          String
+    name             String
     value            String
     type             MongoType
     constraints      MongoConstraint
 
+    tableId          String
     table            MongoTable          @relation(fields: [tableId], references: [id], onDelete: Cascade)
 }

@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import { getProjectsQuery } from '@/services/queries/get-project.query';
+import { getProjectListQuery } from '@/services/queries/get-project-list.query';
 import Link from 'next/link';
 
 export const AsideProjectListSkeleton = () => {
@@ -15,7 +15,7 @@ export const AsideProjectListSkeleton = () => {
 
 const AsideProjectsList = async () => {
 	const session = await auth();
-	const projects = await getProjectsQuery({ ownerId: session?.user?.name as string });
+	const projects = await getProjectListQuery({ ownerId: session?.user?.name as string });
 
 	return (
 		<div className="flex w-full flex-col gap-1">

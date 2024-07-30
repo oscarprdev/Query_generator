@@ -2,7 +2,7 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '../ui/button';
-import CreateProjectForm, { CreateProjectFormValues } from '../Form/CreateProjectForm';
+import CreateProjectForm, { CreateProjectFormValues } from '../Forms/CreateProjectForm';
 import { useRef } from 'react';
 import { IconPlus } from '@tabler/icons-react';
 import { createProject } from '@/app/actions/create-project';

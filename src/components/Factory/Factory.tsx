@@ -1,21 +1,24 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { Databases } from '@prisma/client';
 import { IconBolt, IconChevronUp } from '@tabler/icons-react';
 import { ReactNode } from 'react';
+import { Badge } from '../ui/badge';
 
 type FactoryProps = {
-	projectTitle: string;
+	projectTitle?: string;
+	projectType?: Databases;
 	isVisible: boolean;
 	toggleVisibility(): void;
 	children: ReactNode;
 };
 
-const Factory = ({ isVisible, projectTitle, toggleVisibility, children }: FactoryProps) => {
+const Factory = ({ isVisible, projectTitle, projectType, toggleVisibility, children }: FactoryProps) => {
 	return (
 		<section
 			className={cn(
-				'absolute bottom-0 right-5 flex w-1/2 max-w-[500px] flex-col rounded-t-xl border border-border bg-background shadow-md duration-300',
+				'absolute bottom-0 right-5 flex w-[700px] flex-col rounded-t-xl border border-border bg-background shadow-md duration-300',
 				isVisible ? 'h-[78vh]' : 'h-[60px]'
 			)}>
 			<header className="flex w-full items-center justify-between border-b border-border p-5">
@@ -26,7 +29,9 @@ const Factory = ({ isVisible, projectTitle, toggleVisibility, children }: Factor
 						{projectTitle && (
 							<>
 								<span aria-hidden className="h-1 w-1 rounded-full bg-border" />
-								<p className="text-sm capitalize text-zinc-500">{projectTitle}</p>
+								<p className="text-sm capitalize text-zinc-400">{projectTitle}</p>
+								<span aria-hidden className="h-1 w-1 rounded-full bg-border" />
+								<Badge>{projectType}</Badge>
 							</>
 						)}
 					</div>
