@@ -6,9 +6,10 @@ import { createTable } from '@/app/actions/create-table';
 
 type FactoryTables = {
 	project: Project | null;
+	isProjectSelected: boolean;
 };
 
-const FactoryTables = ({ project }: FactoryTables) => {
+const FactoryTables = ({ project, isProjectSelected }: FactoryTables) => {
 	const handleSubmit = async (values: CreateTableFormValues) => {
 		if (!project) return;
 
@@ -20,7 +21,15 @@ const FactoryTables = ({ project }: FactoryTables) => {
 		});
 	};
 
-	return <div>{project && <CreateTableForm handleSubmit={handleSubmit} type={project.database} />}</div>;
+	return (
+		<div className="grid h-full w-full place-items-center">
+			{project && isProjectSelected ? (
+				<CreateTableForm handleSubmit={handleSubmit} type={project.database} />
+			) : (
+				<p className="text-xs text-zinc-400">Selecciona un proyecto para empezar</p>
+			)}
+		</div>
+	);
 };
 
 export default FactoryTables;

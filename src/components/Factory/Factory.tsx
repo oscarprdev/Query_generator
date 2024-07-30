@@ -5,6 +5,7 @@ import { Databases } from '@prisma/client';
 import { IconBolt, IconChevronUp } from '@tabler/icons-react';
 import { ReactNode } from 'react';
 import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
 
 type FactoryProps = {
 	projectTitle?: string;
@@ -21,26 +22,31 @@ const Factory = ({ isVisible, projectTitle, projectType, toggleVisibility, child
 				'absolute bottom-0 right-5 flex w-[700px] flex-col rounded-t-xl border border-border bg-background shadow-md duration-300',
 				isVisible ? 'h-[78vh]' : 'h-[60px]'
 			)}>
-			<header className="flex w-full items-center justify-between border-b border-border p-5">
+			<header className="flex w-full items-center justify-between border-b border-border px-5 py-2">
 				<div className="flex w-full items-center gap-3">
-					<IconBolt size={20} className="text-secondary" />
+					<IconBolt size={20} className={cn(projectTitle ? 'text-secondary' : 'text-zinc-600')} />
 					<div className="flex items-center gap-3">
-						<p className="text-md text-zinc-300">Factoria</p>
 						{projectTitle && (
 							<>
-								<span aria-hidden className="h-1 w-1 rounded-full bg-border" />
-								<p className="text-sm capitalize text-zinc-400">{projectTitle}</p>
+								<p className="text-sm capitalize text-zinc-200">{projectTitle}</p>
 								<span aria-hidden className="h-1 w-1 rounded-full bg-border" />
 								<Badge>{projectType}</Badge>
 							</>
 						)}
 					</div>
 				</div>
-				<IconChevronUp
-					onClick={() => toggleVisibility()}
-					size={18}
-					className={cn('duration-300', isVisible ? 'rotate-180' : 'rotate-0')}
-				/>
+				<Button
+					variant={'none'}
+					className="group grid place-items-center p-2 hover:cursor-pointer"
+					onClick={() => toggleVisibility()}>
+					<IconChevronUp
+						size={18}
+						className={cn(
+							'text-zinc-400 duration-300 group-hover:text-zinc-100',
+							isVisible ? 'rotate-180' : 'rotate-0'
+						)}
+					/>
+				</Button>
 			</header>
 			<div className="grid h-full w-full place-items-center p-0">{children}</div>
 		</section>

@@ -56,7 +56,7 @@ const CreateTableForm = ({ handleSubmit, type }: CreateTableFormProps) => {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(handleSubmit)} className="-mt-5 flex h-full flex-col gap-5">
+			<form onSubmit={form.handleSubmit(handleSubmit)} className="-mt-5 flex h-full w-full flex-col gap-5">
 				<FormField
 					control={form.control}
 					name="title"
@@ -72,7 +72,7 @@ const CreateTableForm = ({ handleSubmit, type }: CreateTableFormProps) => {
 				/>
 				<section
 					aria-label="scroll"
-					className="flex h-[35vh] w-full flex-col items-start justify-start gap-2 overflow-x-auto overflow-y-scroll pb-5">
+					className="flex h-[40vh] w-full flex-col items-start justify-start gap-2 overflow-x-auto overflow-y-scroll pb-5">
 					{fields.map((field, i) => (
 						<div
 							key={field.id}

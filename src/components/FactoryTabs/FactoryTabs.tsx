@@ -1,5 +1,4 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import FactoryTables from '../FactoryTables/FactoryTables';
 import { ReactNode } from 'react';
 
 type FactoryTabsProps = {

@@ -19,12 +19,12 @@ export default async function Home({ searchParams: { project } }: HomeProps) {
 			<div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px]"></div>
 			<CreateProjectModal />
 			<AppController
-				projectTitle={projectResponse?.title}
+				projectTitle={project}
 				projectType={projectResponse?.database}
-				tables={<TablesViewGrid projectTitle={projectResponse?.title} />}
+				tables={<TablesViewGrid projectTitle={project} />}
 				factoryTabs={
 					<FactoryTabs
-						tables={<FactoryTables project={projectResponse} />}
+						tables={<FactoryTables project={projectResponse} isProjectSelected={Boolean(project)} />}
 						queries={<p>Queries</p>}
 						schemas={<p>Schemas</p>}
 					/>
