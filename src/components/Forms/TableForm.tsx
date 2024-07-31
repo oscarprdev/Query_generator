@@ -68,8 +68,8 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 		}
 
 		const allRowNames = values.rows.map(row => row.name.toLowerCase());
-		const rowsSameName = values.rows.filter(row => allRowNames.includes(row.name.toLowerCase()));
-		if (rowsSameName.length > 1) {
+
+		if (new Set(allRowNames).size > values.rows.length) {
 			return form.setValue('error', 'Cara Row tiene que tener un nombre unico.');
 		}
 

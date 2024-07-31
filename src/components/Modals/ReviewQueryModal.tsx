@@ -14,8 +14,6 @@ const ReviewQueryModal = ({ children }: ReviewQueryModalProps) => {
 				<DialogHeader>
 					<DialogTitle>Detalles de tu query!</DialogTitle>
 				</DialogHeader>
-
-				<QueryView />
 			</DialogContent>
 		</Dialog>
 	);

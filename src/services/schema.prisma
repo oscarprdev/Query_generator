@@ -76,7 +76,7 @@ model Project {
 
     database          Databases  
 
-    ownerId           String              @unique
+    ownerId           String              
     owner             Users               @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
     postgreTableId    String?           

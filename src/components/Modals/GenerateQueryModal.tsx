@@ -1,7 +1,10 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+'use client';
+
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '../ui/button';
-import QueryForm, { QueryFormValues } from '../Forms/QueryForm';
 import { Databases } from '@prisma/client';
+import GenerateQueryModalContent from './GenerateQueryModalContent';
+import { useState } from 'react';
 
 type GenerateQueryModalProps = {
 	projectTitle: string;
@@ -9,30 +12,16 @@ type GenerateQueryModalProps = {
 };
 
 const GenerateQueryModal = ({ projectTitle, type }: GenerateQueryModalProps) => {
-	const handleSubmit = async (values: QueryFormValues) => {
-		'use server';
-	};
+	const [modalOpened, setModalOpened] = useState(false);
 
 	return (
-		<Dialog>
+		<Dialog onOpenChange={e => setModalOpened(e)}>
 			<DialogTrigger asChild>
 				<Button className="ml-auto">Generar query</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[625px]">
-				<DialogHeader>
-					<DialogTitle>Genera tu propia query!</DialogTitle>
-				</DialogHeader>
-				<QueryForm
-					handleSubmit={handleSubmit}
-					type={type}
-					projectTitle={projectTitle}
-					reset={false}
-					defaultValues={{ title: '', tables: [], filters: [] }}
-					submitLabel="Generar query"
-				/>
-			</DialogContent>
+			{modalOpened && <GenerateQueryModalContent projectTitle={projectTitle} type={type} />}
 		</Dialog>
-	);
+	); 
 };
 
 export default GenerateQueryModal;

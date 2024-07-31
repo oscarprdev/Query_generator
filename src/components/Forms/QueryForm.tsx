@@ -12,10 +12,11 @@ import QueryFormFilters from './QueryFormFilters';
 import { Textarea } from '../ui/textarea';
 import QueryFormPromptInfo from './QueryFormPromptInfo';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { useEffect } from 'react';
 
 export type QueryFormValues = {
 	title: string;
-	action?: QueryAction;
+	action: QueryAction;
 	tables: string[];
 	filters: string[];
 	prompt?: string;
