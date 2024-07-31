@@ -261,9 +261,7 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 						<Button type="button" variant={'none'} onClick={() => form.reset()}>
 							Reset
 						</Button>
-						<Button type="submit" variant={'secondary'}>
-							{form.formState.isSubmitting ? 'Loading' : `${submitLabel}`}
-						</Button>
+						<Button type="submit">{form.formState.isSubmitting ? 'Loading' : `${submitLabel}`}</Button>
 					</div>
 				</div>
 			</form>
