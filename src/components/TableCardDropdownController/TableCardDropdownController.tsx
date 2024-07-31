@@ -36,7 +36,13 @@ const TableCardDropdownController = ({ tableId, type, title, rows }: TableCardDr
 				title={title}
 				rows={rows}
 			/>
-			<DeleteTableModal isOpened={isDeleteModalVisible} toggleModal={toggleDeleteModal} />
+			<DeleteTableModal
+				tableId={tableId}
+				type={type}
+				title={title}
+				isOpened={isDeleteModalVisible}
+				toggleModal={toggleDeleteModal}
+			/>
 		</>
 	);
 };
