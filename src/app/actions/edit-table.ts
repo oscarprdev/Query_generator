@@ -1,15 +1,16 @@
 'use server';
 
 import { auth } from '@/auth';
-import { createTableQuery } from '@/services/queries/create-table.query';
+import { editTableQuery } from '@/services/queries/edit-table.query';
 import { $Enums, Databases } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
-interface CreateTableInput {
-	projectId: string;
+interface EditTableInput {
+	tableId: string;
 	type: Databases;
 	title: string;
 	rows: {
+		id?: string;
 		name: string;
 		value: string;
 		type: $Enums.MongoType | $Enums.PostgresType;
@@ -17,13 +18,13 @@ interface CreateTableInput {
 	}[];
 }
 
-export const createTable = async (input: CreateTableInput) => {
+export const editTable = async (input: EditTableInput) => {
 	const session = await auth();
 	const userId = session?.user?.name;
 
 	if (!userId) return 'No se ha encontrado ningun usuario';
 
-	await createTableQuery(input);
+	await editTableQuery(input);
 
 	revalidatePath('/');
 };

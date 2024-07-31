@@ -21,6 +21,9 @@ export const getTablesListQuery = async ({ title }: GetTablesListQueryInput) => 
 				include: {
 					rows: true,
 				},
+				orderBy: {
+					createdAt: 'asc',
+				},
 			});
 		case Databases.mongoDb:
 			return await prisma.mongoTable.findMany({
@@ -29,6 +32,9 @@ export const getTablesListQuery = async ({ title }: GetTablesListQueryInput) => 
 				},
 				include: {
 					rows: true,
+				},
+				orderBy: {
+					createdAt: 'asc',
 				},
 			});
 		default:

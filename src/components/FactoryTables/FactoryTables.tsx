@@ -1,7 +1,7 @@
 'use client';
 
 import { Project } from '@prisma/client';
-import CreateTableForm, { CreateTableFormValues } from '../Forms/CreateTableForm';
+import TableForm, { TableFormValues } from '../Forms/TableForm';
 import { createTable } from '@/app/actions/create-table';
 
 type FactoryTables = {
@@ -10,7 +10,7 @@ type FactoryTables = {
 };
 
 const FactoryTables = ({ project, isProjectSelected }: FactoryTables) => {
-	const handleSubmit = async (values: CreateTableFormValues) => {
+	const handleSubmit = async (values: TableFormValues) => {
 		if (!project) return;
 
 		await createTable({
@@ -24,7 +24,12 @@ const FactoryTables = ({ project, isProjectSelected }: FactoryTables) => {
 	return (
 		<div className="grid h-full w-full place-items-center">
 			{project && isProjectSelected ? (
-				<CreateTableForm handleSubmit={handleSubmit} type={project.database} />
+				<TableForm
+					handleSubmit={handleSubmit}
+					type={project.database}
+					defaultValues={{ title: '', rows: [{ name: '', value: '', type: 'any', constraints: 'any' }] }}
+					submitLabel="Crear tabla"
+				/>
 			) : (
 				<p className="text-xs text-zinc-400">Selecciona un proyecto para empezar</p>
 			)}

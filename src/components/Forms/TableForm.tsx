@@ -11,42 +11,44 @@ import { $Enums, Databases } from '@prisma/client';
 import { IconX } from '@tabler/icons-react';
 
 export type RowFormValues = {
+	id?: string;
 	name: string;
 	value: string;
 	type: $Enums.MongoType | $Enums.PostgresType;
-	constraint: $Enums.MongoConstraint | $Enums.PostgreConstraint;
+	constraints: $Enums.MongoConstraint | $Enums.PostgreConstraint;
 };
 
-export type CreateTableFormValues = {
+export type TableFormValues = {
 	title: string;
 	rows: RowFormValues[];
 	error?: string;
 };
 
-type CreateTableFormProps = {
-	handleSubmit: (values: CreateTableFormValues) => Promise<void>;
+type TableFormProps = {
+	handleSubmit: (values: TableFormValues) => Promise<void>;
 	type: Databases;
+	defaultValues: TableFormValues;
+	submitLabel: string;
+	reset?: boolean;
 };
 
 const formSchema = z.object({
 	title: z.string(),
 	rows: z.array(
 		z.object({
+			id: z.string().optional(),
 			name: z.string(),
 			value: z.string(),
 			type: z.union([z.nativeEnum($Enums.MongoType), z.nativeEnum($Enums.PostgresType)]),
-			constraint: z.union([z.nativeEnum($Enums.MongoConstraint), z.nativeEnum($Enums.PostgreConstraint)]),
+			constraints: z.union([z.nativeEnum($Enums.MongoConstraint), z.nativeEnum($Enums.PostgreConstraint)]),
 		})
 	),
 });
 
-const CreateTableForm = ({ handleSubmit, type }: CreateTableFormProps) => {
-	const form = useForm<CreateTableFormValues>({
+const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = true }: TableFormProps) => {
+	const form = useForm<TableFormValues>({
 		resolver: zodResolver(formSchema),
-		defaultValues: {
-			title: '',
-			rows: [{ name: '', value: '' }],
-		},
+		defaultValues,
 	});
 
 	const { fields, append, remove } = useFieldArray({
@@ -54,10 +56,12 @@ const CreateTableForm = ({ handleSubmit, type }: CreateTableFormProps) => {
 		name: 'rows',
 	});
 
-	const onSubmit = async (values: CreateTableFormValues) => {
+	const onSubmit = async (values: TableFormValues) => {
 		await handleSubmit(values);
 
-		form.reset();
+		if (reset) {
+			form.reset();
+		}
 	};
 
 	return (
@@ -113,7 +117,10 @@ const CreateTableForm = ({ handleSubmit, type }: CreateTableFormProps) => {
 								render={({ field }) => (
 									<FormItem className="flex-1">
 										{i === 0 && <FormLabel>Tipo</FormLabel>}
-										<Select onValueChange={field.onChange} required>
+										<Select
+											onValueChange={field.onChange}
+											defaultValue={field.value === 'any' ? undefined : field.value}
+											required>
 											<FormControl>
 												<SelectTrigger>
 													<SelectValue placeholder="Tipo" />
@@ -145,11 +152,14 @@ const CreateTableForm = ({ handleSubmit, type }: CreateTableFormProps) => {
 							/>
 							<FormField
 								control={form.control}
-								name={`rows.${i}.constraint`}
+								name={`rows.${i}.constraints`}
 								render={({ field }) => (
 									<FormItem className="flex-1">
 										{i === 0 && <FormLabel>Constraint</FormLabel>}
-										<Select onValueChange={field.onChange} required>
+										<Select
+											onValueChange={field.onChange}
+											defaultValue={field.value === 'any' ? undefined : field.value}
+											required>
 											<FormControl>
 												<SelectTrigger>
 													<SelectValue placeholder="Constraint" />
@@ -196,12 +206,12 @@ const CreateTableForm = ({ handleSubmit, type }: CreateTableFormProps) => {
 						type="button"
 						variant={'outline'}
 						className="mr-auto mt-2 h-fit"
-						onClick={() => append({ name: '', value: '', type: 'string', constraint: 'notNull' })}>
+						onClick={() => append({ name: '', value: '', type: 'any', constraints: 'any' })}>
 						Insertar row
 					</Button>
 
 					<Button type="submit" variant={'secondary'} className="ml-auto mt-auto">
-						{form.formState.isSubmitting ? 'Loading' : 'Crear tabla'}
+						{form.formState.isSubmitting ? 'Loading' : `${submitLabel}`}
 					</Button>
 				</div>
 			</form>
@@ -209,4 +219,4 @@ const CreateTableForm = ({ handleSubmit, type }: CreateTableFormProps) => {
 	);
 };
 
-export default CreateTableForm;
+export default TableForm;

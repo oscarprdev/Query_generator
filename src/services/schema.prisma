@@ -23,6 +23,8 @@ enum PostgresType {
     boolean
     date
     json
+    uuid
+    any
 }
 
 enum MongoType {
@@ -32,6 +34,8 @@ enum MongoType {
     date
     object
     array
+    uuid
+    any
 }
 
 enum PostgreConstraint {
@@ -39,11 +43,13 @@ enum PostgreConstraint {
     foreignKey
     notNull
     unique
+    any
 }
 
 enum MongoConstraint {
     primaryKey
     unique
+    any
 }
 
 model Users {

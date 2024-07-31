@@ -4,6 +4,7 @@ import FactoryTabs from '@/components/FactoryTabs/FactoryTabs';
 import CreateProjectModal from '@/components/Modals/CreateProjectModal';
 import TablesViewGrid from '@/components/TablesViewGrid/TablesViewGrid';
 import { getProjectByTitleQuery } from '@/services/queries/get-project.query';
+import { Suspense } from 'react';
 
 type HomeProps = {
 	searchParams: {
@@ -21,7 +22,11 @@ export default async function Home({ searchParams: { project } }: HomeProps) {
 			<AppController
 				projectTitle={project}
 				projectType={projectResponse?.database}
-				tables={<TablesViewGrid projectTitle={project} />}
+				tables={
+					<Suspense fallback={<p>Loading</p>}>
+						<TablesViewGrid projectTitle={project} />
+					</Suspense>
+				}
 				factoryTabs={
 					<FactoryTabs
 						tables={<FactoryTables project={projectResponse} isProjectSelected={Boolean(project)} />}
