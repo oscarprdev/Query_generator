@@ -26,7 +26,7 @@ const EditTableModal = ({ isOpened, tableId, title, type, rows, toggleModal }: E
 
 	return (
 		<Dialog open={isOpened} onOpenChange={toggleModal}>
-			<DialogContent className="sm:max-w-[625px]">
+			<DialogContent className="pb-1 sm:max-w-[625px]">
 				<DialogHeader>
 					<DialogTitle className="mb-5 flex items-center gap-5">
 						Editar tabla <Badge>{type}</Badge>

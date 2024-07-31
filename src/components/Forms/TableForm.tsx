@@ -9,6 +9,7 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { $Enums, Databases } from '@prisma/client';
 import { IconX } from '@tabler/icons-react';
+import { cn } from '@/lib/utils';
 
 export type RowFormValues = {
 	id?: string;
@@ -57,6 +58,17 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 	});
 
 	const onSubmit = async (values: TableFormValues) => {
+		const rowsPrimaryKey = values.rows.filter(row => row.constraints === 'primaryKey');
+		if (rowsPrimaryKey.length > 1) {
+			return form.setValue('error', 'Solo puede haber un row como Primary key por cada tabla.');
+		}
+
+		if (rowsPrimaryKey.length === 0) {
+			return form.setValue('error', 'Tiene que haber un row como Primary key por cada tabla.');
+		}
+
+		form.setValue('error', undefined);
+
 		await handleSubmit(values);
 
 		if (reset) {
@@ -129,20 +141,26 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 											<SelectContent>
 												{type === 'mongoDb' && (
 													<>
-														{Object.values($Enums.MongoType).map(type => (
-															<SelectItem key={type} value={type as $Enums.MongoType}>
-																{type}
-															</SelectItem>
-														))}
+														{Object.values($Enums.MongoType)
+															.filter(type => type !== 'any')
+															.map(type => (
+																<SelectItem key={type} value={type as $Enums.MongoType}>
+																	{type}
+																</SelectItem>
+															))}
 													</>
 												)}
 												{type === 'postgreSQL' && (
 													<>
-														{Object.values($Enums.PostgresType).map(type => (
-															<SelectItem key={type} value={type as $Enums.PostgresType}>
-																{type}
-															</SelectItem>
-														))}
+														{Object.values($Enums.PostgresType)
+															.filter(type => type !== 'any')
+															.map(type => (
+																<SelectItem
+																	key={type}
+																	value={type as $Enums.PostgresType}>
+																	{type}
+																</SelectItem>
+															))}
 													</>
 												)}
 											</SelectContent>
@@ -155,7 +173,11 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 								name={`rows.${i}.constraints`}
 								render={({ field }) => (
 									<FormItem className="flex-1">
-										{i === 0 && <FormLabel>Constraint</FormLabel>}
+										{i === 0 && (
+											<FormLabel className={cn(form.getValues('error') && 'text-red-500')}>
+												Constraint
+											</FormLabel>
+										)}
 										<Select
 											onValueChange={field.onChange}
 											defaultValue={field.value === 'any' ? undefined : field.value}
@@ -201,7 +223,7 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 						</div>
 					))}
 				</section>
-				<div className="mt-auto flex w-full items-center justify-between">
+				<div className="relative mt-auto flex w-full items-center justify-between">
 					<Button
 						type="button"
 						variant={'outline'}
@@ -210,6 +232,11 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 						Insertar row
 					</Button>
 
+					{form.getValues('error') && (
+						<div className="bottom absolute bottom-0 right-32 grid max-w-[280px] place-items-center rounded-lg bg-red-400/10 p-3">
+							<p className="text-center text-xs text-red-500">{form.getValues('error')}</p>
+						</div>
+					)}
 					<Button type="submit" variant={'secondary'} className="ml-auto mt-auto">
 						{form.formState.isSubmitting ? 'Loading' : `${submitLabel}`}
 					</Button>
