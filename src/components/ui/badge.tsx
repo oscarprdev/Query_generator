@@ -8,10 +8,8 @@ const badgeVariants = cva(
 	{
 		variants: {
 			variant: {
-				default:
-					'border-transparent bg-gradient-to-tr from-primary to-primaryLight text-primaryDark hover:bg-slate-900/80 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/80',
-				secondary:
-					'border-transparent bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80',
+				default: 'border-transparent bg-gradient-to-tr from-primary to-primaryLight text-primaryDark',
+				secondary: 'border-none bg-zinc-200/50 text-zinc-700 ',
 				destructive:
 					'border-transparent bg-red-500 text-slate-50 hover:bg-red-500/80 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/80',
 				outline: 'text-slate-950 dark:text-slate-50',

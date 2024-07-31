@@ -1,6 +1,7 @@
 import { $Enums, Databases } from '@prisma/client';
 import { Badge } from '../ui/badge';
 import TableCardDropdownController from '../TableCardDropdownController/TableCardDropdownController';
+import { FOREIGN_KEY, PRIMARY_KEY, sortRows } from './utils/sort-rows';
 
 export type Row = {
 	id: string;
@@ -28,21 +29,23 @@ const TableCard = ({ tableId, title, rows, type }: TableCardProps) => {
 				</div>
 			</div>
 			<ul className="flex w-full flex-col gap-1">
-				{rows
-					.sort((a, b) => (a.constraints === 'primaryKey' ? -1 : b.constraints === 'primaryKey' ? 1 : 0))
-					.map(row => (
-						<li
-							key={row.name}
-							className="flex w-full items-center gap-2 border-b border-border px-5 py-3 font-light last-of-type:border-none">
-							<p className="text-sm capitalize">{row.name}</p>
-							<p className="text-xs capitalize text-zinc-400">{row.type}</p>
-							{row.constraints !== 'primaryKey' ? (
-								<p className="ml-auto text-xs capitalize text-zinc-400">{row.constraints}</p>
-							) : (
-								<Badge className="ml-auto text-xs">Pk</Badge>
-							)}
-						</li>
-					))}
+				{sortRows(rows).map(row => (
+					<li
+						key={row.name}
+						className="flex w-full items-center gap-2 border-b border-border px-5 py-3 font-light last-of-type:border-none">
+						<p className="text-sm capitalize">{row.name}</p>
+						<p className="text-xs capitalize text-zinc-400">{row.type}</p>
+						{row.constraints === PRIMARY_KEY ? (
+							<Badge className="ml-auto text-xs">Pk</Badge>
+						) : row.constraints === FOREIGN_KEY ? (
+							<Badge variant={'secondary'} className="ml-auto text-xs">
+								Foreign key
+							</Badge>
+						) : (
+							<p className="ml-auto text-xs capitalize text-zinc-400">{row.constraints}</p>
+						)}
+					</li>
+				))}
 			</ul>
 		</article>
 	);
