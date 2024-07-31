@@ -1,4 +1,5 @@
 import AppController from '@/components/AppController/AppController';
+import FactoryQueries from '@/components/FactoryQueries/FactoryQueries';
 import FactoryTables from '@/components/FactoryTables/FactoryTables';
 import FactoryTabs from '@/components/FactoryTabs/FactoryTabs';
 import CreateProjectModal from '@/components/Modals/CreateProjectModal';
@@ -30,7 +31,7 @@ export default async function Home({ searchParams: { project } }: HomeProps) {
 				factoryTabs={
 					<FactoryTabs
 						tables={<FactoryTables project={projectResponse} isProjectSelected={Boolean(project)} />}
-						queries={<p>Queries</p>}
+						queries={<FactoryQueries project={projectResponse} />}
 						schemas={<p>Schemas</p>}
 					/>
 				}

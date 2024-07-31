@@ -41,3 +41,4 @@ export const getTablesListQuery = async ({ title }: GetTablesListQueryInput) => 
 			return [];
 	}
 };
+

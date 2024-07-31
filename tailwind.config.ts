@@ -35,11 +35,22 @@ const config = {
 					from: { opacity: '0', transform: 'translateY(15px)' },
 					to: { opacity: '1', transform: 'translateY(0)' },
 				},
+				'fade-up-light': {
+					from: { opacity: '0', transform: 'translateY(5px)' },
+					to: { opacity: '1', transform: 'translateY(0)' },
+				},
+
+				'fade-down-light': {
+					from: { opacity: '1', transform: 'translateY(0px)' },
+					to: { opacity: '0', transform: 'translateY(5px)' },
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-up': 'fade-up 0.2s ease-out',
+				'fade-up-light': 'fade-up-light 0.3s ease-in-out forwards',
+				'fade-down-light': 'fade-down-light 0.3s ease-in-out forwards',
 			},
 		},
 	},
