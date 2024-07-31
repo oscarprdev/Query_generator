@@ -67,6 +67,12 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 			return form.setValue('error', 'Tiene que haber un row como Primary key por cada tabla.');
 		}
 
+		const allRowNames = values.rows.map(row => row.name.toLowerCase());
+		const rowsSameName = values.rows.filter(row => allRowNames.includes(row.name.toLowerCase()));
+		if (rowsSameName.length > 1) {
+			return form.setValue('error', 'Cara Row tiene que tener un nombre unico.');
+		}
+
 		form.setValue('error', undefined);
 
 		await handleSubmit(values);
@@ -104,7 +110,16 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 								name={`rows.${i}.name`}
 								render={({ field }) => (
 									<FormItem className="flex-1">
-										{i === 0 && <FormLabel>Nombre</FormLabel>}
+										{i === 0 && (
+											<FormLabel
+												className={cn(
+													form.getValues('error') &&
+														!form.getValues('error')?.match('Primary key') &&
+														'text-red-500'
+												)}>
+												Nombre
+											</FormLabel>
+										)}
 										<FormControl>
 											<Input required placeholder="Nombre" {...field} />
 										</FormControl>
@@ -174,7 +189,12 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 								render={({ field }) => (
 									<FormItem className="flex-1">
 										{i === 0 && (
-											<FormLabel className={cn(form.getValues('error') && 'text-red-500')}>
+											<FormLabel
+												className={cn(
+													form.getValues('error') &&
+														form.getValues('error')?.match('Primary key') &&
+														'text-red-500'
+												)}>
 												Constraint
 											</FormLabel>
 										)}
@@ -233,13 +253,18 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 					</Button>
 
 					{form.getValues('error') && (
-						<div className="bottom absolute bottom-0 right-32 grid max-w-[280px] place-items-center rounded-lg bg-red-400/10 p-3">
+						<div className="bottom absolute bottom-0 right-52 grid max-w-[280px] place-items-center rounded-lg bg-red-400/10 p-3">
 							<p className="text-center text-xs text-red-500">{form.getValues('error')}</p>
 						</div>
 					)}
-					<Button type="submit" variant={'secondary'} className="ml-auto mt-auto">
-						{form.formState.isSubmitting ? 'Loading' : `${submitLabel}`}
-					</Button>
+					<div className="ml-auto mt-auto flex items-center gap-5">
+						<Button type="button" variant={'none'} onClick={() => form.reset()}>
+							Reset
+						</Button>
+						<Button type="submit" variant={'secondary'}>
+							{form.formState.isSubmitting ? 'Loading' : `${submitLabel}`}
+						</Button>
+					</div>
 				</div>
 			</form>
 		</Form>
