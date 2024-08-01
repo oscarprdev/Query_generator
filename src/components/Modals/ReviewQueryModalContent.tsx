@@ -62,8 +62,10 @@ const ReviewQueryModalContent = ({ queryId }: ReviewQueryModalContentProps) => {
 	return (
 		<DialogContent
 			className={cn(modalState.success || modalState.loading ? 'sm:max-w-[280px]' : 'sm:max-w-[625px]')}>
-			{modalState.loading && !modalState.success ? (
-				<LoadingModalContent text="Editando query ..." />
+			{modalState.loading && !query ? (
+				<LoadingModalContent text={'Obteniendo query ...'} />
+			) : modalState.loading && !modalState.success ? (
+				<LoadingModalContent text={'Editando query ...'} />
 			) : modalState.success && !modalState.loading ? (
 				<SuccessModalContent text="Query editada correctamente!" />
 			) : (

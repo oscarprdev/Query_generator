@@ -1,5 +1,5 @@
 import { getTablesListQuery } from '@/services/queries/get-tables-list.query';
-import TableCard from '../TablesCard/TableCard';
+import TableCard, { TableCardSkeleton } from '../TablesCard/TableCard';
 import { getProjectByTitleQuery } from '@/services/queries/get-project.query';
 
 type TablesViewGridProps = {
@@ -31,4 +31,15 @@ const TablesViewGrid = async ({ projectTitle }: TablesViewGridProps) => {
 	);
 };
 
+export const TableViewGridSkeleton = () => {
+	return (
+		<div
+			aria-label="scroll"
+			className="grid h-[90vh] w-full grid-cols-[repeat(auto-fill,minmax(250px,250px))] gap-5 overflow-x-hidden overflow-y-scroll p-10">
+			<TableCardSkeleton />
+			<TableCardSkeleton />
+			<TableCardSkeleton />
+		</div>
+	);
+};
 export default TablesViewGrid;

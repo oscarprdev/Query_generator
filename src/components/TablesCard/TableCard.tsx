@@ -51,4 +51,32 @@ const TableCard = ({ tableId, title, rows, type }: TableCardProps) => {
 	);
 };
 
+export const TableCardSkeleton = () => {
+	return (
+		<article className="flex h-fit max-w-[300px] flex-col rounded-lg border border-border bg-background shadow-lg">
+			<div className="relative grid w-full place-items-center border-b border-border bg-emerald-900/10 p-2">
+				<div className="mr-auto w-3/4 animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
+				<div className="absolute right-1 top-1 rounded-md bg-zinc-800/70 p-3"></div>
+			</div>
+			<ul className="flex w-full flex-col gap-1">
+				<li className="flex w-full items-center gap-2 border-b border-border px-5 py-3 last-of-type:border-none">
+					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
+					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
+					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
+				</li>
+				<li className="flex w-full items-center gap-2 border-b border-border px-5 py-3 last-of-type:border-none">
+					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
+					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
+					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
+				</li>
+				<li className="flex w-full items-center gap-2 border-b border-border px-5 py-3 last-of-type:border-none">
+					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
+					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
+					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
+				</li>
+			</ul>
+		</article>
+	);
+};
+
 export default TableCard;

@@ -3,7 +3,7 @@ import FactoryQueries from '@/components/FactoryQueries/FactoryQueries';
 import FactoryTables from '@/components/FactoryTables/FactoryTables';
 import FactoryTabs from '@/components/FactoryTabs/FactoryTabs';
 import CreateProjectModal from '@/components/Modals/CreateProjectModal';
-import TablesViewGrid from '@/components/TablesViewGrid/TablesViewGrid';
+import TablesViewGrid, { TableViewGridSkeleton } from '@/components/TablesViewGrid/TablesViewGrid';
 import { getProjectByTitleQuery } from '@/services/queries/get-project.query';
 import { Suspense } from 'react';
 
@@ -24,7 +24,7 @@ export default async function Home({ searchParams: { project } }: HomeProps) {
 				projectTitle={project}
 				projectType={projectResponse?.database}
 				tables={
-					<Suspense fallback={<p>Loading</p>}>
+					<Suspense fallback={<TableViewGridSkeleton />}>
 						<TablesViewGrid projectTitle={project} />
 					</Suspense>
 				}
