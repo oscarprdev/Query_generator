@@ -8,13 +8,12 @@ type QueryItemProps = {
 	title: string;
 	action: QueryAction;
 	description: string;
-	tables: string;
 	createdAt: Date;
 };
 
-const QueryItem = ({ queryId, title, description, action, tables, createdAt }: QueryItemProps) => {
+const QueryItem = ({ queryId, title, description, action, createdAt }: QueryItemProps) => {
 	return (
-		<ReviewQueryModal>
+		<ReviewQueryModal queryId={queryId}>
 			<li className="flex w-full animate-fade-up cursor-pointer flex-col gap-1 rounded-md bg-zinc-800/50 px-3 py-3 duration-300 hover:bg-zinc-800">
 				<p className="text-md text-zinc-400">{title}</p>
 				<p className="truncate text-sm text-zinc-500">{description}</p>

@@ -1,7 +1,6 @@
 import { getQueriesQuery } from '@/services/queries/get-queries.query';
 import { Project } from '@prisma/client';
 import QueryItem from '../QueryItem/QueryItem';
-import ReviewQueryModal from '../Modals/ReviewQueryModal';
 import GenerateQueryModal from '../Modals/GenerateQueryModal';
 
 type FactoryQueries = {
@@ -25,7 +24,6 @@ const FactoryQueries = async ({ project }: FactoryQueries) => {
 							action={query.action}
 							description={query.description}
 							createdAt={query.createdAt}
-							tables={query.tables}
 						/>
 					))
 				) : project ? (

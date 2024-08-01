@@ -17,3 +17,11 @@ export const getQueriesQuery = async ({ projectId }: GetQueriesQueryInput) => {
 		},
 	});
 };
+
+interface GetQueryByIdQueryInput {
+	queryId: string;
+}
+
+export const getQueryByIdQuery = async ({ queryId }: GetQueryByIdQueryInput) => {
+	return await prisma.query.findFirst({ where: { id: queryId } });
+};

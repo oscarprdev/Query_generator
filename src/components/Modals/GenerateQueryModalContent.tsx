@@ -56,11 +56,11 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 		setPayload({ title: values.title, tables: values.tables.join(', '), action: values.action });
 	};
 
-	const handleStoreQuery = async () => {
+	const handleStoreQuery = async (code: string) => {
 		if (!payload || !component) return;
 
 		setModalState({ success: false, loading: true });
-		await createQuery({ ...payload, projectTitle, code: component });
+		await createQuery({ ...payload, projectTitle, code });
 		setModalState({ success: true, loading: false });
 	};
 
@@ -76,7 +76,11 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 					<DialogHeader>
 						<DialogTitle>Genera tu propia query!</DialogTitle>
 					</DialogHeader>
-					{component && <QueryView handleStoreQuery={handleStoreQuery}>{component}</QueryView>}
+					{component && (
+						<QueryView props={{ handleStoreQuery, content: component }}>
+							<QueryView.CreateQueryCTA />
+						</QueryView>
+					)}
 					<QueryForm
 						handleSubmit={handleSubmit}
 						type={type}

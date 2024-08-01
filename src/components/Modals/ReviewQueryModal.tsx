@@ -1,20 +1,24 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { ReactNode } from 'react';
-import QueryView from '../QueryView/QueryView';
+'use client';
+
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { ReactNode, useState } from 'react';
+import ReviewQueryModalContent from './ReviewQueryModalContent';
 
 type ReviewQueryModalProps = {
+	queryId: string;
 	children: ReactNode;
 };
 
-const ReviewQueryModal = ({ children }: ReviewQueryModalProps) => {
+const ReviewQueryModal = ({ queryId, children }: ReviewQueryModalProps) => {
+	const [modalOpened, setModalOpened] = useState(false);
+
 	return (
-		<Dialog>
+		<Dialog onOpenChange={e => {
+			console.log(e)
+			setModalOpened(e)
+		}}>
 			<DialogTrigger asChild>{children}</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
-				<DialogHeader>
-					<DialogTitle>Detalles de tu query!</DialogTitle>
-				</DialogHeader>
-			</DialogContent>
+			{modalOpened && <ReviewQueryModalContent queryId={queryId} />}
 		</Dialog>
 	);
 };
