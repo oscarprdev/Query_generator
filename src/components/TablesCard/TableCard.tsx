@@ -59,20 +59,20 @@ export const TableCardSkeleton = () => {
 				<div className="absolute right-1 top-1 rounded-md bg-zinc-800/70 p-3"></div>
 			</div>
 			<ul className="flex w-full flex-col gap-1">
-				<li className="flex w-full items-center gap-2 border-b border-border px-5 py-3 last-of-type:border-none">
+				<li className="flex w-full items-center gap-2 border-b border-border px-3 py-3 last-of-type:border-none">
 					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
 					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
-					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
+					<div className="ml-6 w-1/4 animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
 				</li>
-				<li className="flex w-full items-center gap-2 border-b border-border px-5 py-3 last-of-type:border-none">
+				<li className="flex w-full items-center gap-2 border-b border-border px-3 py-3 last-of-type:border-none">
 					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
 					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
-					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
+					<div className="ml-6 w-1/4 animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
 				</li>
-				<li className="flex w-full items-center gap-2 border-b border-border px-5 py-3 last-of-type:border-none">
+				<li className="flex w-full items-center gap-2 border-b border-border px-3 py-3 last-of-type:border-none">
 					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
 					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
-					<div className="w-full animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
+					<div className="ml-6 w-1/4 animate-pulse rounded-md bg-zinc-700/50 px-4 py-3"></div>
 				</li>
 			</ul>
 		</article>

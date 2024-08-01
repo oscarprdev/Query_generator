@@ -13,6 +13,7 @@ import { Textarea } from '../ui/textarea';
 import QueryFormPromptInfo from './QueryFormPromptInfo';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useEffect } from 'react';
+import { IconSparkles } from '@tabler/icons-react';
 
 export type QueryFormValues = {
 	title: string;
@@ -135,7 +136,16 @@ const QueryForm = ({ handleSubmit, defaultValues, submitLabel, projectTitle, typ
 						<Button type="button" variant={'none'} onClick={() => form.reset()}>
 							Reset
 						</Button>
-						<Button type="submit">{form.formState.isSubmitting ? 'Loading' : `${submitLabel}`}</Button>
+						<Button type="submit">
+							{form.formState.isSubmitting ? (
+								'Loading'
+							) : (
+								<>
+									<IconSparkles size={20} className="mr-1 text-zinc-500" />
+									{submitLabel}
+								</>
+							)}
+						</Button>
 					</div>
 				</div>
 			</form>

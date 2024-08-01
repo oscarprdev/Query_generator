@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
 import { useDebouncedCallback } from 'use-debounce';
+import { IconSparkles } from '@tabler/icons-react';
 
 type QueryViewProps = {
 	handleStoreQuery: (value: string) => Promise<void>;
@@ -39,6 +40,7 @@ const QueryView = ({ handleStoreQuery, query, kind }: QueryViewProps) => {
 					kind === 'create' ? 'top-2 animate-fade-up-light opacity-0 delay-1000 duration-300' : 'bottom-2',
 					'absolute right-2 text-xs'
 				)}>
+				<IconSparkles size={20} className="mr-1 text-zinc-500" />
 				{kind === 'create' ? 'Crear query' : 'Editar query'}
 			</Button>
 		</pre>

@@ -19,7 +19,9 @@ const QueryItem = ({ queryId, title, description, action, createdAt }: QueryItem
 				<p className="truncate text-sm text-zinc-500">{description}</p>
 				<div className="mt-2 flex w-full items-center justify-between">
 					<div className="flex items-center gap-2">
-						<Badge variant={'primary'}>{action}</Badge>
+						<Badge variant={'primary'} className="capitalize">
+							{action}
+						</Badge>
 					</div>
 					<p className="text-xs text-zinc-500">{formatDateTime(createdAt)}</p>
 				</div>
