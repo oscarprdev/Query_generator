@@ -29,3 +29,19 @@ export const createQueryQuery = async ({
 		},
 	});
 };
+
+interface UpdateQueryQueryInput {
+	queryId: string;
+	code: string;
+	description: string;
+}
+
+export const updateQueryQuery = async ({ queryId, code, description }: UpdateQueryQueryInput) => {
+	await prisma.query.update({
+		where: { id: queryId },
+		data: {
+			code,
+			description,
+		},
+	});
+};

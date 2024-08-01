@@ -1,11 +1,9 @@
 'use server';
 
 import { getTablesListQuery } from '@/services/queries/get-tables-list.query';
-import { openai } from '@ai-sdk/openai';
 import { $Enums, Databases } from '@prisma/client';
-import { streamUI } from 'ai/rsc';
 
-type QueryGeneratorProps = {
+type GenerateQueryInput = {
 	projectTitle: string;
 	type: Databases;
 	title: string;
@@ -15,7 +13,15 @@ type QueryGeneratorProps = {
 	prompt: string;
 };
 
-const QueryGenerator = async ({ projectTitle, type, title, action, tables, filters, prompt }: QueryGeneratorProps) => {
+export const generateQuery = async ({
+	projectTitle,
+	type,
+	title,
+	action,
+	tables,
+	filters,
+	prompt,
+}: GenerateQueryInput) => {
 	const tablesResponse = await getTablesListQuery({ title: projectTitle });
 
 	const aIprompt: string = `
@@ -37,7 +43,5 @@ const QueryGenerator = async ({ projectTitle, type, title, action, tables, filte
 	// });
 	// return result.value;
 
-	return <p>{`SELECT * FROM Users WHERE id = "11"`}</p>;
+	return `'SELECT * FROM Users WHERE id = "11"`;
 };
-
-export default QueryGenerator;

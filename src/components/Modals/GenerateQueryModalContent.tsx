@@ -3,13 +3,14 @@
 import React, { useEffect, useState } from 'react';
 import { DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import QueryForm, { QueryFormValues } from '../Forms/QueryForm';
-import QueryGenerator from '../QueryGenerator/QueryGenerator';
 import { Databases, QueryAction } from '@prisma/client';
 import QueryView from '../QueryView/QueryView';
 import { createQuery } from '@/app/actions/create-query';
 import { cn } from '@/lib/utils';
 import LoadingModalContent from './shared/LoadingModalContent';
 import SuccessModalContent from './shared/SuccessModalContent';
+import { generateQuery } from '@/app/actions/generate-query';
+import { Button } from '../ui/button';
 
 type GenerateQueryModalContentProps = {
 	projectTitle: string;
@@ -32,17 +33,17 @@ const DEFAULT_MODAL_STATE = { loading: false, success: false };
 const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalContentProps) => {
 	const [modalState, setModalState] = useState<ModalContentState>(DEFAULT_MODAL_STATE);
 	const [payload, setPayload] = useState<QueryPayload>();
-	const [component, setComponent] = useState<React.ReactNode>();
+	const [query, setQuery] = useState<string | null>(null);
 
 	useEffect(() => {
-		setComponent(null);
+		setQuery(null);
 		setPayload(undefined);
 		setModalState(DEFAULT_MODAL_STATE);
 	}, []);
 
 	const handleSubmit = async (values: QueryFormValues) => {
-		setComponent(
-			await QueryGenerator({
+		setQuery(
+			await generateQuery({
 				projectTitle,
 				type,
 				title: values.title,
@@ -57,7 +58,7 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 	};
 
 	const handleStoreQuery = async (code: string) => {
-		if (!payload || !component) return;
+		if (!payload || !query) return;
 
 		setModalState({ success: false, loading: true });
 		await createQuery({ ...payload, projectTitle, code });
@@ -76,10 +77,8 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 					<DialogHeader>
 						<DialogTitle>Genera tu propia query!</DialogTitle>
 					</DialogHeader>
-					{component && (
-						<QueryView props={{ handleStoreQuery, content: component }}>
-							<QueryView.CreateQueryCTA />
-						</QueryView>
+					{query && (
+						<QueryView query={query} handleStoreQuery={handleStoreQuery} buttonLabel="Guardar query" />
 					)}
 					<QueryForm
 						handleSubmit={handleSubmit}
