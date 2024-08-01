@@ -1,6 +1,7 @@
 import { auth } from '@/auth';
 import { getProjectListQuery } from '@/services/queries/get-project-list.query';
 import Link from 'next/link';
+import AsideProjectListItem from '../AsideProjectListItem/AsideProjectListItem';
 
 export const AsideProjectListSkeleton = () => {
 	return (
@@ -23,12 +24,7 @@ const AsideProjectsList = async () => {
 				<>
 					<p className="text-xs uppercase text-zinc-500">Proyectos</p>
 					{projects.map(project => (
-						<Link
-							key={project.id}
-							href={`?project=${project.title}`}
-							className="rounded-md px-4 py-2 text-sm font-light capitalize text-zinc-400 duration-300 first-of-type:mt-3 hover:bg-zinc-800">
-							{project.title}
-						</Link>
+						<AsideProjectListItem key={project.id} title={project.title} />
 					))}
 				</>
 			) : (
