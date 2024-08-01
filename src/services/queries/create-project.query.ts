@@ -8,16 +8,11 @@ export interface CreateProjectQueryInput {
 }
 
 export const createProjectQuery = async ({ ownerId, title, database }: CreateProjectQueryInput) => {
-	try {
-		console.log(ownerId, database);
-		await prisma.project.create({
-			data: {
-				ownerId,
-				title,
-				database,
-			},
-		});
-	} catch (error) {
-		console.log(error);
-	}
+	await prisma.project.create({
+		data: {
+			ownerId,
+			title,
+			database,
+		},
+	});
 };
