@@ -24,8 +24,8 @@ const formSchema = z.object({
 		.min(5, {
 			message: 'El titulo del proyecto tiene que tener al menos 5 letras.',
 		})
-		.max(10, {
-			message: 'El titulo del proyecto no puede tener mas de 10 letras',
+		.max(15, {
+			message: 'El titulo del proyecto no puede tener mas de 15 letras',
 		}),
 	database: z.nativeEnum(Databases, { message: 'La base de datos seleccionada no es valida' }),
 });

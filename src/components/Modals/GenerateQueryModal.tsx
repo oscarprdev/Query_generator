@@ -17,7 +17,7 @@ const GenerateQueryModal = ({ projectTitle, type }: GenerateQueryModalProps) => 
 	return (
 		<Dialog onOpenChange={e => setModalOpened(e)}>
 			<DialogTrigger asChild>
-				<Button className="ml-auto flex">Generar query</Button>
+				<Button className="absolute bottom-3 right-3">Generar query</Button>
 			</DialogTrigger>
 			{modalOpened && <GenerateQueryModalContent projectTitle={projectTitle} type={type} />}
 		</Dialog>

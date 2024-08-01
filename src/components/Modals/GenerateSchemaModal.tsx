@@ -17,7 +17,7 @@ const GenerateSchemaModal = ({ projectTitle, type }: GenerateSchemaModalProps) =
 	return (
 		<Dialog onOpenChange={e => setModalOpened(e)}>
 			<DialogTrigger asChild>
-				<Button className="ml-auto flex">Generar schema</Button>
+				<Button className="absolute bottom-3 right-3">Generar schema</Button>
 			</DialogTrigger>
 			{modalOpened && <GenerateSchemaModalContent projectTitle={projectTitle} type={type} />}
 		</Dialog>

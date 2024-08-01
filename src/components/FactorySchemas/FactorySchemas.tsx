@@ -14,11 +14,11 @@ const FactorySchemas = async ({ project }: FactorySchemasProps) => {
 
 	return (
 		<>
-			<ul
-				aria-label="scroll"
-				className="-mt-5 mb-5 grid h-[80%] w-full auto-rows-[80px] grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-5 overflow-x-hidden overflow-y-scroll align-top">
-				{schemas.length > 0 ? (
-					schemas.map(schema => (
+			{schemas.length > 0 ? (
+				<ul
+					aria-label="scroll"
+					className="-mt-5 mb-5 grid h-[80%] w-full auto-rows-[80px] grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-5 overflow-x-hidden overflow-y-scroll">
+					{schemas.map(schema => (
 						<SchemaItem
 							key={schema.id}
 							schemaId={schema.id}
@@ -26,13 +26,14 @@ const FactorySchemas = async ({ project }: FactorySchemasProps) => {
 							table={schema.table}
 							createdAt={schema.createdAt}
 						/>
-					))
-				) : project ? (
-					<p className="text-center text-xs text-zinc-400">No hay ningun schema generado todavia.</p>
-				) : (
-					<p className="text-center text-xs text-zinc-400">Selecciona un proyecto para empezar.</p>
-				)}
-			</ul>
+					))}
+				</ul>
+			) : project ? (
+				<p className="text-center text-xs text-zinc-400">No hay ningun schema generado todavia.</p>
+			) : (
+				<p className="text-center text-xs text-zinc-400">Selecciona un proyecto para empezar.</p>
+			)}
+
 			{project && <GenerateSchemaModal projectTitle={project.title} type={project.database} />}
 		</>
 	);

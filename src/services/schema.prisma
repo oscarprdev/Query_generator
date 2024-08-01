@@ -22,7 +22,7 @@ enum QueryAction {
     delete
     upsert
     count
-    aggregate
+    alter
 }
 
 enum PostgresType {
