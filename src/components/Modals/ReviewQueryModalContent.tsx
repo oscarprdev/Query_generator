@@ -50,6 +50,7 @@ const ReviewQueryModalContent = ({ queryId }: ReviewQueryModalContentProps) => {
 		};
 
 		handleQuery();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [queryId]);
 
 	const handleStoreQuery = async (code: string) => {
