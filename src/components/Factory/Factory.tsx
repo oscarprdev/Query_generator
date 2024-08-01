@@ -48,7 +48,7 @@ const Factory = ({ isVisible, projectTitle, projectType, toggleVisibility, child
 					/>
 				</Button>
 			</header>
-			<div className="grid h-full w-full place-items-center p-0">{children}</div>
+			<div className="relative grid h-full w-full place-items-center p-0">{children}</div>
 		</section>
 	);
 };

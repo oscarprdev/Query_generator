@@ -14,3 +14,11 @@ export const getSchemasListQuery = async ({ projectId }: GetSchemasListQueryInpu
 		},
 	});
 };
+
+interface GetSchemaByIdQueryInput {
+	schemaId: string;
+}
+
+export const getSchemaByIdQuery = async ({ schemaId }: GetSchemaByIdQueryInput) => {
+	return await prisma.schema.findFirst({ where: { id: schemaId } });
+};

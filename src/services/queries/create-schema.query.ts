@@ -17,3 +17,17 @@ export const createSchemaQuery = async ({ projectId, title, table, code }: Creat
 		},
 	});
 };
+
+interface UpdateSchemaQueryInput {
+	schemaId: string;
+	code: string;
+}
+
+export const updateSchemaQuery = async ({ schemaId, code }: UpdateSchemaQueryInput) => {
+	await prisma.schema.update({
+		where: { id: schemaId },
+		data: {
+			code,
+		},
+	});
+};

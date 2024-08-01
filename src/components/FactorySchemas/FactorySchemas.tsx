@@ -14,13 +14,14 @@ const FactorySchemas = async ({ project }: FactorySchemasProps) => {
 
 	return (
 		<>
-			{schemas.length > 0 ? (
+			{schemas.length > 0 && project ? (
 				<ul
 					aria-label="scroll"
 					className="-mt-5 mb-5 grid h-[80%] w-full auto-rows-[80px] grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-5 overflow-x-hidden overflow-y-scroll">
 					{schemas.map(schema => (
 						<SchemaItem
 							key={schema.id}
+							type={project.database}
 							schemaId={schema.id}
 							title={schema.title}
 							table={schema.table}

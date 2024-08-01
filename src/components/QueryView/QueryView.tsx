@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
 import { IconSparkles } from '@tabler/icons-react';
@@ -16,7 +16,10 @@ type QueryViewProps = {
 };
 
 const QueryView = ({ handleStoreQuery, query, kind, error, database }: QueryViewProps) => {
+	const [isCodeDirty, setIsCodeDirty] = useState(false);
 	const codeRef = useRef<HTMLElement>(null);
+
+	const handleEditCode = () => setIsCodeDirty(true);
 
 	return (
 		<pre
@@ -24,7 +27,11 @@ const QueryView = ({ handleStoreQuery, query, kind, error, database }: QueryView
 			className={cn(
 				'relative max-h-[200px] w-full overflow-x-hidden text-wrap rounded-lg border border-border bg-zinc-800/50 p-5 pt-10 text-xs shadow-md'
 			)}>
-			<code ref={codeRef} contentEditable className="w-full max-w-[200px] pt-10 text-zinc-300 outline-none">
+			<code
+				onInput={handleEditCode}
+				ref={codeRef}
+				contentEditable
+				className="w-full max-w-[200px] pt-10 text-zinc-300 outline-none">
 				{query.replaceAll('`', '').replace('javascript', '').replace('sql', '')}
 			</code>
 			{database === Databases.mongoDb ? (
@@ -40,6 +47,7 @@ const QueryView = ({ handleStoreQuery, query, kind, error, database }: QueryView
 				<Button
 					onClick={() => codeRef.current?.textContent && handleStoreQuery(codeRef.current.textContent)}
 					size={'sm'}
+					disabled={!isCodeDirty && kind === 'edit'}
 					variant={kind === 'create' ? 'primary' : 'default'}
 					className={cn(
 						kind === 'create' && 'animate-fade-up-light opacity-0 delay-1000 duration-300',
