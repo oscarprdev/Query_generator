@@ -4,12 +4,12 @@ import { Project } from '@prisma/client';
 import TableForm, { TableFormValues } from '../Forms/TableForm';
 import { createTable } from '@/app/actions/create-table';
 
-type FactoryTables = {
+type FactoryTablesProps = {
 	project: Project | null;
 	isProjectSelected: boolean;
 };
 
-const FactoryTables = ({ project, isProjectSelected }: FactoryTables) => {
+const FactoryTables = ({ project, isProjectSelected }: FactoryTablesProps) => {
 	const handleSubmit = async (values: TableFormValues) => {
 		if (!project) return;
 

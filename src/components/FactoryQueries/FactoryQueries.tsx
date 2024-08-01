@@ -3,11 +3,11 @@ import { Project } from '@prisma/client';
 import QueryItem from '../QueryItem/QueryItem';
 import GenerateQueryModal from '../Modals/GenerateQueryModal';
 
-type FactoryQueries = {
+type FactoryQueriesProps = {
 	project: Project | null;
 };
 
-const FactoryQueries = async ({ project }: FactoryQueries) => {
+const FactoryQueries = async ({ project }: FactoryQueriesProps) => {
 	const queries = await getQueriesQuery({ projectId: project?.id });
 
 	return (

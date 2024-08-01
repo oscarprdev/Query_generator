@@ -13,10 +13,7 @@ const ReviewQueryModal = ({ queryId, children }: ReviewQueryModalProps) => {
 	const [modalOpened, setModalOpened] = useState(false);
 
 	return (
-		<Dialog onOpenChange={e => {
-			console.log(e)
-			setModalOpened(e)
-		}}>
+		<Dialog onOpenChange={setModalOpened}>
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			{modalOpened && <ReviewQueryModalContent queryId={queryId} />}
 		</Dialog>

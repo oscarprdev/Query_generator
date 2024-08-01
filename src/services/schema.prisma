@@ -86,7 +86,10 @@ model Project {
     mongoTable        MongoTable[]  
 
     queryId           String?
-    query             Query[]       
+    query             Query[]     
+
+    schemaId          String?
+    schema            Schema[]    
 }
 
 model PostgreTable {
@@ -141,6 +144,17 @@ model Query {
     description      String   
     tables           String  
     action           QueryAction
+    code             String
+    createdAt        DateTime            @default(now()) @unique
+
+    projectId        String           
+    project          Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Schema {
+    id               String              @id @default(uuid()) @unique
+    title            String        
+    tables           String  
     code             String
     createdAt        DateTime            @default(now()) @unique
 
