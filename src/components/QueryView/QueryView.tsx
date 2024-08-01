@@ -6,9 +6,10 @@ import { Button } from '../ui/button';
 
 type QueryViewProps = {
 	children: ReactNode;
+	handleStoreQuery: () => Promise<void>;
 };
 
-const QueryView = ({ children }: QueryViewProps) => {
+const QueryView = ({ children, handleStoreQuery }: QueryViewProps) => {
 	const [content, setContent] = useState<ReactNode>(children);
 
 	const handleInput = (event: React.FormEvent<HTMLDivElement>) => {
@@ -23,6 +24,7 @@ const QueryView = ({ children }: QueryViewProps) => {
 				{content}
 			</code>
 			<Button
+				onClick={handleStoreQuery}
 				size={'sm'}
 				variant={'primary'}
 				className="absolute right-2 top-2 animate-fade-up-light text-xs opacity-0 delay-1000 duration-300">

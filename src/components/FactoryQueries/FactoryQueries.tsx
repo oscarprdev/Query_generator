@@ -13,7 +13,9 @@ const FactoryQueries = async ({ project }: FactoryQueries) => {
 
 	return (
 		<div className="grid h-full w-full place-items-center">
-			<ul aria-label="scroll" className="flex h-[52vh] w-full flex-col gap-1 overflow-x-hidden overflow-y-scroll">
+			<ul
+				aria-label="scroll"
+				className="-mt-5 mb-5 flex h-[52vh] w-full flex-col gap-1 overflow-x-hidden overflow-y-scroll">
 				{queries.length > 0 ? (
 					queries.map(query => (
 						<QueryItem

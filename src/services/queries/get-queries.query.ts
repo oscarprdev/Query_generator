@@ -12,5 +12,8 @@ export const getQueriesQuery = async ({ projectId }: GetQueriesQueryInput) => {
 		where: {
 			projectId,
 		},
+		orderBy: {
+			createdAt: 'desc',
+		},
 	});
 };

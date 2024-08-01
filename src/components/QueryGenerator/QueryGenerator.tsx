@@ -29,13 +29,15 @@ const QueryGenerator = async ({ projectTitle, type, title, action, tables, filte
 		The language used to generate the query will be SQL if the table type is PostgreSQL and in case of MongoDb the language will be Javascript
     `;
 
-	const result = await streamUI({
-		model: openai('gpt-4o'),
-		prompt: aIprompt,
-		text: ({ content }) => <p>{content.replaceAll('`', '')}</p>,
-		tools: {},
-	});
-	return result.value;
+	// const result = await streamUI({
+	// 	model: openai('gpt-4o'),
+	// 	prompt: aIprompt,
+	// 	text: ({ content }) => <p>{content.replaceAll('`', '')}</p>,
+	// 	tools: {},
+	// });
+	// return result.value;
+
+	return <p>{`SELECT * FROM Users WHERE id = "11"`}</p>;
 };
 
 export default QueryGenerator;
