@@ -77,9 +77,7 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 					<DialogHeader>
 						<DialogTitle>Genera tu propia query!</DialogTitle>
 					</DialogHeader>
-					{query && (
-						<QueryView query={query} handleStoreQuery={handleStoreQuery} buttonLabel="Guardar query" />
-					)}
+					{query && <QueryView query={query} handleStoreQuery={handleStoreQuery} kind="create" />}
 					<QueryForm
 						handleSubmit={handleSubmit}
 						type={type}

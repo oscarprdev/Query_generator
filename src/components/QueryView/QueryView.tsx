@@ -8,10 +8,10 @@ import { useDebouncedCallback } from 'use-debounce';
 type QueryViewProps = {
 	handleStoreQuery: (value: string) => Promise<void>;
 	query: string;
-	buttonLabel: string;
+	kind: 'edit' | 'create';
 };
 
-const QueryView = ({ handleStoreQuery, query, buttonLabel }: QueryViewProps) => {
+const QueryView = ({ handleStoreQuery, query, kind }: QueryViewProps) => {
 	const [editedContent, setEditedContent] = useState<string>(query);
 
 	const handleEditCode = useDebouncedCallback((event: React.FormEvent<HTMLElement>) => {
@@ -34,9 +34,12 @@ const QueryView = ({ handleStoreQuery, query, buttonLabel }: QueryViewProps) => 
 			<Button
 				onClick={() => handleStoreQuery(editedContent)}
 				size={'sm'}
-				variant={'primary'}
-				className="absolute right-2 top-2 animate-fade-up-light text-xs opacity-0 delay-1000 duration-300">
-				{buttonLabel}
+				variant={kind === 'create' ? 'primary' : 'default'}
+				className={cn(
+					kind === 'create' ? 'top-2 animate-fade-up-light opacity-0 delay-1000 duration-300' : 'bottom-2',
+					'absolute right-2 text-xs'
+				)}>
+				{kind === 'create' ? 'Crear query' : 'Editar query'}
 			</Button>
 		</pre>
 	);

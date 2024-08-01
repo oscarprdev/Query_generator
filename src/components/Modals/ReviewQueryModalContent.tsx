@@ -75,20 +75,21 @@ const ReviewQueryModalContent = ({ queryId }: ReviewQueryModalContentProps) => {
 					</DialogHeader>
 					{query ? (
 						<>
-							{query && (
-								<QueryView
-									query={query.code}
-									handleStoreQuery={handleStoreQuery}
-									buttonLabel="Editar query"
-								/>
-							)}
 							<div className="flex items-center gap-2">
 								<p className="text-md capitalize text-zinc-400">{query.title}</p>
-								<Badge className="capitalize">{query.action}</Badge>
+								<Badge variant={'primary'} className="capitalize">
+									{query.action}
+								</Badge>
+								{query.tables.split(', ').map(table => (
+									<Badge key={table} variant={'secondary'}>
+										{table}
+									</Badge>
+								))}
 							</div>
-							<div className="border-l border-secondary pl-2">
+							<div className="border-l border-primary pl-2">
 								<p className="text-sm text-zinc-400">{query.description}</p>
 							</div>
+							<QueryView query={query.code} handleStoreQuery={handleStoreQuery} kind="edit" />
 						</>
 					) : (
 						<ErrorModalContent text="No se ha encontrado la query que buscabas, porfavor intentalo mas tarde." />
