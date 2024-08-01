@@ -3,7 +3,7 @@
 import { DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import QueryView from '../QueryView/QueryView';
 import { startTransition, useEffect, useState } from 'react';
-import { $Enums } from '@prisma/client';
+import { $Enums, Databases } from '@prisma/client';
 import { getQueryById } from '@/app/actions/get-query-by-id';
 import LoadingModalContent from './shared/LoadingModalContent';
 import { cn } from '@/lib/utils';
@@ -14,6 +14,7 @@ import SuccessModalContent from './shared/SuccessModalContent';
 
 type ReviewQueryModalContentProps = {
 	queryId: string;
+	type: Databases;
 };
 
 type Query = {
@@ -34,7 +35,7 @@ type ModalContentState = {
 
 const DEFAULT_MODAL_STATE = { loading: false, success: false };
 
-const ReviewQueryModalContent = ({ queryId }: ReviewQueryModalContentProps) => {
+const ReviewQueryModalContent = ({ queryId, type }: ReviewQueryModalContentProps) => {
 	const [modalState, setModalState] = useState<ModalContentState>(DEFAULT_MODAL_STATE);
 	const [query, setQuery] = useState<Query | null>(null);
 
@@ -89,7 +90,13 @@ const ReviewQueryModalContent = ({ queryId }: ReviewQueryModalContentProps) => {
 							<div className="border-l border-primary pl-2">
 								<p className="text-sm text-zinc-400">{query.description}</p>
 							</div>
-							<QueryView query={query.code} handleStoreQuery={handleStoreQuery} kind="edit" />
+							<QueryView
+								error={false}
+								database={type}
+								query={query.code}
+								handleStoreQuery={handleStoreQuery}
+								kind="edit"
+							/>
 						</>
 					) : (
 						<ErrorModalContent text="No se ha encontrado la query que buscabas, porfavor intentalo mas tarde." />

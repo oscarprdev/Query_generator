@@ -1,48 +1,53 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
-import { useDebouncedCallback } from 'use-debounce';
 import { IconSparkles } from '@tabler/icons-react';
+import { Databases } from '@prisma/client';
+import { Badge } from '../ui/badge';
 
 type QueryViewProps = {
 	handleStoreQuery: (value: string) => Promise<void>;
 	query: string;
 	kind: 'edit' | 'create';
+	error: boolean;
+	database: Databases;
 };
 
-const QueryView = ({ handleStoreQuery, query, kind }: QueryViewProps) => {
-	const [editedContent, setEditedContent] = useState<string>(query);
-
-	const handleEditCode = useDebouncedCallback((event: React.FormEvent<HTMLElement>) => {
-		const target = event.target;
-		if (target instanceof HTMLElement) {
-			target.textContent && setEditedContent(target.textContent);
-		}
-	}, 600);
+const QueryView = ({ handleStoreQuery, query, kind, error, database }: QueryViewProps) => {
+	const codeRef = useRef<HTMLElement>(null);
 
 	return (
 		<pre
 			aria-label="scroll"
-			className={cn('relative w-full rounded-lg border border-border bg-zinc-800/50 p-5 text-xs shadow-md')}>
-			<code
-				onInput={e => handleEditCode(e)}
-				contentEditable
-				className="max-h-[180px] w-full text-zinc-300 outline-none">
-				{query}
+			className={cn(
+				'relative max-h-[200px] w-full overflow-x-hidden text-wrap rounded-lg border border-border bg-zinc-800/50 p-5 pt-10 text-xs shadow-md'
+			)}>
+			<code ref={codeRef} contentEditable className="w-full max-w-[200px] pt-10 text-zinc-300 outline-none">
+				{query.replaceAll('`', '').replace('javascript', '').replace('sql', '')}
 			</code>
-			<Button
-				onClick={() => handleStoreQuery(editedContent)}
-				size={'sm'}
-				variant={kind === 'create' ? 'primary' : 'default'}
-				className={cn(
-					kind === 'create' ? 'top-2 animate-fade-up-light opacity-0 delay-1000 duration-300' : 'bottom-2',
-					'absolute right-2 text-xs'
-				)}>
-				<IconSparkles size={20} className="mr-1 text-zinc-500" />
-				{kind === 'create' ? 'Crear query' : 'Editar query'}
-			</Button>
+			{database === Databases.mongoDb ? (
+				<Badge variant={'secondary'} className="absolute left-2 top-2 text-xs font-light">
+					Javascript
+				</Badge>
+			) : (
+				<Badge variant={'secondary'} className="absolute left-2 top-2 text-xs font-light">
+					Sql
+				</Badge>
+			)}
+			{!error && (
+				<Button
+					onClick={() => codeRef.current?.textContent && handleStoreQuery(codeRef.current.textContent)}
+					size={'sm'}
+					variant={kind === 'create' ? 'primary' : 'default'}
+					className={cn(
+						kind === 'create' && 'animate-fade-up-light opacity-0 delay-1000 duration-300',
+						'absolute right-2 top-2 max-w-[200px] text-xs'
+					)}>
+					Guardar query
+				</Button>
+			)}
 		</pre>
 	);
 };

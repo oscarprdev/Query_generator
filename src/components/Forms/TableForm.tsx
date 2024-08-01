@@ -235,9 +235,9 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 								<Button
 									type="button"
 									variant={'none'}
-									className="-ml-1 mt-auto grid place-items-center p-1"
+									className="group -ml-1 mt-auto grid place-items-center p-1"
 									onClick={() => remove(i)}>
-									<IconX className="text-zinc-200" size={20} />
+									<IconX className="text-zinc-400 duration-300 group-hover:text-zinc-200" size={20} />
 								</Button>
 							)}
 						</div>

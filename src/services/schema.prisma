@@ -154,7 +154,7 @@ model Query {
 model Schema {
     id               String              @id @default(uuid()) @unique
     title            String        
-    tables           String  
+    table            String  
     code             String
     createdAt        DateTime            @default(now()) @unique
 

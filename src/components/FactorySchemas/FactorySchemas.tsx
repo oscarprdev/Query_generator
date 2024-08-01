@@ -1,6 +1,9 @@
+'use server';
+
 import { getSchemasListQuery } from '@/services/queries/get-schemas-list';
 import { Project } from '@prisma/client';
 import SchemaItem from '../SchemaItem/SchemaItem';
+import GenerateSchemaModal from '../Modals/GenerateSchemaModal';
 
 type FactorySchemasProps = {
 	project: Project | null;
@@ -10,17 +13,17 @@ const FactorySchemas = async ({ project }: FactorySchemasProps) => {
 	const schemas = await getSchemasListQuery({ projectId: project?.id });
 
 	return (
-		<div className="grid h-full w-full place-items-center">
+		<>
 			<ul
 				aria-label="scroll"
-				className="-mt-5 mb-5 flex h-[52vh] w-full flex-col gap-1 overflow-x-hidden overflow-y-scroll">
+				className="-mt-5 mb-5 grid h-[80%] w-full auto-rows-[80px] grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-5 overflow-x-hidden overflow-y-scroll align-top">
 				{schemas.length > 0 ? (
 					schemas.map(schema => (
 						<SchemaItem
 							key={schema.id}
 							schemaId={schema.id}
 							title={schema.title}
-							tables={schema.tables}
+							table={schema.table}
 							createdAt={schema.createdAt}
 						/>
 					))
@@ -30,8 +33,8 @@ const FactorySchemas = async ({ project }: FactorySchemasProps) => {
 					<p className="text-center text-xs text-zinc-400">Selecciona un proyecto para empezar.</p>
 				)}
 			</ul>
-			{/* {project && <GenerateQueryModal projectTitle={project.title} type={project.database} />} */}
-		</div>
+			{project && <GenerateSchemaModal projectTitle={project.title} type={project.database} />}
+		</>
 	);
 };
 

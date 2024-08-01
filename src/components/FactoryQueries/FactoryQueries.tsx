@@ -11,29 +11,31 @@ const FactoryQueries = async ({ project }: FactoryQueriesProps) => {
 	const queries = await getQueriesQuery({ projectId: project?.id });
 
 	return (
-		<div className="grid h-full w-full place-items-center">
-			<ul
-				aria-label="scroll"
-				className="-mt-5 mb-5 flex h-[52vh] w-full flex-col gap-1 overflow-x-hidden overflow-y-scroll">
-				{queries.length > 0 ? (
-					queries.map(query => (
+		<>
+			{queries.length > 0 && project ? (
+				<ul
+					aria-label="scroll"
+					className="-mt-5 mb-5 grid h-[67%] w-full auto-rows-[100px] grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-5 overflow-x-hidden overflow-y-scroll">
+					{queries.map(query => (
 						<QueryItem
 							key={query.id}
+							type={project.database}
 							queryId={query.id}
 							title={query.title}
 							action={query.action}
 							description={query.description}
 							createdAt={query.createdAt}
 						/>
-					))
-				) : project ? (
-					<p className="text-center text-xs text-zinc-400">No hay ninguna query generada todavia.</p>
-				) : (
-					<p className="text-center text-xs text-zinc-400">Selecciona un proyecto para empezar</p>
-				)}
-			</ul>
+					))}
+				</ul>
+			) : project ? (
+				<p className="text-center text-xs text-zinc-400">No hay ninguna query generada todavia.</p>
+			) : (
+				<p className="text-center text-xs text-zinc-400">Selecciona un proyecto para empezar</p>
+			)}
+
 			{project && <GenerateQueryModal projectTitle={project.title} type={project.database} />}
-		</div>
+		</>
 	);
 };
 

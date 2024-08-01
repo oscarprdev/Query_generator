@@ -3,25 +3,25 @@
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '../ui/button';
 import { Databases } from '@prisma/client';
-import GenerateQueryModalContent from './GenerateQueryModalContent';
 import { useState } from 'react';
+import GenerateSchemaModalContent from './GenerateSchemaModalContent';
 
-type GenerateQueryModalProps = {
+type GenerateSchemaModalProps = {
 	projectTitle: string;
 	type: Databases;
 };
 
-const GenerateQueryModal = ({ projectTitle, type }: GenerateQueryModalProps) => {
+const GenerateSchemaModal = ({ projectTitle, type }: GenerateSchemaModalProps) => {
 	const [modalOpened, setModalOpened] = useState(false);
 
 	return (
 		<Dialog onOpenChange={e => setModalOpened(e)}>
 			<DialogTrigger asChild>
-				<Button className="ml-auto flex">Generar query</Button>
+				<Button className="ml-auto flex">Generar schema</Button>
 			</DialogTrigger>
-			{modalOpened && <GenerateQueryModalContent projectTitle={projectTitle} type={type} />}
+			{modalOpened && <GenerateSchemaModalContent projectTitle={projectTitle} type={type} />}
 		</Dialog>
 	);
 };
 
-export default GenerateQueryModal;
+export default GenerateSchemaModal;

@@ -30,7 +30,7 @@ const Factory = ({ isVisible, projectTitle, projectType, toggleVisibility, child
 							<>
 								<p className="text-sm capitalize text-zinc-200">{projectTitle}</p>
 								<span aria-hidden className="h-1 w-1 rounded-full bg-border" />
-								<Badge>{projectType}</Badge>
+								<Badge className="capitalize">{projectType}</Badge>
 							</>
 						)}
 					</div>

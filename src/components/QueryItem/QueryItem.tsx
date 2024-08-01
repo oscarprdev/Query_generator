@@ -1,4 +1,4 @@
-import { QueryAction } from '@prisma/client';
+import { Databases, QueryAction } from '@prisma/client';
 import { Badge } from '../ui/badge';
 import ReviewQueryModal from '../Modals/ReviewQueryModal';
 import { formatDateTime } from '@/lib/dates';
@@ -9,13 +9,14 @@ type QueryItemProps = {
 	action: QueryAction;
 	description: string;
 	createdAt: Date;
+	type: Databases;
 };
 
-const QueryItem = ({ queryId, title, description, action, createdAt }: QueryItemProps) => {
+const QueryItem = ({ queryId, type, title, description, action, createdAt }: QueryItemProps) => {
 	return (
-		<ReviewQueryModal queryId={queryId}>
+		<ReviewQueryModal queryId={queryId} type={type}>
 			<li className="flex w-full animate-fade-up cursor-pointer flex-col gap-1 rounded-md bg-zinc-800/50 px-3 py-3 duration-300 hover:bg-zinc-800">
-				<p className="text-md text-zinc-400">{title}</p>
+				<p className="text-md truncate capitalize text-zinc-400">{title}</p>
 				<p className="truncate text-sm text-zinc-500">{description}</p>
 				<div className="mt-2 flex w-full items-center justify-between">
 					<div className="flex items-center gap-2">

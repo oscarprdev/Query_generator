@@ -22,7 +22,7 @@ const FactoryTables = ({ project, isProjectSelected }: FactoryTablesProps) => {
 	};
 
 	return (
-		<div className="grid h-full w-full place-items-center">
+		<div className="grid h-[75%] w-full place-items-center">
 			{project && isProjectSelected ? (
 				<TableForm
 					handleSubmit={handleSubmit}

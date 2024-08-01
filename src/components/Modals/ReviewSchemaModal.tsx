@@ -14,7 +14,7 @@ const ReviewSchemaModal = ({ children, schemaId }: ReviewSchemaModalProps) => {
 
 	return (
 		<Dialog onOpenChange={setModalOpened}>
-			<DialogTrigger>{children}</DialogTrigger>
+			<DialogTrigger className="h-fit">{children}</DialogTrigger>
 			{modalOpened && <ReviewSchemaModalContent />}
 		</Dialog>
 	);
