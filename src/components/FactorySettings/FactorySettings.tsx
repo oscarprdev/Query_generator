@@ -4,6 +4,8 @@ import { Project } from '@prisma/client';
 import ProjectSettingsForm, { ProjectSettingsFormValues } from '../Forms/ProjectSettingsForm';
 import { updateProject } from '@/app/actions/projects/update-project';
 import { useRouter } from 'next/navigation';
+import DeleteTableModal from '../Modals/DeleteTableModal/DeleteTableModal';
+import DeleteProjectModal from '../Modals/DeleteProjectModal/DeleteProjectModal';
 
 type FactorySettingsProps = {
 	project: Project | null;
@@ -19,9 +21,14 @@ const FactorySettings = ({ project }: FactorySettingsProps) => {
 	};
 
 	return (
-		<div className="flex h-full w-full flex-col">
-			{project && <ProjectSettingsForm title={project.title} handleSubmit={handleUpdateProjectSubmit} />}
-		</div>
+		<>
+			{project && (
+				<div className="flex h-[87%] w-full flex-col">
+					<ProjectSettingsForm title={project.title} handleSubmit={handleUpdateProjectSubmit} />
+					<DeleteProjectModal projectId={project.id} title={project?.title} />
+				</div>
+			)}
+		</>
 	);
 };
 

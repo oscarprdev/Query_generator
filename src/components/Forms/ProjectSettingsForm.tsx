@@ -53,7 +53,7 @@ const ProjectSettingsForm = ({ handleSubmit, title }: ProjectSettingsFormProps) 
 					)}
 				/>
 
-				<Button type="submit" className="ml-auto">
+				<Button type="submit" className="ml-auto" variant={'none'}>
 					{form.formState.isSubmitting ? (
 						<IconDots size={18} className="min-w-[100px] animate-pulse text-zinc-800" />
 					) : (

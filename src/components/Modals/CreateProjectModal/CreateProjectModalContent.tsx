@@ -33,7 +33,7 @@ const CreateProjectModalContent = () => {
 			{modalState.loading && !modalState.success ? (
 				<LoadingModalContent text="Creando proyecto ..." />
 			) : modalState.success && !modalState.loading ? (
-				<SuccessModalContent text="Poryecto creado correctamente!" />
+				<SuccessModalContent text="Proyecto creado correctamente!" />
 			) : (
 				<>
 					<DialogHeader>
