@@ -16,7 +16,7 @@ const QueryView = ({ codeRef, query, handleEditCode, database }: QueryViewProps)
 		<pre
 			aria-label="scroll"
 			className={cn(
-				'relative max-h-[200px] w-full overflow-x-hidden text-wrap rounded-lg border border-border bg-zinc-800/50 px-5 py-2 text-xs shadow-md'
+				'relative max-h-[200px] w-full overflow-x-hidden text-wrap rounded-lg border border-border bg-zinc-800/50 px-5 py-4 text-xs shadow-md'
 			)}>
 			<code
 				onInput={handleEditCode}

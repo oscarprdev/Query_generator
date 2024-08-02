@@ -9,6 +9,7 @@ interface EditTableQueryInput {
 		id?: string;
 		name: string;
 		value: string;
+		reference: string;
 		type: $Enums.MongoType | $Enums.PostgresType;
 		constraints: $Enums.MongoConstraint | $Enums.PostgreConstraint;
 	}[];
@@ -24,12 +25,14 @@ export const editTableQuery = async ({ tableId, type, title, rows }: EditTableQu
 						update: {
 							name: row.name,
 							value: row.value,
+							reference: row.reference,
 							type: row.type as $Enums.MongoType,
 							constraints: row.constraints as $Enums.MongoConstraint,
 						},
 						create: {
 							name: row.name,
 							value: row.value,
+							reference: row.reference,
 							type: row.type as $Enums.MongoType,
 							constraints: row.constraints as $Enums.MongoConstraint,
 							table: { connect: { id: tableId } },
@@ -52,12 +55,14 @@ export const editTableQuery = async ({ tableId, type, title, rows }: EditTableQu
 						update: {
 							name: row.name,
 							value: row.value,
+							reference: row.reference,
 							type: row.type as $Enums.PostgresType,
 							constraints: row.constraints as $Enums.PostgreConstraint,
 						},
 						create: {
 							name: row.name,
 							value: row.value,
+							reference: row.reference,
 							type: row.type as $Enums.PostgresType,
 							constraints: row.constraints as $Enums.PostgreConstraint,
 							table: { connect: { id: tableId } },

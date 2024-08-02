@@ -7,6 +7,7 @@ export type Row = {
 	id: string;
 	name: string;
 	value: string;
+	reference: string;
 	type: $Enums.PostgresType | $Enums.MongoType;
 	constraints: $Enums.PostgreConstraint | $Enums.MongoConstraint;
 	tableId: string;

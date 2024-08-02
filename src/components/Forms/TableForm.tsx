@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { $Enums, Databases } from '@prisma/client';
 import { IconDots, IconX } from '@tabler/icons-react';
 import { cn } from '@/lib/utils';
+import SchemaFormTables from './SchemaFormTables';
+import TableFormReference from './TableFormReference';
 
 export type RowFormValues = {
 	id?: string;
@@ -17,6 +19,7 @@ export type RowFormValues = {
 	value: string;
 	type: $Enums.MongoType | $Enums.PostgresType;
 	constraints: $Enums.MongoConstraint | $Enums.PostgreConstraint;
+	reference: string;
 };
 
 export type TableFormValues = {
@@ -27,6 +30,7 @@ export type TableFormValues = {
 
 type TableFormProps = {
 	handleSubmit: (values: TableFormValues) => Promise<void>;
+	projectTitle: string;
 	type: Databases;
 	defaultValues: TableFormValues;
 	submitLabel: string;
@@ -40,13 +44,14 @@ const formSchema = z.object({
 			id: z.string().optional(),
 			name: z.string(),
 			value: z.string(),
+			reference: z.string(),
 			type: z.union([z.nativeEnum($Enums.MongoType), z.nativeEnum($Enums.PostgresType)]),
 			constraints: z.union([z.nativeEnum($Enums.MongoConstraint), z.nativeEnum($Enums.PostgreConstraint)]),
 		})
 	),
 });
 
-const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = true }: TableFormProps) => {
+const TableForm = ({ handleSubmit, projectTitle, type, defaultValues, submitLabel, reset = true }: TableFormProps) => {
 	const form = useForm<TableFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues,
@@ -70,10 +75,21 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 		const allRowNames = values.rows.map(row => row.name.toLowerCase());
 
 		if (new Set(allRowNames).size > values.rows.length) {
-			return form.setValue('error', 'Cara Row tiene que tener un nombre unico.');
+			return form.setValue('error', 'Cada Row tiene que tener un nombre unico.');
 		}
 
-		form.setValue('error', undefined);
+		const rowsForeign = values.rows.filter(row => row.constraints === 'foreignKey');
+		if (rowsForeign.some(row => row.reference === '')) {
+			return form.setValue('error', 'Un valor Foreign Key necesita tener una tabla de referencia.');
+		}
+
+		const rowsObjectId = values.rows.filter(row => row.type === 'objectId');
+		if (rowsObjectId.some(row => row.reference === '' && row.constraints !== 'primaryKey')) {
+			return form.setValue(
+				'error',
+				'Un valor ObjectId que no sea Primary Key necesita tener una tabla de referencia.'
+			);
+		}
 
 		await handleSubmit(values);
 
@@ -113,8 +129,9 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 										{i === 0 && (
 											<FormLabel
 												className={cn(
+													'text-xs',
 													form.getValues('error') &&
-														!form.getValues('error')?.match('Primary key') &&
+														form.getValues('error')?.match('nombre') &&
 														'text-red-500'
 												)}>
 												Nombre
@@ -131,7 +148,7 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 								name={`rows.${i}.value`}
 								render={({ field }) => (
 									<FormItem className="flex-1">
-										{i === 0 && <FormLabel>Valor por defecto</FormLabel>}
+										{i === 0 && <FormLabel className="text-xs">Valor por defecto</FormLabel>}
 										<FormControl>
 											<Input placeholder="Sin valor" {...field} />
 										</FormControl>
@@ -143,7 +160,7 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 								name={`rows.${i}.type`}
 								render={({ field }) => (
 									<FormItem className="flex-1">
-										{i === 0 && <FormLabel>Tipo</FormLabel>}
+										{i === 0 && <FormLabel className="text-xs">Tipo</FormLabel>}
 										<Select
 											onValueChange={field.onChange}
 											defaultValue={field.value === 'any' ? undefined : field.value}
@@ -191,6 +208,7 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 										{i === 0 && (
 											<FormLabel
 												className={cn(
+													'text-xs',
 													form.getValues('error') &&
 														form.getValues('error')?.match('Primary key') &&
 														'text-red-500'
@@ -231,6 +249,10 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 									</FormItem>
 								)}
 							/>
+							{(form.watch('rows')[i].constraints === $Enums.PostgreConstraint.foreignKey ||
+								form.watch('rows')[i].type === $Enums.MongoType.objectId) && (
+								<TableFormReference projectTitle={projectTitle} form={form} index={i} />
+							)}
 							{fields.length > 1 && (
 								<Button
 									type="button"
@@ -248,7 +270,7 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 						type="button"
 						variant={'outline'}
 						className="mr-auto mt-2 h-fit"
-						onClick={() => append({ name: '', value: '', type: 'any', constraints: 'any' })}>
+						onClick={() => append({ name: '', value: '', type: 'any', constraints: 'any', reference: '' })}>
 						Insertar row
 					</Button>
 

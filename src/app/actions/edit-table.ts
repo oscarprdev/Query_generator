@@ -13,6 +13,7 @@ interface EditTableInput {
 		id?: string;
 		name: string;
 		value: string;
+		reference: string;
 		type: $Enums.MongoType | $Enums.PostgresType;
 		constraints: $Enums.MongoConstraint | $Enums.PostgreConstraint;
 	}[];

@@ -34,6 +34,7 @@ const EditTableModal = ({ isOpened, tableId, title, type, rows, toggleModal }: E
 				</DialogHeader>
 				<TableForm
 					type={type}
+					projectTitle={title}
 					defaultValues={{ title, rows }}
 					handleSubmit={handleSubmit}
 					reset={false}

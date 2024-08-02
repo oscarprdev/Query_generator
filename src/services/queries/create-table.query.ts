@@ -10,6 +10,7 @@ interface CreateTableQueryInput {
 		value: string;
 		type: $Enums.MongoType | $Enums.PostgresType;
 		constraints: $Enums.MongoConstraint | $Enums.PostgreConstraint;
+		reference: string;
 	}[];
 }
 
@@ -24,6 +25,7 @@ export const createTableQuery = async ({ projectId, type, title, rows }: CreateT
 						create: rows.map(row => ({
 							name: row.name,
 							value: row.value,
+							reference: row.reference,
 							type: row.type as $Enums.MongoType,
 							constraints: row.constraints as $Enums.MongoConstraint,
 						})),
@@ -39,6 +41,7 @@ export const createTableQuery = async ({ projectId, type, title, rows }: CreateT
 						create: rows.map(row => ({
 							name: row.name,
 							value: row.value,
+							reference: row.reference,
 							type: row.type as $Enums.PostgresType,
 							constraints: row.constraints as $Enums.PostgreConstraint,
 						})),

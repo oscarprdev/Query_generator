@@ -17,12 +17,7 @@ const CreateProjectModal = () => {
 					Crear proyecto
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
-				<DialogHeader>
-					<DialogTitle>Vamos a crear tu proyecto!</DialogTitle>
-				</DialogHeader>
-				{modalOpened && <CreateProjectModalContent />}
-			</DialogContent>
+			{modalOpened && <CreateProjectModalContent />}
 		</Dialog>
 	);
 };

@@ -26,6 +26,7 @@ enum QueryAction {
 }
 
 enum PostgresType {
+    uuid
     text
     integer
     bigint
@@ -33,18 +34,17 @@ enum PostgresType {
     boolean
     date
     json
-    uuid
     any
 }
 
 enum MongoType {
+    objectId
     string
     number
     boolean
     date
     object
     array
-    uuid
     any
 }
 
@@ -122,7 +122,8 @@ model MongoTable {
 model PostgreRow {
     id                String              @id @default(uuid()) @unique
     name              String
-    value             String              
+    value             String 
+    reference         String             
     type              PostgresType
     constraints       PostgreConstraint
 
@@ -134,6 +135,7 @@ model MongoRow {
     id               String               @id @default(uuid()) @unique
     name             String
     value            String
+    reference        String
     type             MongoType
     constraints      MongoConstraint
 

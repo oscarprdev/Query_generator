@@ -26,8 +26,12 @@ const FactoryTables = ({ project, isProjectSelected }: FactoryTablesProps) => {
 			{project && isProjectSelected ? (
 				<TableForm
 					handleSubmit={handleSubmit}
+					projectTitle={project.title}
 					type={project.database}
-					defaultValues={{ title: '', rows: [{ name: '', value: '', type: 'any', constraints: 'any' }] }}
+					defaultValues={{
+						title: '',
+						rows: [{ name: '', value: '', type: 'any', constraints: 'any', reference: '' }],
+					}}
 					submitLabel="Crear tabla"
 				/>
 			) : (
