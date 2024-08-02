@@ -1,28 +1,25 @@
-'use client';
-
 import React, { startTransition, useEffect, useRef, useState } from 'react';
 import { DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import QueryForm, { QueryFormValues } from '../Forms/QueryForm';
-import { Databases, QueryAction } from '@prisma/client';
+import { Databases } from '@prisma/client';
 import QueryView from '../QueryView/QueryView';
-import { createQuery } from '@/app/actions/create-query';
 import { cn } from '@/lib/utils';
 import LoadingModalContent from './shared/LoadingModalContent';
 import SuccessModalContent from './shared/SuccessModalContent';
-import { generateQuery } from '@/app/actions/generate-query';
 import { readStreamableValue } from 'ai/rsc';
 import { Button } from '../ui/button';
 import { IconDots, IconSparkles } from '@tabler/icons-react';
+import { generateSeed } from '@/app/actions/generate-seed';
+import { createSeed } from '@/app/actions/create-seed';
+import SchemaForm, { SchemaFormValues } from '../Forms/SchemaForm';
 
-type GenerateQueryModalContentProps = {
+type GenerateSeedModalContentProps = {
 	projectTitle: string;
 	type: Databases;
 };
 
-type QueryPayload = {
+type SeedPayload = {
 	title: string;
-	tables: string;
-	action: QueryAction;
+	table: string;
 };
 
 type ModalContentState = {
@@ -32,102 +29,94 @@ type ModalContentState = {
 
 const DEFAULT_MODAL_STATE = { loading: false, success: false };
 
-export const maxDuration = 30;
-
-const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalContentProps) => {
+const GenerateSeedModalContent = ({ projectTitle, type }: GenerateSeedModalContentProps) => {
 	const [formSubmitting, setFormSubmitting] = useState(false);
 	const [modalState, setModalState] = useState<ModalContentState>(DEFAULT_MODAL_STATE);
-	const [payload, setPayload] = useState<QueryPayload>();
-	const [query, setQuery] = useState<string>('');
+	const [payload, setPayload] = useState<SeedPayload>();
+	const [seed, setSeed] = useState<string>('');
 
 	const codeRef = useRef<HTMLElement>(null);
 
 	useEffect(() => {
-		setQuery('');
+		setSeed('');
 		setPayload(undefined);
 		setModalState(DEFAULT_MODAL_STATE);
 	}, []);
 
-	const handleSubmit = async (values: QueryFormValues) => {
+	const handleSubmit = async (values: SchemaFormValues) => {
 		setFormSubmitting(true);
-		const { output } = await generateQuery({
+		const { output } = await generateSeed({
 			projectTitle,
 			type,
-			title: values.title,
-			action: values.action,
-			filters: values.filters,
-			tables: values.tables,
-			prompt: values.prompt || '',
-		}).finally(() => setQuery(''));
+			table: values.table,
+		}).finally(() => setSeed(''));
 
 		for await (const delta of readStreamableValue(output)) {
-			setQuery(currentQuery => `${currentQuery}${delta}`);
+			setSeed(currentSeed => `${currentSeed}${delta}`);
 		}
 
 		startTransition(() => {
-			setPayload({ title: values.title, tables: values.tables.join(', '), action: values.action });
+			setPayload({ title: values.title, table: values.table });
 			setFormSubmitting(false);
 		});
 	};
 
 	const handleStoreQuery = async (code: string) => {
-		if (!payload || !query) return;
+		if (!payload || !seed) return;
 
 		setModalState({ success: false, loading: true });
-		await createQuery({ ...payload, projectTitle, code });
+		await createSeed({ ...payload, projectTitle, code });
 		setModalState({ success: true, loading: false });
 	};
 
 	const handleReset = () => {
-		setQuery('');
+		setSeed('');
 	};
 
 	return (
 		<DialogContent
 			className={cn(modalState.success || modalState.loading ? 'sm:max-w-[280px]' : 'sm:max-w-[625px]')}>
 			{modalState.loading && !modalState.success ? (
-				<LoadingModalContent text="Guardando query ..." />
+				<LoadingModalContent text="Guardando semilla ..." />
 			) : modalState.success && !modalState.loading ? (
-				<SuccessModalContent text="Query guardada correctamente!" />
+				<SuccessModalContent text="Semilla guardada correctamente!" />
 			) : (
 				<>
 					<DialogHeader>
-						<DialogTitle>Genera tu propia query</DialogTitle>
+						<DialogTitle>Genera tu propia semilla.</DialogTitle>
 					</DialogHeader>
-					{query.length > 0 && <QueryView database={type} query={query} codeRef={codeRef} />}
-					<QueryForm
+					{seed && <QueryView database={type} query={seed} codeRef={codeRef} />}
+					<SchemaForm
 						handleSubmit={handleSubmit}
 						handleReset={handleReset}
-						type={type}
 						projectTitle={projectTitle}
-						defaultValues={{ title: '', tables: [], filters: [], action: 'read' }}>
-						{query.length === 0 ? (
+						defaultValues={{ title: '', table: '' }}>
+						{seed.length === 0 ? (
 							<Button disabled={formSubmitting} type="submit">
 								{formSubmitting ? (
 									<IconDots size={18} className="min-w-[100px] animate-pulse text-zinc-800" />
 								) : (
 									<>
 										<IconSparkles size={20} className="mr-1 text-zinc-500" />
-										Generar query
+										Generar semilla
 									</>
 								)}
 							</Button>
 						) : (
-							!query.includes('Error') && (
+							!seed.includes('Error') && (
 								<Button
-									type="button"
 									onClick={() =>
 										codeRef.current?.textContent && handleStoreQuery(codeRef.current.textContent)
 									}>
-									Guardar query
+									Guardar semilla
 								</Button>
 							)
 						)}
-					</QueryForm>
+					</SchemaForm>
 				</>
 			)}
 		</DialogContent>
 	);
 };
 
-export default GenerateQueryModalContent;
+export default GenerateSeedModalContent;

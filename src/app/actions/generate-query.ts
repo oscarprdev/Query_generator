@@ -4,7 +4,8 @@ import { getTablesListQuery } from '@/services/queries/get-tables-list.query';
 import { $Enums, Databases } from '@prisma/client';
 import { openai } from '@ai-sdk/openai';
 import { streamText } from 'ai';
-import { createStreamableValue } from 'ai/rsc';
+import { createStreamableValue, StreamableValue } from 'ai/rsc';
+import { auth } from '@/auth';
 
 type GenerateQueryInput = {
 	projectTitle: string;
@@ -25,6 +26,11 @@ export const generateQuery = async ({
 	filters,
 	prompt,
 }: GenerateQueryInput) => {
+	const session = await auth();
+	const userId = session?.user?.name;
+
+	if (!userId) return { output: 'Usuario no autorizado' as StreamableValue<string, any> };
+
 	const tablesResponse = await getTablesListQuery({ title: projectTitle });
 
 	const aIprompt: string = `

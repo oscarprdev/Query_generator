@@ -15,7 +15,7 @@ const FactoryQueries = async ({ project }: FactoryQueriesProps) => {
 			{queries.length > 0 && project ? (
 				<ul
 					aria-label="scroll"
-					className="-mt-5 mb-5 grid h-[67%] w-full auto-rows-[100px] grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-5 overflow-x-hidden overflow-y-scroll">
+					className="-mt-2 mb-5 grid h-[67%] w-full auto-rows-min grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-5 overflow-x-hidden overflow-y-scroll">
 					{queries.map(query => (
 						<QueryItem
 							key={query.id}

@@ -12,16 +12,17 @@ import { Button } from '../ui/button';
 import { Query } from '@/app/actions/get-query-by-id';
 import { Schema } from '@/app/actions/get-schema-by-id';
 import { capitalizeStr } from '@/lib/strings';
+import { Seed } from '@/app/actions/get-seed-by-id';
 
-export type ModalEntity = Query | Schema;
+export type ModalEntity = Query | Schema | Seed;
 
 type ReviewModalProps = {
 	queryId: string;
 	type: Databases;
 	children: ReactNode;
-	getCode: (id: string) => Promise<ModalEntity | Schema | null>;
+	getCode: (id: string) => Promise<ModalEntity | null>;
 	updateCode: (input: { id: string; code: string }) => Promise<null | undefined>;
-	setModalContent: (input: ModalEntity | Schema) => void;
+	setModalContent: (input: ModalEntity) => void;
 	labels: {
 		onOpen: string;
 		loading: string;

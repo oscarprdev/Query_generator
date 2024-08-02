@@ -15,7 +15,7 @@ const TablesViewGrid = async ({ projectTitle }: TablesViewGridProps) => {
 	return (
 		<div
 			aria-label="scroll"
-			className="grid h-[90vh] w-full grid-cols-[repeat(auto-fill,minmax(250px,250px))] gap-5 overflow-x-hidden overflow-y-scroll p-10">
+			className="grid h-[90vh] w-full auto-rows-min grid-cols-[repeat(auto-fill,minmax(250px,250px))] gap-5 overflow-x-hidden overflow-y-scroll p-10">
 			{project &&
 				tables.length > 0 &&
 				tables.map(table => (
