@@ -20,7 +20,7 @@ const buttonVariants = cva(
 					'border-2 border-secondary bg-gradient-to-tr from-secondary to-secondaryLight hover:border-secondaryLight  text-zinc-100 hover:text-white duration-300',
 				ghost: 'hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50',
 				link: 'text-slate-900 underline-offset-4 hover:underline dark:text-slate-50',
-				none: 'bg-none border-none',
+				none: 'bg-none border-none text-zinc-300 hover:text-zinc-100 duration-300',
 			},
 			size: {
 				default: 'h-10 px-4 py-2 rounded-lg',

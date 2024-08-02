@@ -7,6 +7,7 @@ import { getSchemaById, Schema } from '@/app/actions/schemas/get-schema-by-id';
 import { updateSchema } from '@/app/actions/schemas/update-schema';
 import ReviewModal, { ModalEntity } from '../shared/ReviewModal';
 import ReviewSchemaModalContent from './ReviewSchemaModalContent';
+import { deleteSchema } from '@/app/actions/schemas/delete-schema';
 
 type ReviewSchemaModalProps = {
 	children: ReactNode;
@@ -30,6 +31,7 @@ const ReviewSchemaModal = ({ children, schemaId, type }: ReviewSchemaModalProps)
 				<ReviewModal
 					getCode={(id: string) => getSchemaById({ id })}
 					updateCode={updateSchema}
+					deleteCode={deleteSchema}
 					queryId={schemaId}
 					setModalContent={handleModalContent}
 					type={type}
@@ -37,9 +39,12 @@ const ReviewSchemaModal = ({ children, schemaId, type }: ReviewSchemaModalProps)
 						onOpen: 'Obteniendo schema ...',
 						loading: 'Editando schema ...',
 						success: 'Schema editado correctamente!',
+						deleted: 'Schema eliminado correctamente!',
+						deleting: 'Eliminando schema ...',
 						error: 'No se ha encontrado el schema que buscabas, porfavor intentalo mas tarde.',
 						title: 'Detalles de tu schema.',
 						submitButton: 'Guardar schema',
+						deleteButton: 'Eliminar schema',
 					}}>
 					{schemaModalContent && <ReviewSchemaModalContent schema={schemaModalContent} />}
 				</ReviewModal>

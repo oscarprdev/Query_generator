@@ -12,11 +12,12 @@ const ReviewQueryModalContent = ({ query }: ReviewQueryModalContentProps) => {
 			<div className="flex items-center gap-2">
 				<p className="text-md text-zinc-400">{capitalizeStr(query.title)}</p>
 				<Badge variant={'primary'}>{query.action}</Badge>
-				{query.tables.split(', ').map(table => (
-					<Badge key={table} variant={'secondary'}>
-						{table}
-					</Badge>
-				))}
+				{query.tables.length > 0 &&
+					query.tables.split(', ').map(table => (
+						<Badge key={table} variant={'secondary'}>
+							{table}
+						</Badge>
+					))}
 			</div>
 			<div className="border-l border-primary pl-2">
 				<p className="text-sm text-zinc-400">{query.description}</p>

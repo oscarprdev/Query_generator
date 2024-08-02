@@ -10,7 +10,7 @@ const ReviewSeedModalContent = ({ seed }: ReviewSeedModalContentProps) => {
 	return (
 		<div className="flex items-center gap-2">
 			<p className="text-md text-zinc-400">{capitalizeStr(seed.title)}</p>
-			<Badge variant={'primary'}>{seed.table}</Badge>
+			{seed.table && <Badge variant={'primary'}>{seed.table}</Badge>}
 		</div>
 	);
 };

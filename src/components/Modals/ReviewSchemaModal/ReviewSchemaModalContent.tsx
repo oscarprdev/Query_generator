@@ -10,7 +10,7 @@ const ReviewSchemaModalContent = ({ schema }: ReviewSchemaModalContentProps) => 
 	return (
 		<div className="flex items-center gap-2">
 			<p className="text-md text-zinc-400">{capitalizeStr(schema.title)}</p>
-			<Badge variant={'primary'}>{schema.table}</Badge>
+			{schema.table && <Badge variant={'primary'}>{schema.table}</Badge>}
 		</div>
 	);
 };

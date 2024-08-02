@@ -7,6 +7,7 @@ import { getQueryById, Query } from '@/app/actions/queries/get-query-by-id';
 import { updateQuery } from '@/app/actions/queries/update-query';
 import ReviewModal, { ModalEntity } from '../shared/ReviewModal';
 import ReviewQueryModalContent from './ReviewQueryModalContent';
+import { deleteQuery } from '@/app/actions/queries/delete-query';
 
 type ReviewQueryModalProps = {
 	queryId: string;
@@ -33,6 +34,7 @@ const ReviewQueryModal = ({ queryId, type, children }: ReviewQueryModalProps) =>
 				<ReviewModal
 					getCode={(id: string) => getQueryById({ id })}
 					updateCode={updateQuery}
+					deleteCode={deleteQuery}
 					queryId={queryId}
 					setModalContent={handleModalContent}
 					type={type}
@@ -40,9 +42,12 @@ const ReviewQueryModal = ({ queryId, type, children }: ReviewQueryModalProps) =>
 						onOpen: 'Obteniendo query ...',
 						loading: 'Editando query ...',
 						success: 'Query editada correctamente!',
+						deleting: 'Eliminando query ...',
+						deleted: 'Query eliminada correctamente!',
 						error: 'No se ha encontrado la query que buscabas, porfavor intentalo mas tarde.',
 						title: 'Detalles de tu query.',
 						submitButton: 'Guardar query',
+						deleteButton: 'Eliminar query',
 					}}>
 					{queryModalContent && <ReviewQueryModalContent query={queryModalContent} />}
 				</ReviewModal>

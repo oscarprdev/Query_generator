@@ -7,6 +7,7 @@ import { getSeedById, Seed } from '@/app/actions/seeds/get-seed-by-id';
 import { updateSeed } from '@/app/actions/seeds/update-seed';
 import ReviewModal, { ModalEntity } from '../shared/ReviewModal';
 import ReviewSeedModalContent from './ReviewSeedModalContent';
+import { deleteSeed } from '@/app/actions/seeds/delete-seed';
 
 type ReviewSeedModalProps = {
 	children: ReactNode;
@@ -30,16 +31,20 @@ const ReviewSeedModal = ({ children, seedId, type }: ReviewSeedModalProps) => {
 				<ReviewModal
 					getCode={(id: string) => getSeedById({ id })}
 					updateCode={updateSeed}
+					deleteCode={deleteSeed}
 					queryId={seedId}
 					setModalContent={handleModalContent}
 					type={type}
 					labels={{
 						onOpen: 'Obteniendo semilla ...',
 						loading: 'Editando semilla ...',
-						success: 'Semilla editado correctamente!',
+						deleting: 'Eliminando semilla ...',
+						success: 'Semilla editada correctamente!',
+						deleted: 'Semilla eliminada correctamente!',
 						error: 'No se ha encontrado la semilla que buscabas, porfavor intentalo mas tarde.',
 						title: 'Detalles de tu semilla.',
 						submitButton: 'Guardar semilla',
+						deleteButton: 'Eliminar semilla',
 					}}>
 					{seedModalContent && <ReviewSeedModalContent seed={seedModalContent} />}
 				</ReviewModal>
