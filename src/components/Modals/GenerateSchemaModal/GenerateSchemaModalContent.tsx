@@ -11,6 +11,7 @@ import { Button } from '../../ui/button';
 import { IconDots, IconSparkles } from '@tabler/icons-react';
 import LoadingModalContent from '../shared/LoadingModalContent';
 import SuccessModalContent from '../shared/SuccessModalContent';
+import AccordionInfo from '@/components/AccordionInfo/AccordionInfo';
 
 type GenerateSchemaModalContentProps = {
 	projectTitle: string;
@@ -85,7 +86,14 @@ const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalC
 					<DialogHeader>
 						<DialogTitle>Genera tu propio schema.</DialogTitle>
 					</DialogHeader>
-					{schema && <QueryView database={type} query={schema} codeRef={codeRef} />}
+					{schema ? (
+						<QueryView database={type} query={schema} codeRef={codeRef} />
+					) : (
+						<AccordionInfo
+							title="Que es un esquema?"
+							description="Un esquema de una tabla en una base de datos es la definición de la estructura de la tabla. Por ejemplo, los nombres de los campos, los tipos o las relaciones entre distintos campos"
+						/>
+					)}
 					<SchemaForm
 						handleSubmit={handleSubmit}
 						handleReset={handleReset}

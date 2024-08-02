@@ -8,6 +8,7 @@ import { createProject } from '@/app/actions/projects/create-project';
 import { cn } from '@/lib/utils';
 import LoadingModalContent from '../shared/LoadingModalContent';
 import SuccessModalContent from '../shared/SuccessModalContent';
+import { useRouter } from 'next/navigation';
 
 const DEFAULT_MODAL_STATE = { loading: false, success: false };
 
@@ -17,6 +18,7 @@ type ModalContentState = {
 };
 
 const CreateProjectModalContent = () => {
+	const router = useRouter();
 	const [modalState, setModalState] = useState<ModalContentState>(DEFAULT_MODAL_STATE);
 
 	const handleSubmit = async ({ title, database }: CreateProjectFormValues) => {
@@ -25,6 +27,8 @@ const CreateProjectModalContent = () => {
 		setModalState({ loading: true, success: false });
 		await createProject({ title, database });
 		setModalState({ loading: false, success: true });
+
+		router.push(`/?project=${title}`);
 	};
 
 	return (

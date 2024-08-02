@@ -13,6 +13,7 @@ import { Button } from '../../ui/button';
 import { IconDots, IconSparkles } from '@tabler/icons-react';
 import LoadingModalContent from '../shared/LoadingModalContent';
 import SuccessModalContent from '../shared/SuccessModalContent';
+import AccordionInfo from '@/components/AccordionInfo/AccordionInfo';
 
 type GenerateQueryModalContentProps = {
 	projectTitle: string;
@@ -94,7 +95,14 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 					<DialogHeader>
 						<DialogTitle>Genera tu propia query</DialogTitle>
 					</DialogHeader>
-					{query.length > 0 && <QueryView database={type} query={query} codeRef={codeRef} />}
+					{query.length > 0 ? (
+						<QueryView database={type} query={query} codeRef={codeRef} />
+					) : (
+						<AccordionInfo
+							title="Que es una query?"
+							description="Una Query o consulta es una solicitud específica para recuperar información de una base de datos. Se utiliza para seleccionar, filtrar y organizar datos de manera efectiva"
+						/>
+					)}
 					<QueryForm
 						handleSubmit={handleSubmit}
 						handleReset={handleReset}

@@ -11,6 +11,7 @@ import { createSeed } from '@/app/actions/seeds/create-seed';
 import SchemaForm, { SchemaFormValues } from '../../Forms/SchemaForm';
 import LoadingModalContent from '../shared/LoadingModalContent';
 import SuccessModalContent from '../shared/SuccessModalContent';
+import AccordionInfo from '@/components/AccordionInfo/AccordionInfo';
 
 type GenerateSeedModalContentProps = {
 	projectTitle: string;
@@ -85,7 +86,14 @@ const GenerateSeedModalContent = ({ projectTitle, type }: GenerateSeedModalConte
 					<DialogHeader>
 						<DialogTitle>Genera tu propia semilla.</DialogTitle>
 					</DialogHeader>
-					{seed && <QueryView database={type} query={seed} codeRef={codeRef} />}
+					{seed ? (
+						<QueryView database={type} query={seed} codeRef={codeRef} />
+					) : (
+						<AccordionInfo
+							title="Que es una semilla?"
+							description="En el contexto de una base de datos, una semilla (también conocida como “seed”) se refiere a los datos iniciales que se insertan en una tabla cuando se crea por primera vez"
+						/>
+					)}
 					<SchemaForm
 						handleSubmit={handleSubmit}
 						handleReset={handleReset}
