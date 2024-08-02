@@ -11,10 +11,17 @@ type TableCardDropdownControllerProps = {
 	tableId: string;
 	type: Databases;
 	title: string;
+	projectTitle: string;
 	rows: Row[];
 };
 
-const TableCardDropdownController = ({ tableId, type, title, rows }: TableCardDropdownControllerProps) => {
+const TableCardDropdownController = ({
+	tableId,
+	type,
+	title,
+	projectTitle,
+	rows,
+}: TableCardDropdownControllerProps) => {
 	const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 	const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
@@ -34,6 +41,7 @@ const TableCardDropdownController = ({ tableId, type, title, rows }: TableCardDr
 				tableId={tableId}
 				type={type}
 				title={title}
+				projectTitle={projectTitle}
 				rows={rows}
 			/>
 			<DeleteTableModal

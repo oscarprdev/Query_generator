@@ -12,6 +12,7 @@ import { IconDots, IconX } from '@tabler/icons-react';
 import { cn } from '@/lib/utils';
 import SchemaFormTables from './SchemaFormTables';
 import TableFormReference from './TableFormReference';
+import { useEffect } from 'react';
 
 export type RowFormValues = {
 	id?: string;
@@ -250,7 +251,8 @@ const TableForm = ({ handleSubmit, projectTitle, type, defaultValues, submitLabe
 								)}
 							/>
 							{(form.watch('rows')[i].constraints === $Enums.PostgreConstraint.foreignKey ||
-								form.watch('rows')[i].type === $Enums.MongoType.objectId) && (
+								(form.watch('rows')[i].type === $Enums.MongoType.objectId &&
+									form.watch('rows')[i].constraints !== $Enums.MongoConstraint.primaryKey)) && (
 								<TableFormReference projectTitle={projectTitle} form={form} index={i} />
 							)}
 							{fields.length > 1 && (

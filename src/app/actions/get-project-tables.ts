@@ -13,5 +13,5 @@ export const getProjectTables = async ({ projectTitle }: GetProjectTablesInput) 
 
 	if (!userId) return null;
 
-	return getTablesListQuery({ title: projectTitle });
+	return await getTablesListQuery({ title: projectTitle });
 };

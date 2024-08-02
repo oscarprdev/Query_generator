@@ -9,12 +9,13 @@ type EditTableModalProps = {
 	isOpened: boolean;
 	tableId: string;
 	title: string;
+	projectTitle: string;
 	type: Databases;
 	rows: Row[];
 	toggleModal: (open: boolean) => void;
 };
 
-const EditTableModal = ({ isOpened, tableId, title, type, rows, toggleModal }: EditTableModalProps) => {
+const EditTableModal = ({ isOpened, tableId, title, projectTitle, type, rows, toggleModal }: EditTableModalProps) => {
 	const handleSubmit = async (values: TableFormValues) => {
 		await editTable({
 			tableId,
@@ -26,21 +27,23 @@ const EditTableModal = ({ isOpened, tableId, title, type, rows, toggleModal }: E
 
 	return (
 		<Dialog open={isOpened} onOpenChange={toggleModal}>
-			<DialogContent className="pb-1 sm:max-w-[625px]">
-				<DialogHeader>
-					<DialogTitle className="mb-5 flex items-center gap-5">
-						Editar tabla <Badge>{type}</Badge>
-					</DialogTitle>
-				</DialogHeader>
-				<TableForm
-					type={type}
-					projectTitle={title}
-					defaultValues={{ title, rows }}
-					handleSubmit={handleSubmit}
-					reset={false}
-					submitLabel="Editar tabla"
-				/>
-			</DialogContent>
+			{isOpened && (
+				<DialogContent className="pb-1 sm:max-w-[625px]">
+					<DialogHeader>
+						<DialogTitle className="mb-5 flex items-center gap-5">
+							Editar tabla <Badge>{type}</Badge>
+						</DialogTitle>
+					</DialogHeader>
+					<TableForm
+						type={type}
+						projectTitle={projectTitle}
+						defaultValues={{ title, rows }}
+						handleSubmit={handleSubmit}
+						reset={false}
+						submitLabel="Editar tabla"
+					/>
+				</DialogContent>
+			)}
 		</Dialog>
 	);
 };

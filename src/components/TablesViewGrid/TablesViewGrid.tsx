@@ -23,6 +23,7 @@ const TablesViewGrid = async ({ projectTitle }: TablesViewGridProps) => {
 						key={table.id}
 						tableId={table.id}
 						title={table.title}
+						projectTitle={project.title}
 						rows={table.rows}
 						type={project?.database}
 					/>

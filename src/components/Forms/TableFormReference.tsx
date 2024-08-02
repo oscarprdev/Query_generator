@@ -26,7 +26,7 @@ const TableFormReference = ({ form, projectTitle, index }: TableFormReferencePro
 		};
 
 		handleTableValues();
-	}, [projectTitle]);
+	}, [projectTitle, index]);
 
 	return (
 		<FormField
