@@ -1,7 +1,7 @@
 'use client';
 
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 import { Databases } from '@prisma/client';
 import { useState } from 'react';
 import GenerateSeedModalContent from './GenerateSeedModalContent';

@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react';
 import TableCardDropdown from '../TableCardDropdown/TableCardDropdown';
-import EditTableModal from '../Modals/EditTableModal';
-import DeleteTableModal from '../Modals/DeleteTableModal';
 import { Databases } from '@prisma/client';
 import { Row } from '../TablesCard/TableCard';
+import EditTableModal from '../Modals/EditTableModal/EditTableModal';
+import DeleteTableModal from '../Modals/DeleteTableModal/DeleteTableModal';
 
 type TableCardDropdownControllerProps = {
 	tableId: string;

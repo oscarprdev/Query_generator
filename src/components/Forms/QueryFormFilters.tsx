@@ -2,7 +2,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { IconX } from '@tabler/icons-react';
 import { Badge } from '../ui/badge';
 import { useEffect, useState } from 'react';
-import { getTableValues } from '@/app/actions/get-table-values';
+import { getTableValues } from '@/app/actions/tables/get-table-values';
 import { UseFormReturn } from 'react-hook-form';
 import { QueryFormValues } from './QueryForm';
 import { Databases } from '@prisma/client';

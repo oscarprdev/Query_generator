@@ -1,6 +1,6 @@
 import { capitalizeStr } from '@/lib/strings';
-import { Badge } from '../ui/badge';
-import { Query } from '@/app/actions/get-query-by-id';
+import { Badge } from '../../ui/badge';
+import { Query } from '@/app/actions/queries/get-query-by-id';
 
 type ReviewQueryModalContentProps = {
 	query: Query;

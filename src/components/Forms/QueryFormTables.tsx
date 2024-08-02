@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { QueryFormValues } from './QueryForm';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { getProjectTables } from '@/app/actions/get-project-tables';
+import { getProjectTables } from '@/app/actions/projects/get-project-tables';
 
 type QueryFormTablesProps = {
 	form: UseFormReturn<QueryFormValues, any, undefined>;

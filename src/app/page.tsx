@@ -4,7 +4,7 @@ import FactorySchemas from '@/components/FactorySchemas/FactorySchemas';
 import FactorySeed from '@/components/FactorySeed/FactorySeed';
 import FactoryTables from '@/components/FactoryTables/FactoryTables';
 import FactoryTabs from '@/components/FactoryTabs/FactoryTabs';
-import CreateProjectModal from '@/components/Modals/CreateProjectModal';
+import CreateProjectModal from '@/components/Modals/CreateProjectModal/CreateProjectModal';
 import TablesViewGrid, { TableViewGridSkeleton } from '@/components/TablesViewGrid/TablesViewGrid';
 import { getProjectByTitleQuery } from '@/services/queries/get-project.query';
 import { Suspense } from 'react';

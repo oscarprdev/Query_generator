@@ -1,10 +1,10 @@
 'use client';
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Button } from '../ui/button';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { useState } from 'react';
 import { IconPlus } from '@tabler/icons-react';
 import CreateProjectModalContent from './CreateProjectModalContent';
+import { Button } from '@/components/ui/button';
 
 const CreateProjectModal = () => {
 	const [modalOpened, setModalOpened] = useState(false);

@@ -2,7 +2,7 @@
 
 import { Project } from '@prisma/client';
 import TableForm, { TableFormValues } from '../Forms/TableForm';
-import { createTable } from '@/app/actions/create-table';
+import { createTable } from '@/app/actions/tables/create-table';
 
 type FactoryTablesProps = {
 	project: Project | null;

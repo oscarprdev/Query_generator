@@ -3,7 +3,7 @@
 import { getSchemasListQuery } from '@/services/queries/get-schemas-list';
 import { Project } from '@prisma/client';
 import SchemaItem from '../SchemaItem/SchemaItem';
-import GenerateSchemaModal from '../Modals/GenerateSchemaModal';
+import GenerateSchemaModal from '../Modals/GenerateSchemaModal/GenerateSchemaModal';
 
 type FactorySchemasProps = {
 	project: Project | null;

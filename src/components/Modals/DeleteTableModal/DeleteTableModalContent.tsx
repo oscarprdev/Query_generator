@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import LoadingModalContent from './shared/LoadingModalContent';
-import SuccessModalContent from './shared/SuccessModalContent';
+import { DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
 import { cn } from '@/lib/utils';
-import { deleteTable } from '@/app/actions/delete-table';
-import { Button } from '../ui/button';
+import { deleteTable } from '@/app/actions/tables/delete-table';
+import { Button } from '../../ui/button';
 import { Databases } from '@prisma/client';
+import LoadingModalContent from '../shared/LoadingModalContent';
+import SuccessModalContent from '../shared/SuccessModalContent';
 
 type DeleteTableModalContentProps = {
 	tableId: string;

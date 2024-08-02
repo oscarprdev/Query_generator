@@ -3,7 +3,7 @@
 import { Project } from '@prisma/client';
 import SeedItem from '../SeedItem/SeedItem';
 import { getSeedsListQuery } from '@/services/queries/get-seed.query';
-import GenerateSeedModal from '../Modals/GenerateSeedModal';
+import GenerateSeedModal from '../Modals/GenerateSeedModal/GenerateSeedModal';
 
 type FactorySeedProps = {
 	project: Project | null;

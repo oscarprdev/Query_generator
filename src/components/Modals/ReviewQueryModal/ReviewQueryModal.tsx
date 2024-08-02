@@ -2,11 +2,11 @@
 
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { ReactNode, useState } from 'react';
-import ReviewQueryModalContent from './ReviewQueryModalContent';
 import { Databases } from '@prisma/client';
-import ReviewModal, { ModalEntity } from './ReviewModal';
-import { getQueryById, Query } from '@/app/actions/get-query-by-id';
-import { updateQuery } from '@/app/actions/update-query';
+import { getQueryById, Query } from '@/app/actions/queries/get-query-by-id';
+import { updateQuery } from '@/app/actions/queries/update-query';
+import ReviewModal, { ModalEntity } from '../shared/ReviewModal';
+import ReviewQueryModalContent from './ReviewQueryModalContent';
 
 type ReviewQueryModalProps = {
 	queryId: string;

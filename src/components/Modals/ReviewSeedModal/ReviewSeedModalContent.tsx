@@ -1,6 +1,6 @@
-import { Badge } from '../ui/badge';
+import { Badge } from '../../ui/badge';
 import { capitalizeStr } from '@/lib/strings';
-import { Seed } from '@/app/actions/get-seed-by-id';
+import { Seed } from '@/app/actions/seeds/get-seed-by-id';
 
 type ReviewSeedModalContentProps = {
 	seed: Seed;

@@ -1,6 +1,6 @@
 'use client';
 
-import { createUser } from '@/app/actions/create-user';
+import { createUser } from '@/app/actions/users/create-user';
 import { createContext, ReactNode, useEffect, useState } from 'react';
 
 interface SessionStorageContext {

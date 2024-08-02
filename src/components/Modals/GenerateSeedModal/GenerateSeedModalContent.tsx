@@ -1,16 +1,16 @@
 import React, { startTransition, useEffect, useRef, useState } from 'react';
-import { DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import { DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
 import { Databases } from '@prisma/client';
-import QueryView from '../QueryView/QueryView';
+import QueryView from '../../QueryView/QueryView';
 import { cn } from '@/lib/utils';
-import LoadingModalContent from './shared/LoadingModalContent';
-import SuccessModalContent from './shared/SuccessModalContent';
 import { readStreamableValue } from 'ai/rsc';
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 import { IconDots, IconSparkles } from '@tabler/icons-react';
-import { generateSeed } from '@/app/actions/generate-seed';
-import { createSeed } from '@/app/actions/create-seed';
-import SchemaForm, { SchemaFormValues } from '../Forms/SchemaForm';
+import { generateSeed } from '@/app/actions/seeds/generate-seed';
+import { createSeed } from '@/app/actions/seeds/create-seed';
+import SchemaForm, { SchemaFormValues } from '../../Forms/SchemaForm';
+import LoadingModalContent from '../shared/LoadingModalContent';
+import SuccessModalContent from '../shared/SuccessModalContent';
 
 type GenerateSeedModalContentProps = {
 	projectTitle: string;

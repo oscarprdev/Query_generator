@@ -1,18 +1,18 @@
 'use client';
 
 import React, { startTransition, useEffect, useRef, useState } from 'react';
-import { DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import QueryForm, { QueryFormValues } from '../Forms/QueryForm';
+import { DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
+import QueryForm, { QueryFormValues } from '../../Forms/QueryForm';
 import { Databases, QueryAction } from '@prisma/client';
-import QueryView from '../QueryView/QueryView';
-import { createQuery } from '@/app/actions/create-query';
+import QueryView from '../../QueryView/QueryView';
+import { createQuery } from '@/app/actions/queries/create-query';
 import { cn } from '@/lib/utils';
-import LoadingModalContent from './shared/LoadingModalContent';
-import SuccessModalContent from './shared/SuccessModalContent';
-import { generateQuery } from '@/app/actions/generate-query';
+import { generateQuery } from '@/app/actions/queries/generate-query';
 import { readStreamableValue } from 'ai/rsc';
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 import { IconDots, IconSparkles } from '@tabler/icons-react';
+import LoadingModalContent from '../shared/LoadingModalContent';
+import SuccessModalContent from '../shared/SuccessModalContent';
 
 type GenerateQueryModalContentProps = {
 	projectTitle: string;

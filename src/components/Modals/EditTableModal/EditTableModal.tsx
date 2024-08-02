@@ -1,9 +1,9 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Databases } from '@prisma/client';
-import { Row } from '../TablesCard/TableCard';
-import TableForm, { TableFormValues } from '../Forms/TableForm';
-import { Badge } from '../ui/badge';
-import { editTable } from '@/app/actions/edit-table';
+import { Row } from '../../TablesCard/TableCard';
+import TableForm, { TableFormValues } from '../../Forms/TableForm';
+import { Badge } from '../../ui/badge';
+import { editTable } from '@/app/actions/tables/edit-table';
 
 type EditTableModalProps = {
 	isOpened: boolean;

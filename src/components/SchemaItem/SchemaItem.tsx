@@ -1,5 +1,5 @@
 import { formatDateTime } from '@/lib/dates';
-import ReviewSchemaModal from '../Modals/ReviewSchemaModal';
+import ReviewSchemaModal from '../Modals/ReviewSchemaModal/ReviewSchemaModal';
 import { Badge } from '../ui/badge';
 import { Databases } from '@prisma/client';
 import { capitalizeStr } from '@/lib/strings';

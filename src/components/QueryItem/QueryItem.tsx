@@ -1,6 +1,6 @@
 import { Databases, QueryAction } from '@prisma/client';
 import { Badge } from '../ui/badge';
-import ReviewQueryModal from '../Modals/ReviewQueryModal';
+import ReviewQueryModal from '../Modals/ReviewQueryModal/ReviewQueryModal';
 import { formatDateTime } from '@/lib/dates';
 import { capitalizeStr } from '@/lib/strings';
 

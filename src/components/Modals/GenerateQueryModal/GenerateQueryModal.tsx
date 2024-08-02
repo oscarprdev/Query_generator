@@ -1,10 +1,10 @@
 'use client';
 
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 import { Databases } from '@prisma/client';
-import GenerateQueryModalContent from './GenerateQueryModalContent';
 import { useState } from 'react';
+import GenerateQueryModalContent from './GenerateQueryModalContent';
 
 type GenerateQueryModalProps = {
 	projectTitle: string;

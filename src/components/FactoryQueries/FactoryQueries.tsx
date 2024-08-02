@@ -1,7 +1,7 @@
 import { getQueriesQuery } from '@/services/queries/get-queries.query';
 import { Project } from '@prisma/client';
 import QueryItem from '../QueryItem/QueryItem';
-import GenerateQueryModal from '../Modals/GenerateQueryModal';
+import GenerateQueryModal from '../Modals/GenerateQueryModal/GenerateQueryModal';
 
 type FactoryQueriesProps = {
 	project: Project | null;

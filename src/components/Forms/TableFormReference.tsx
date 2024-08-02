@@ -2,7 +2,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { getProjectTables } from '@/app/actions/get-project-tables';
+import { getProjectTables } from '@/app/actions/projects/get-project-tables';
 import { TableFormValues } from './TableForm';
 import { cn } from '@/lib/utils';
 import { capitalizeStr } from '@/lib/strings';

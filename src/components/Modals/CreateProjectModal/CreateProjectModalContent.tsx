@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import CreateProjectForm, { CreateProjectFormValues } from '../Forms/CreateProjectForm';
-import { createProject } from '@/app/actions/create-project';
-import LoadingModalContent from './shared/LoadingModalContent';
-import SuccessModalContent from './shared/SuccessModalContent';
+import { DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
+import CreateProjectForm, { CreateProjectFormValues } from '../../Forms/CreateProjectForm';
+import { createProject } from '@/app/actions/projects/create-project';
+
 import { cn } from '@/lib/utils';
+import LoadingModalContent from '../shared/LoadingModalContent';
+import SuccessModalContent from '../shared/SuccessModalContent';
 
 const DEFAULT_MODAL_STATE = { loading: false, success: false };
 

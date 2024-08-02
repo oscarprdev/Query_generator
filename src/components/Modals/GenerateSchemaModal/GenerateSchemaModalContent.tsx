@@ -1,16 +1,16 @@
 import React, { startTransition, useEffect, useRef, useState } from 'react';
-import { DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import { DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
 import { Databases } from '@prisma/client';
-import QueryView from '../QueryView/QueryView';
+import QueryView from '../../QueryView/QueryView';
 import { cn } from '@/lib/utils';
-import LoadingModalContent from './shared/LoadingModalContent';
-import SuccessModalContent from './shared/SuccessModalContent';
-import { generateSchema } from '@/app/actions/generate-schema';
-import { createSchema } from '@/app/actions/create-schema';
-import SchemaForm, { SchemaFormValues } from '../Forms/SchemaForm';
+import { generateSchema } from '@/app/actions/schemas/generate-schema';
+import { createSchema } from '@/app/actions/schemas/create-schema';
+import SchemaForm, { SchemaFormValues } from '../../Forms/SchemaForm';
 import { readStreamableValue } from 'ai/rsc';
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 import { IconDots, IconSparkles } from '@tabler/icons-react';
+import LoadingModalContent from '../shared/LoadingModalContent';
+import SuccessModalContent from '../shared/SuccessModalContent';
 
 type GenerateSchemaModalContentProps = {
 	projectTitle: string;

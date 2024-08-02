@@ -1,12 +1,12 @@
 'use client';
 
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
-import ReviewSchemaModalContent from './ReviewSchemaModalContent';
 import { ReactNode, useState } from 'react';
 import { Databases } from '@prisma/client';
-import ReviewModal, { ModalEntity } from './ReviewModal';
-import { getSchemaById, Schema } from '@/app/actions/get-schema-by-id';
-import { updateSchema } from '@/app/actions/update-schema';
+import { getSchemaById, Schema } from '@/app/actions/schemas/get-schema-by-id';
+import { updateSchema } from '@/app/actions/schemas/update-schema';
+import ReviewModal, { ModalEntity } from '../shared/ReviewModal';
+import ReviewSchemaModalContent from './ReviewSchemaModalContent';
 
 type ReviewSchemaModalProps = {
 	children: ReactNode;

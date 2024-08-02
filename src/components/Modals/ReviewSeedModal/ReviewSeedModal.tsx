@@ -3,10 +3,10 @@
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { ReactNode, useState } from 'react';
 import { Databases } from '@prisma/client';
-import ReviewModal, { ModalEntity } from './ReviewModal';
-import { getSeedById, Seed } from '@/app/actions/get-seed-by-id';
+import { getSeedById, Seed } from '@/app/actions/seeds/get-seed-by-id';
+import { updateSeed } from '@/app/actions/seeds/update-seed';
+import ReviewModal, { ModalEntity } from '../shared/ReviewModal';
 import ReviewSeedModalContent from './ReviewSeedModalContent';
-import { updateSeed } from '@/app/actions/update-seed';
 
 type ReviewSeedModalProps = {
 	children: ReactNode;

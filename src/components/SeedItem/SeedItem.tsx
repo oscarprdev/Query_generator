@@ -2,7 +2,7 @@ import { formatDateTime } from '@/lib/dates';
 import { Badge } from '../ui/badge';
 import { Databases } from '@prisma/client';
 import { capitalizeStr } from '@/lib/strings';
-import ReviewSeedModal from '../Modals/ReviewSeedModal';
+import ReviewSeedModal from '../Modals/ReviewSeedModal/ReviewSeedModal';
 
 type SeedItemProps = {
 	seedId: string;

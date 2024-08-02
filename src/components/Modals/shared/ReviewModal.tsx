@@ -1,18 +1,18 @@
 'use client';
 
-import { DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import QueryView from '../QueryView/QueryView';
+import { DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
+import QueryView from '../../QueryView/QueryView';
 import { ReactNode, startTransition, useEffect, useRef, useState } from 'react';
 import { Databases } from '@prisma/client';
-import LoadingModalContent from './shared/LoadingModalContent';
 import { cn } from '@/lib/utils';
-import ErrorModalContent from './shared/ErrorModalContent';
-import SuccessModalContent from './shared/SuccessModalContent';
-import { Button } from '../ui/button';
-import { Query } from '@/app/actions/get-query-by-id';
-import { Schema } from '@/app/actions/get-schema-by-id';
+import { Button } from '../../ui/button';
+import { Query } from '@/app/actions/queries/get-query-by-id';
+import { Schema } from '@/app/actions/schemas/get-schema-by-id';
 import { capitalizeStr } from '@/lib/strings';
-import { Seed } from '@/app/actions/get-seed-by-id';
+import { Seed } from '@/app/actions/seeds/get-seed-by-id';
+import LoadingModalContent from './LoadingModalContent';
+import SuccessModalContent from './SuccessModalContent';
+import ErrorModalContent from './ErrorModalContent';
 
 export type ModalEntity = Query | Schema | Seed;
 
