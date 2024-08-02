@@ -2,25 +2,16 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '../ui/button';
-import CreateProjectForm, { CreateProjectFormValues } from '../Forms/CreateProjectForm';
-import { useRef } from 'react';
+import { useState } from 'react';
 import { IconPlus } from '@tabler/icons-react';
-import { createProject } from '@/app/actions/create-project';
+import CreateProjectModalContent from './CreateProjectModalContent';
 
 const CreateProjectModal = () => {
-	const dialogTrigger = useRef<HTMLButtonElement>(null);
-
-	const handleSubmit = async ({ title, database }: CreateProjectFormValues) => {
-		if (!database) return;
-
-		await createProject({ title, database });
-
-		dialogTrigger?.current?.click();
-	};
+	const [modalOpened, setModalOpened] = useState(false);
 
 	return (
-		<Dialog>
-			<DialogTrigger ref={dialogTrigger} asChild>
+		<Dialog onOpenChange={e => setModalOpened(e)}>
+			<DialogTrigger asChild>
 				<Button className="absolute right-5 top-5 z-50 flex items-center gap-2 text-sm">
 					<IconPlus size={18} />
 					Crear proyecto
@@ -30,7 +21,7 @@ const CreateProjectModal = () => {
 				<DialogHeader>
 					<DialogTitle>Vamos a crear tu proyecto!</DialogTitle>
 				</DialogHeader>
-				<CreateProjectForm handleSubmit={handleSubmit} />
+				{modalOpened && <CreateProjectModalContent />}
 			</DialogContent>
 		</Dialog>
 	);
