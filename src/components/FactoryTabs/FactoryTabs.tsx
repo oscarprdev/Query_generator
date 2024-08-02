@@ -1,23 +1,43 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ReactNode } from 'react';
+import { IconTable, IconBolt, IconFile3d, IconSeeding, IconSettings } from '@tabler/icons-react';
 
 type FactoryTabsProps = {
 	tables: ReactNode;
 	queries: ReactNode;
 	schemas: ReactNode;
+	seeds: ReactNode;
 };
 
-const FactoryTabs = ({ tables, queries, schemas }: FactoryTabsProps) => {
+const FactoryTabs = ({ tables, queries, schemas, seeds }: FactoryTabsProps) => {
 	return (
 		<Tabs defaultValue="tables" className="h-full w-full">
 			<TabsList className="w-full gap-8">
-				<TabsTrigger value="tables">Tablas</TabsTrigger>
-				<TabsTrigger value="queries">Querys</TabsTrigger>
-				<TabsTrigger value="schemas">Esquemas</TabsTrigger>
+				<TabsTrigger value="tables" className="flex items-center gap-2">
+					<IconTable size={16} />
+					Tablas
+				</TabsTrigger>
+				<TabsTrigger value="queries" className="flex items-center gap-2">
+					<IconBolt size={18} />
+					Querys
+				</TabsTrigger>
+				<TabsTrigger value="schemas" className="flex items-center gap-2">
+					<IconFile3d size={18} />
+					Esquemas
+				</TabsTrigger>
+				<TabsTrigger value="seeds" className="flex items-center gap-2">
+					<IconSeeding size={18} />
+					Semillas
+				</TabsTrigger>
+				<TabsTrigger value="setup" className="flex items-center gap-2">
+					<IconSettings size={18} />
+					Setup
+				</TabsTrigger>
 			</TabsList>
 			<TabsContent value="tables">{tables}</TabsContent>
 			<TabsContent value="queries">{queries}</TabsContent>
 			<TabsContent value="schemas">{schemas}</TabsContent>
+			<TabsContent value="seeds">{seeds}</TabsContent>
 		</Tabs>
 	);
 };

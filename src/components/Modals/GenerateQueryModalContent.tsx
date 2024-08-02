@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { startTransition, useEffect, useRef, useState } from 'react';
 import { DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import QueryForm, { QueryFormValues } from '../Forms/QueryForm';
 import { Databases, QueryAction } from '@prisma/client';
@@ -11,6 +11,8 @@ import LoadingModalContent from './shared/LoadingModalContent';
 import SuccessModalContent from './shared/SuccessModalContent';
 import { generateQuery } from '@/app/actions/generate-query';
 import { readStreamableValue } from 'ai/rsc';
+import { Button } from '../ui/button';
+import { IconDots, IconSparkles } from '@tabler/icons-react';
 
 type GenerateQueryModalContentProps = {
 	projectTitle: string;
@@ -33,9 +35,12 @@ const DEFAULT_MODAL_STATE = { loading: false, success: false };
 export const maxDuration = 30;
 
 const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalContentProps) => {
+	const [formSubmitting, setFormSubmitting] = useState(false);
 	const [modalState, setModalState] = useState<ModalContentState>(DEFAULT_MODAL_STATE);
 	const [payload, setPayload] = useState<QueryPayload>();
 	const [query, setQuery] = useState<string>('');
+
+	const codeRef = useRef<HTMLElement>(null);
 
 	useEffect(() => {
 		setQuery('');
@@ -44,6 +49,7 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 	}, []);
 
 	const handleSubmit = async (values: QueryFormValues) => {
+		setFormSubmitting(true);
 		const { output } = await generateQuery({
 			projectTitle,
 			type,
@@ -58,7 +64,10 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 			setQuery(currentQuery => `${currentQuery}${delta}`);
 		}
 
-		setPayload({ title: values.title, tables: values.tables.join(', '), action: values.action });
+		startTransition(() => {
+			setPayload({ title: values.title, tables: values.tables.join(', '), action: values.action });
+			setFormSubmitting(false);
+		});
 	};
 
 	const handleStoreQuery = async (code: string) => {
@@ -67,6 +76,10 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 		setModalState({ success: false, loading: true });
 		await createQuery({ ...payload, projectTitle, code });
 		setModalState({ success: true, loading: false });
+	};
+
+	const handleReset = () => {
+		setQuery('');
 	};
 
 	return (
@@ -81,23 +94,35 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 					<DialogHeader>
 						<DialogTitle>Genera tu propia query</DialogTitle>
 					</DialogHeader>
-					{query.length > 0 && (
-						<QueryView
-							database={type}
-							error={query.includes('Error')}
-							query={query}
-							handleStoreQuery={handleStoreQuery}
-							kind="create"
-						/>
-					)}
+					{query.length > 0 && <QueryView database={type} query={query} />}
 					<QueryForm
 						handleSubmit={handleSubmit}
+						handleReset={handleReset}
 						type={type}
 						projectTitle={projectTitle}
-						reset={false}
-						defaultValues={{ title: '', tables: [], filters: [], action: 'read' }}
-						submitLabel="Generar query"
-					/>
+						defaultValues={{ title: '', tables: [], filters: [], action: 'read' }}>
+						{query.length === 0 ? (
+							<Button disabled={formSubmitting} type="submit">
+								{formSubmitting ? (
+									<IconDots size={18} className="min-w-[100px] animate-pulse text-zinc-800" />
+								) : (
+									<>
+										<IconSparkles size={20} className="mr-1 text-zinc-500" />
+										Generar query
+									</>
+								)}
+							</Button>
+						) : (
+							!query.includes('Error') && (
+								<Button
+									onClick={() =>
+										codeRef.current?.textContent && handleStoreQuery(codeRef.current.textContent)
+									}>
+									Guardar query
+								</Button>
+							)
+						)}
+					</QueryForm>
 				</>
 			)}
 		</DialogContent>

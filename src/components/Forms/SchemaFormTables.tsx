@@ -32,7 +32,11 @@ const SchemaFormTables = ({ form, projectTitle }: SchemaFormTablesProps) => {
 			name="table"
 			render={({ field }) => (
 				<FormItem className="relative w-full">
-					<Select required disabled={tables.length === 0} onValueChange={field.onChange}>
+					<Select
+						required
+						value={field.value || ''}
+						disabled={tables.length === 0}
+						onValueChange={field.onChange}>
 						<FormControl>
 							<SelectTrigger className="w-full capitalize" disabled={form.formState.isSubmitting}>
 								<SelectValue placeholder="Tabla requerida:" />

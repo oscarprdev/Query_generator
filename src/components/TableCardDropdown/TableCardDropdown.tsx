@@ -1,4 +1,4 @@
-import { IconEdit } from '@tabler/icons-react';
+import { IconDotsVertical } from '@tabler/icons-react';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -16,8 +16,8 @@ type TableCardDropdownProps = {
 const TableCardDropdown = ({ handleEditModal, handleDeleteModal }: TableCardDropdownProps) => {
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger className="grid place-items-center p-2">
-				<IconEdit size={20} className="text-zinc-600 hover:text-zinc-400" />
+			<DropdownMenuTrigger className="grid place-items-center p-2 focus-visible:outline-none">
+				<IconDotsVertical size={20} className="text-zinc-600 hover:text-zinc-400" />
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
 				<DropdownMenuLabel>Acciones</DropdownMenuLabel>

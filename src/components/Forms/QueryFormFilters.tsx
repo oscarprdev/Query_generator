@@ -15,6 +15,7 @@ type QueryFormFiltersProps = {
 
 const QueryFormFilters = ({ form, type }: QueryFormFiltersProps) => {
 	const [filters, setFilters] = useState<string[]>([]);
+	const [filterSelected, setFilterSelected] = useState<string>();
 	const tables = form.watch('tables');
 
 	useEffect(() => {
@@ -32,6 +33,8 @@ const QueryFormFilters = ({ form, type }: QueryFormFiltersProps) => {
 
 	const handleSelectFilterChange = (filterSelected: string, currentFilters: string[]) => {
 		if (currentFilters.includes(filterSelected)) return;
+
+		setFilterSelected(filterSelected);
 
 		form.setValue('filters', [...currentFilters, filterSelected]);
 	};
@@ -61,7 +64,7 @@ const QueryFormFilters = ({ form, type }: QueryFormFiltersProps) => {
 									id={`badge-${filter}`}
 									variant={'withicon'}
 									key={filter}
-									className="animate-fade-up-light aria-pressed:animate-fade-down-light flex items-center justify-between gap-1">
+									className="flex animate-fade-up-light items-center justify-between gap-1 aria-pressed:animate-fade-down-light">
 									{filter}
 									<button
 										type="button"
@@ -76,6 +79,7 @@ const QueryFormFilters = ({ form, type }: QueryFormFiltersProps) => {
 					</div>
 					<p className="absolute -bottom-5 right-1 text-xs text-zinc-600">{field.value.length}/2</p>
 					<Select
+						value={field.value.length > 0 ? field.value.find(fil => fil === filterSelected) : ''}
 						disabled={tables.length === 0 || field.value.length === 2}
 						onValueChange={filter => handleSelectFilterChange(filter, field.value)}>
 						<FormControl>

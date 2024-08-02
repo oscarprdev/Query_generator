@@ -8,10 +8,10 @@ import { updateQueryQuery } from '@/services/queries/create-query.query';
 
 type UpdateQueryInput = {
 	code: string;
-	queryId: string;
+	id: string;
 };
 
-export const updateQuery = async ({ queryId, code }: UpdateQueryInput) => {
+export const updateQuery = async ({ id, code }: UpdateQueryInput) => {
 	const session = await auth();
 	const userId = session?.user?.name;
 
@@ -24,7 +24,7 @@ export const updateQuery = async ({ queryId, code }: UpdateQueryInput) => {
 	    Responde directamente a la pregunta sin aportar ningun contexto por tu parte.`,
 	});
 
-	await updateQueryQuery({ code, description, queryId });
+	await updateQueryQuery({ code, description, queryId: id });
 
 	revalidatePath('/');
 };

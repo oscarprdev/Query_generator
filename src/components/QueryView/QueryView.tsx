@@ -1,60 +1,38 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Button } from '../ui/button';
-import { IconSparkles } from '@tabler/icons-react';
 import { Databases } from '@prisma/client';
 import { Badge } from '../ui/badge';
 
 type QueryViewProps = {
-	handleStoreQuery: (value: string) => Promise<void>;
 	query: string;
-	kind: 'edit' | 'create';
-	error: boolean;
 	database: Databases;
+	codeRef?: React.RefObject<HTMLElement>;
+	handleEditCode?: () => void;
 };
 
-const QueryView = ({ handleStoreQuery, query, kind, error, database }: QueryViewProps) => {
-	const [isCodeDirty, setIsCodeDirty] = useState(false);
-	const codeRef = useRef<HTMLElement>(null);
-
-	const handleEditCode = () => setIsCodeDirty(true);
-
+const QueryView = ({ codeRef, query, handleEditCode, database }: QueryViewProps) => {
 	return (
 		<pre
 			aria-label="scroll"
 			className={cn(
-				'relative max-h-[200px] w-full overflow-x-hidden text-wrap rounded-lg border border-border bg-zinc-800/50 p-5 pt-10 text-xs shadow-md'
+				'relative max-h-[200px] w-full overflow-x-hidden text-wrap rounded-lg border border-border bg-zinc-800/50 px-5 py-2 text-xs shadow-md'
 			)}>
 			<code
 				onInput={handleEditCode}
 				ref={codeRef}
 				contentEditable
-				className="w-full max-w-[200px] pt-10 text-zinc-300 outline-none">
+				className="w-full max-w-[200px] text-zinc-300 outline-none">
 				{query.replaceAll('`', '').replace('javascript', '').replace('sql', '')}
 			</code>
 			{database === Databases.mongoDb ? (
-				<Badge variant={'secondary'} className="absolute left-2 top-2 text-xs font-light">
+				<Badge variant={'secondary'} className="absolute right-2 top-2 text-[0.6rem]">
 					Javascript
 				</Badge>
 			) : (
-				<Badge variant={'secondary'} className="absolute left-2 top-2 text-xs font-light">
+				<Badge variant={'secondary'} className="absolute right-2 top-2 text-[0.6rem]">
 					Sql
 				</Badge>
-			)}
-			{!error && (
-				<Button
-					onClick={() => codeRef.current?.textContent && handleStoreQuery(codeRef.current.textContent)}
-					size={'sm'}
-					disabled={!isCodeDirty && kind === 'edit'}
-					variant={kind === 'create' ? 'primary' : 'default'}
-					className={cn(
-						kind === 'create' && 'animate-fade-up-light opacity-0 delay-1000 duration-300',
-						'absolute right-2 top-2 max-w-[200px] text-xs'
-					)}>
-					Guardar query
-				</Button>
 			)}
 		</pre>
 	);

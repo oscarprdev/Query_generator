@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { $Enums, Databases } from '@prisma/client';
-import { IconX } from '@tabler/icons-react';
+import { IconDots, IconX } from '@tabler/icons-react';
 import { cn } from '@/lib/utils';
 
 export type RowFormValues = {
@@ -261,7 +261,14 @@ const TableForm = ({ handleSubmit, type, defaultValues, submitLabel, reset = tru
 						<Button type="button" variant={'none'} onClick={() => form.reset()}>
 							Reset
 						</Button>
-						<Button type="submit">{form.formState.isSubmitting ? 'Loading' : `${submitLabel}`}</Button>
+
+						<Button type="submit">
+							{form.formState.isSubmitting ? (
+								<IconDots size={18} className="min-w-[75px] animate-pulse text-zinc-800" />
+							) : (
+								`${submitLabel}`
+							)}
+						</Button>
 					</div>
 				</div>
 			</form>

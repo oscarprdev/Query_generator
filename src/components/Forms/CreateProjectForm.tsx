@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Databases } from '@prisma/client';
+import { IconDots } from '@tabler/icons-react';
 
 export type CreateProjectFormValues = {
 	title: string;
@@ -76,7 +77,13 @@ const CreateProjectForm = ({ handleSubmit }: CreateProjectFormProps) => {
 						</FormItem>
 					)}
 				/>
-				<Button type="submit">{form.formState.isSubmitting ? 'Loading' : 'Crear proyecto'}</Button>
+				<Button type="submit">
+					{form.formState.isSubmitting ? (
+						<IconDots size={18} className="min-w-[100px] animate-pulse text-zinc-800" />
+					) : (
+						'Crear proyecto'
+					)}
+				</Button>
 			</form>
 		</Form>
 	);

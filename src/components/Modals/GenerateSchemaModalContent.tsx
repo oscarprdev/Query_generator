@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { startTransition, useEffect, useRef, useState } from 'react';
 import { DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Databases } from '@prisma/client';
 import QueryView from '../QueryView/QueryView';
@@ -9,6 +9,8 @@ import { generateSchema } from '@/app/actions/generate-schema';
 import { createSchema } from '@/app/actions/create-schema';
 import SchemaForm, { SchemaFormValues } from '../Forms/SchemaForm';
 import { readStreamableValue } from 'ai/rsc';
+import { Button } from '../ui/button';
+import { IconDots, IconSparkles } from '@tabler/icons-react';
 
 type GenerateSchemaModalContentProps = {
 	projectTitle: string;
@@ -28,9 +30,12 @@ type ModalContentState = {
 const DEFAULT_MODAL_STATE = { loading: false, success: false };
 
 const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalContentProps) => {
+	const [formSubmitting, setFormSubmitting] = useState(false);
 	const [modalState, setModalState] = useState<ModalContentState>(DEFAULT_MODAL_STATE);
 	const [payload, setPayload] = useState<SchemaPayload>();
 	const [schema, setSchema] = useState<string>('');
+
+	const codeRef = useRef<HTMLElement>(null);
 
 	useEffect(() => {
 		setSchema('');
@@ -39,8 +44,7 @@ const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalC
 	}, []);
 
 	const handleSubmit = async (values: SchemaFormValues) => {
-		setSchema('');
-
+		setFormSubmitting(true);
 		const { output } = await generateSchema({
 			projectTitle,
 			type,
@@ -51,7 +55,10 @@ const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalC
 			setSchema(currentSchema => `${currentSchema}${delta}`);
 		}
 
-		setPayload({ title: values.title, table: values.table });
+		startTransition(() => {
+			setPayload({ title: values.title, table: values.table });
+			setFormSubmitting(false);
+		});
 	};
 
 	const handleStoreQuery = async (code: string) => {
@@ -60,6 +67,10 @@ const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalC
 		setModalState({ success: false, loading: true });
 		await createSchema({ ...payload, projectTitle, code });
 		setModalState({ success: true, loading: false });
+	};
+
+	const handleReset = () => {
+		setSchema('');
 	};
 
 	return (
@@ -74,22 +85,34 @@ const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalC
 					<DialogHeader>
 						<DialogTitle>Genera tu propio schema.</DialogTitle>
 					</DialogHeader>
-					{schema && (
-						<QueryView
-							database={type}
-							error={schema.includes('Error')}
-							query={schema}
-							handleStoreQuery={handleStoreQuery}
-							kind="create"
-						/>
-					)}
+					{schema && <QueryView database={type} query={schema} codeRef={codeRef} />}
 					<SchemaForm
 						handleSubmit={handleSubmit}
+						handleReset={handleReset}
 						projectTitle={projectTitle}
-						reset={false}
-						defaultValues={{ title: '', table: '' }}
-						submitLabel="Generar schema"
-					/>
+						defaultValues={{ title: '', table: '' }}>
+						{schema.length === 0 ? (
+							<Button disabled={formSubmitting} type="submit">
+								{formSubmitting ? (
+									<IconDots size={18} className="min-w-[100px] animate-pulse text-zinc-800" />
+								) : (
+									<>
+										<IconSparkles size={20} className="mr-1 text-zinc-500" />
+										Generar schema
+									</>
+								)}
+							</Button>
+						) : (
+							!schema.includes('Error') && (
+								<Button
+									onClick={() =>
+										codeRef.current?.textContent && handleStoreQuery(codeRef.current.textContent)
+									}>
+									Guardar schema
+								</Button>
+							)
+						)}
+					</SchemaForm>
 				</>
 			)}
 		</DialogContent>

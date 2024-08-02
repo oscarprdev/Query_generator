@@ -6,8 +6,9 @@ import { Input } from '@/components/ui/input';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { IconSparkles } from '@tabler/icons-react';
+import { IconDots, IconSparkles } from '@tabler/icons-react';
 import SchemaFormTables from './SchemaFormTables';
+import { ReactNode } from 'react';
 
 export type SchemaFormValues = {
 	title: string;
@@ -17,10 +18,10 @@ export type SchemaFormValues = {
 
 type SchemaFormProps = {
 	handleSubmit: (values: SchemaFormValues) => Promise<void>;
+	handleReset: () => void;
 	projectTitle: string;
 	defaultValues: SchemaFormValues;
-	submitLabel: string;
-	reset?: boolean;
+	children: ReactNode;
 };
 
 const formSchema = z.object({
@@ -28,24 +29,21 @@ const formSchema = z.object({
 	table: z.string(),
 });
 
-const SchemaForm = ({ handleSubmit, defaultValues, submitLabel, projectTitle, reset = true }: SchemaFormProps) => {
+const SchemaForm = ({ handleSubmit, defaultValues, children, projectTitle, handleReset }: SchemaFormProps) => {
 	const form = useForm<SchemaFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues,
 	});
 
-	const onSubmit = async (values: SchemaFormValues) => {
-		await handleSubmit(values);
-
-		if (reset) {
-			form.reset();
-		}
+	const onReset = () => {
+		handleReset();
+		form.reset();
 	};
 
 	return (
 		<Form {...form}>
 			<form
-				onSubmit={form.handleSubmit(onSubmit)}
+				onSubmit={form.handleSubmit(handleSubmit)}
 				className="mt-5 flex h-full w-full flex-col items-center gap-4">
 				<div className="flex w-full items-center gap-5">
 					<FormField
@@ -70,19 +68,10 @@ const SchemaForm = ({ handleSubmit, defaultValues, submitLabel, projectTitle, re
 						</div>
 					)}
 					<div className="ml-auto mt-auto flex items-center gap-5">
-						<Button type="button" variant={'none'} onClick={() => form.reset()}>
+						<Button disabled={form.formState.isSubmitting} type="button" variant={'none'} onClick={onReset}>
 							Reset
 						</Button>
-						<Button type="submit">
-							{form.formState.isSubmitting ? (
-								'Loading'
-							) : (
-								<>
-									<IconSparkles size={20} className="mr-1 text-zinc-500" />
-									{submitLabel}
-								</>
-							)}
-						</Button>
+						{children}
 					</div>
 				</div>
 			</form>
