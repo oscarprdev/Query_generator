@@ -1,3 +1,4 @@
+import { capitalizeStr } from '@/lib/strings';
 import { Badge } from '../ui/badge';
 import { Query } from '@/app/actions/get-query-by-id';
 
@@ -9,10 +10,8 @@ const ReviewQueryModalContent = ({ query }: ReviewQueryModalContentProps) => {
 	return (
 		<>
 			<div className="flex items-center gap-2">
-				<p className="text-md capitalize text-zinc-400">{query.title}</p>
-				<Badge variant={'primary'} className="capitalize">
-					{query.action}
-				</Badge>
+				<p className="text-md text-zinc-400">{capitalizeStr(query.title)}</p>
+				<Badge variant={'primary'}>{query.action}</Badge>
 				{query.tables.split(', ').map(table => (
 					<Badge key={table} variant={'secondary'}>
 						{table}

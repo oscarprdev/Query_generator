@@ -11,6 +11,7 @@ import SuccessModalContent from './shared/SuccessModalContent';
 import { Button } from '../ui/button';
 import { Query } from '@/app/actions/get-query-by-id';
 import { Schema } from '@/app/actions/get-schema-by-id';
+import { capitalizeStr } from '@/lib/strings';
 
 export type ModalEntity = Query | Schema;
 
@@ -81,7 +82,7 @@ const ReviewModal = ({ queryId, type, children, getCode, updateCode, setModalCon
 			) : (
 				<>
 					<DialogHeader>
-						<DialogTitle>{labels.title}</DialogTitle>
+						<DialogTitle>{capitalizeStr(labels.title)}</DialogTitle>
 					</DialogHeader>
 					{query ? (
 						<>

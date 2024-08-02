@@ -20,7 +20,7 @@ const AsideProjectListItem = ({ title }: AsideProjectListItemProps) => {
 			className={cn(
 				isSelected
 					? 'rounded-l-none rounded-r-md border-l border-primary bg-zinc-800/50 text-zinc-300'
-					: 'rounded-md text-zinc-400',
+					: 'rounded-md border-l border-transparent text-zinc-400',
 				'px-4 py-2 text-sm font-light capitalize duration-300 first-of-type:mt-3 hover:bg-zinc-800'
 			)}>
 			{title}
