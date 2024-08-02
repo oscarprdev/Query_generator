@@ -16,3 +16,17 @@ export const createProjectQuery = async ({ ownerId, title, database }: CreatePro
 		},
 	});
 };
+
+interface UpdateProjectQueryInput {
+	projectId: string;
+	title: string;
+}
+
+export const updateProjectQuery = async ({ projectId, title }: UpdateProjectQueryInput) => {
+	await prisma.project.update({
+		where: { id: projectId },
+		data: {
+			title,
+		},
+	});
+};

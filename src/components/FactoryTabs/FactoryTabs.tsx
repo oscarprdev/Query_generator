@@ -7,9 +7,10 @@ type FactoryTabsProps = {
 	queries: ReactNode;
 	schemas: ReactNode;
 	seeds: ReactNode;
+	settings: ReactNode;
 };
 
-const FactoryTabs = ({ tables, queries, schemas, seeds }: FactoryTabsProps) => {
+const FactoryTabs = ({ tables, queries, schemas, seeds, settings }: FactoryTabsProps) => {
 	return (
 		<Tabs defaultValue="tables" className="h-full w-full">
 			<TabsList className="w-full gap-8">
@@ -29,15 +30,16 @@ const FactoryTabs = ({ tables, queries, schemas, seeds }: FactoryTabsProps) => {
 					<IconSeeding size={18} />
 					Semillas
 				</TabsTrigger>
-				<TabsTrigger value="setup" className="flex items-center gap-2">
+				<TabsTrigger value="settings" className="flex items-center gap-2">
 					<IconSettings size={18} />
-					Setup
+					Ajustes
 				</TabsTrigger>
 			</TabsList>
 			<TabsContent value="tables">{tables}</TabsContent>
 			<TabsContent value="queries">{queries}</TabsContent>
 			<TabsContent value="schemas">{schemas}</TabsContent>
 			<TabsContent value="seeds">{seeds}</TabsContent>
+			<TabsContent value="settings">{settings}</TabsContent>
 		</Tabs>
 	);
 };

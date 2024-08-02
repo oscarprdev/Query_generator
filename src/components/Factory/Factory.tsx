@@ -6,6 +6,7 @@ import { IconBolt, IconChevronUp } from '@tabler/icons-react';
 import { ReactNode } from 'react';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
+import { capitalizeStr } from '@/lib/strings';
 
 type FactoryProps = {
 	projectTitle?: string;
@@ -20,18 +21,20 @@ const Factory = ({ isVisible, projectTitle, projectType, toggleVisibility, child
 		<section
 			className={cn(
 				'absolute bottom-0 right-5 flex w-[80vw] min-w-[550px] max-w-[700px] flex-col rounded-t-xl border border-border bg-background shadow-md duration-300',
-				isVisible ? 'h-[78vh]' : 'h-[60px]'
+				isVisible && projectTitle ? 'h-[78vh]' : 'h-[60px]'
 			)}>
 			<header className="flex w-full items-center justify-between border-b border-border px-5 py-2">
 				<div className="flex w-full items-center gap-3">
 					<IconBolt size={20} className={cn(projectTitle ? 'text-secondary' : 'text-zinc-600')} />
 					<div className="flex items-center gap-3">
-						{projectTitle && (
+						{projectTitle ? (
 							<>
-								<p className="text-sm capitalize text-zinc-200">{projectTitle}</p>
+								<p className="text-sm text-zinc-200">{capitalizeStr(projectTitle)}</p>
 								<span aria-hidden className="h-1 w-1 rounded-full bg-border" />
-								<Badge className="capitalize">{projectType}</Badge>
+								{projectType && <Badge className="capitalize">{projectType}</Badge>}
 							</>
+						) : (
+							<p className="text-sm text-zinc-500">Selecciona un projecto primero</p>
 						)}
 					</div>
 				</div>
