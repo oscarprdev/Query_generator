@@ -8,6 +8,7 @@ import DeleteProjectModal from '../Modals/DeleteProjectModal/DeleteProjectModal'
 import ApiKeySettingsForm, { ApiKeySettingsFormValues } from '../Forms/ApiKeySettingsForm';
 import { useContext } from 'react';
 import { OpenAiApiKeyContext } from '@/providers/OpenAiApiKey';
+import { toast } from '../ui/use-toast';
 
 type FactorySettingsProps = {
 	project: Project | null;
@@ -24,6 +25,10 @@ const FactorySettings = ({ project }: FactorySettingsProps) => {
 	};
 	const handleApiKeySubmit = async (values: ApiKeySettingsFormValues) => {
 		handleApiKey(values.apiKey);
+		toast({
+			variant: 'default',
+			description: 'OPENAI API KEY actualizada y guardada en tu local storage.',
+		});
 	};
 
 	return (
