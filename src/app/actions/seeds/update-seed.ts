@@ -1,6 +1,8 @@
 'use server';
 
 import { auth } from '@/auth';
+import { ERRORS_MESSAGES } from '@/constants/wordings';
+import { errorResponse } from '@/lib/either';
 import { updateSeedQuery } from '@/services/queries/create-seed.query';
 import { revalidatePath } from 'next/cache';
 
@@ -10,12 +12,17 @@ type UpdateSeedInput = {
 };
 
 export const updateSeed = async ({ id, code }: UpdateSeedInput) => {
-	const session = await auth();
-	const userId = session?.user?.name;
+	try {
+		const session = await auth();
+		const user = session?.user;
 
-	if (!userId) return null;
+		if (!user) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
 
-	await updateSeedQuery({ code, seedId: id });
+		await updateSeedQuery({ code, seedId: id });
+	} catch (error) {
+		console.error(error);
+		return errorResponse(ERRORS_MESSAGES.UPDATING_SEED);
+	}
 
 	revalidatePath('/');
 };

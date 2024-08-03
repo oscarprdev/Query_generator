@@ -16,7 +16,6 @@ export type Seed = {
 };
 
 export const getSeedById = async ({ id }: GetSeedByIdInput) => {
-	console.log(id);
 	const seed = await getSeedByIdQuery({ seedId: id });
 
 	if (!seed) return null;

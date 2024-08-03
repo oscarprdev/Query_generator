@@ -9,6 +9,8 @@ import { cn } from '@/lib/utils';
 import LoadingModalContent from '../shared/LoadingModalContent';
 import SuccessModalContent from '../shared/SuccessModalContent';
 import { useRouter } from 'next/navigation';
+import { isError } from '@/lib/either';
+import { toast } from '@/components/ui/use-toast';
 
 const DEFAULT_MODAL_STATE = { loading: false, success: false };
 
@@ -25,7 +27,14 @@ const CreateProjectModalContent = () => {
 		if (!database) return;
 
 		setModalState({ loading: true, success: false });
-		await createProject({ title, database });
+		const response = await createProject({ title, database });
+		if (response && isError(response)) {
+			toast({
+				variant: 'destructive',
+				description: response.error,
+			});
+			return;
+		}
 		setModalState({ loading: false, success: true });
 
 		router.push(`/?project=${title}`);

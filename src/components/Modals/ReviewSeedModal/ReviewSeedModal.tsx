@@ -8,6 +8,7 @@ import { updateSeed } from '@/app/actions/seeds/update-seed';
 import ReviewModal, { ModalEntity } from '../shared/ReviewModal';
 import ReviewSeedModalContent from './ReviewSeedModalContent';
 import { deleteSeed } from '@/app/actions/seeds/delete-seed';
+import { ERRORS_MESSAGES, LOADING_MESSAGES, SUCCESS_MESSAGES } from '@/constants/wordings';
 
 type ReviewSeedModalProps = {
 	children: ReactNode;
@@ -36,12 +37,14 @@ const ReviewSeedModal = ({ children, seedId, type }: ReviewSeedModalProps) => {
 					setModalContent={handleModalContent}
 					type={type}
 					labels={{
-						onOpen: 'Obteniendo semilla ...',
-						loading: 'Editando semilla ...',
-						deleting: 'Eliminando semilla ...',
-						success: 'Semilla editada correctamente!',
-						deleted: 'Semilla eliminada correctamente!',
-						error: 'No se ha encontrado la semilla que buscabas, porfavor intentalo mas tarde.',
+						onOpen: LOADING_MESSAGES.GETTING_SEED,
+						loading: LOADING_MESSAGES.EDITTING_SEED,
+						success: SUCCESS_MESSAGES.EDITTING_SEED,
+						deleting: LOADING_MESSAGES.DELETTING_SEED,
+						deleted: SUCCESS_MESSAGES.DELETTING_SEED,
+						error: ERRORS_MESSAGES.GETTING_SEED,
+						errorDeletting: ERRORS_MESSAGES.DELETTING_SEED,
+						errorUpdatting: ERRORS_MESSAGES.UPDATING_SEED,
 						title: 'Detalles de tu semilla.',
 						submitButton: 'Guardar semilla',
 						deleteButton: 'Eliminar semilla',

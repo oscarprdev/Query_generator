@@ -11,9 +11,9 @@ type GetTableValuesInput = {
 
 export const getTableValues = async ({ title, type }: GetTableValuesInput) => {
 	const session = await auth();
-	const userId = session?.user?.name;
+	const user = session?.user;
 
-	if (!userId) return null;
+	if (!user) return null;
 
 	return await getTableQuery({ title, type });
 };

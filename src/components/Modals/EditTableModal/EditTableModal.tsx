@@ -4,6 +4,8 @@ import { Row } from '../../TablesCard/TableCard';
 import TableForm, { TableFormValues } from '../../Forms/TableForm';
 import { Badge } from '../../ui/badge';
 import { editTable } from '@/app/actions/tables/edit-table';
+import { isError } from '@/lib/either';
+import { toast } from '@/components/ui/use-toast';
 
 type EditTableModalProps = {
 	isOpened: boolean;
@@ -17,12 +19,18 @@ type EditTableModalProps = {
 
 const EditTableModal = ({ isOpened, tableId, title, projectTitle, type, rows, toggleModal }: EditTableModalProps) => {
 	const handleSubmit = async (values: TableFormValues) => {
-		await editTable({
+		const response = await editTable({
 			tableId,
 			type,
 			title: values.title,
 			rows: values.rows,
 		});
+		if (response && isError(response)) {
+			toast({
+				variant: 'destructive',
+				description: response.error,
+			});
+		}
 	};
 
 	return (

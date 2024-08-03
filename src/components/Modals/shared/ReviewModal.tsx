@@ -13,6 +13,7 @@ import { Seed } from '@/app/actions/seeds/get-seed-by-id';
 import LoadingModalContent from './LoadingModalContent';
 import SuccessModalContent from './SuccessModalContent';
 import ErrorModalContent from './ErrorModalContent';
+import { Either, isError } from '@/lib/either';
 
 export type ModalEntity = Query | Schema | Seed;
 
@@ -21,8 +22,8 @@ type ReviewModalProps = {
 	type: Databases;
 	children: ReactNode;
 	getCode: (id: string) => Promise<ModalEntity | null>;
-	updateCode: (input: { id: string; code: string }) => Promise<null | undefined>;
-	deleteCode: (input: { id: string }) => Promise<null | undefined>;
+	updateCode: (input: { id: string; code: string }) => Promise<Either<string, never> | undefined>;
+	deleteCode: (input: { id: string }) => Promise<Either<string, never> | undefined>;
 	setModalContent: (input: ModalEntity) => void;
 	labels: {
 		onOpen: string;
@@ -31,6 +32,8 @@ type ReviewModalProps = {
 		success: string;
 		deleted: string;
 		error: string;
+		errorUpdatting: string;
+		errorDeletting: string;
 		submitButton: string;
 		deleteButton: string;
 		title: string;
@@ -42,9 +45,18 @@ type ModalContentState = {
 	success: boolean;
 	deletting: boolean;
 	deleted: boolean;
+	errorDeletting: boolean;
+	errorUpdatting: boolean;
 };
 
-const DEFAULT_MODAL_STATE = { loading: false, success: false, deletting: false, deleted: false };
+const DEFAULT_MODAL_STATE = {
+	loading: false,
+	success: false,
+	deletting: false,
+	deleted: false,
+	errorUpdatting: false,
+	errorDeletting: false,
+};
 
 const ReviewModal = ({
 	queryId,
@@ -82,22 +94,28 @@ const ReviewModal = ({
 
 	const handleStoreQuery = async (code: string) => {
 		setModalState({ ...DEFAULT_MODAL_STATE, loading: true });
-		await updateCode({ id: queryId, code });
+		const response = await updateCode({ id: queryId, code });
+		if (response && isError(response)) {
+			setModalState({ ...DEFAULT_MODAL_STATE, errorUpdatting: true });
+			return;
+		}
 		setModalState({ ...DEFAULT_MODAL_STATE, success: true });
 	};
 
 	const handleDeleteQuery = async () => {
 		setModalState({ ...DEFAULT_MODAL_STATE, deletting: true });
-		await deleteCode({ id: queryId });
+		const response = await deleteCode({ id: queryId });
+		if (response && isError(response)) {
+			setModalState({ ...DEFAULT_MODAL_STATE, errorDeletting: true });
+			return;
+		}
 		setModalState({ ...DEFAULT_MODAL_STATE, deleted: true });
 	};
 
 	return (
 		<DialogContent
 			className={cn(
-				Object.values(DEFAULT_MODAL_STATE).some(value => Boolean(value))
-					? 'sm:max-w-[280px]'
-					: 'sm:max-w-[625px]'
+				Object.values(modalState).some(value => Boolean(value)) ? 'sm:max-w-[280px]' : 'sm:max-w-[625px]'
 			)}>
 			{modalState.loading && !query ? (
 				<LoadingModalContent text={labels.onOpen} />
@@ -109,12 +127,16 @@ const ReviewModal = ({
 				<LoadingModalContent text={labels.deleting} />
 			) : modalState.deleted ? (
 				<SuccessModalContent text={labels.deleted} />
+			) : modalState.errorUpdatting ? (
+				<ErrorModalContent text={labels.errorUpdatting} />
+			) : modalState.errorDeletting ? (
+				<ErrorModalContent text={labels.errorDeletting} />
 			) : (
 				<>
 					<DialogHeader>
 						<DialogTitle>{capitalizeStr(labels.title)}</DialogTitle>
 					</DialogHeader>
-					{query ? (
+					{query && (
 						<>
 							{children}
 							<QueryView
@@ -124,8 +146,6 @@ const ReviewModal = ({
 								handleEditCode={handleEditCode}
 							/>
 						</>
-					) : (
-						<ErrorModalContent text={labels.error} />
 					)}
 					<div className="ml-auto flex items-center gap-2">
 						<Button variant={'none'} onClick={handleDeleteQuery}>

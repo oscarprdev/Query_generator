@@ -1,6 +1,8 @@
 'use client';
 
 import { createUser } from '@/app/actions/users/create-user';
+import { toast } from '@/components/ui/use-toast';
+import { isError } from '@/lib/either';
 import { createContext, ReactNode, useEffect, useState } from 'react';
 
 interface SessionStorageContext {
@@ -14,7 +16,14 @@ const SessionStorage = ({ children }: { children: ReactNode }) => {
 
 	useEffect(() => {
 		const handleCreateUser = async () => {
-			const user = await createUser();
+			const response = await createUser();
+			if (response && isError(response)) {
+				toast({
+					variant: 'destructive',
+					description: response.error,
+				});
+				return;
+			}
 
 			setUser(user);
 		};

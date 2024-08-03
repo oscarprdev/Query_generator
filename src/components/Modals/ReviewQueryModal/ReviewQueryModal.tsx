@@ -8,6 +8,7 @@ import { updateQuery } from '@/app/actions/queries/update-query';
 import ReviewModal, { ModalEntity } from '../shared/ReviewModal';
 import ReviewQueryModalContent from './ReviewQueryModalContent';
 import { deleteQuery } from '@/app/actions/queries/delete-query';
+import { ERRORS_MESSAGES, LOADING_MESSAGES, SUCCESS_MESSAGES } from '@/constants/wordings';
 
 type ReviewQueryModalProps = {
 	queryId: string;
@@ -39,12 +40,14 @@ const ReviewQueryModal = ({ queryId, type, children }: ReviewQueryModalProps) =>
 					setModalContent={handleModalContent}
 					type={type}
 					labels={{
-						onOpen: 'Obteniendo query ...',
-						loading: 'Editando query ...',
-						success: 'Query editada correctamente!',
-						deleting: 'Eliminando query ...',
-						deleted: 'Query eliminada correctamente!',
-						error: 'No se ha encontrado la query que buscabas, porfavor intentalo mas tarde.',
+						onOpen: LOADING_MESSAGES.GETTING_QUERY,
+						loading: LOADING_MESSAGES.EDITTING_QUERY,
+						success: SUCCESS_MESSAGES.EDITTING_QUERY,
+						deleting: LOADING_MESSAGES.DELETTING_QUERY,
+						deleted: SUCCESS_MESSAGES.DELETTING_QUERY,
+						error: ERRORS_MESSAGES.GETTING_QUERY,
+						errorDeletting: ERRORS_MESSAGES.DELETTING_QUERY,
+						errorUpdatting: ERRORS_MESSAGES.UPDATING_QUERY,
 						title: 'Detalles de tu query.',
 						submitButton: 'Guardar query',
 						deleteButton: 'Eliminar query',

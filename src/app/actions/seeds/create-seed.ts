@@ -17,9 +17,9 @@ type CreateSeedInput = {
 export const createSeed = async ({ title, table, code, projectTitle }: CreateSeedInput) => {
 	try {
 		const session = await auth();
-		const userId = session?.user?.name;
+		const user = session?.user;
 
-		if (!userId) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
+		if (!user) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
 
 		const project = await getProjectByTitleQuery({ title: projectTitle });
 		if (!project) return errorResponse(ERRORS_MESSAGES.PROJECT_NOT_FOUND);

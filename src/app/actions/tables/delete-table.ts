@@ -1,6 +1,8 @@
 'use server';
 
 import { auth } from '@/auth';
+import { ERRORS_MESSAGES } from '@/constants/wordings';
+import { errorResponse } from '@/lib/either';
 import { deleteTableQuery } from '@/services/queries/delete-table.query';
 import { Databases } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
@@ -11,12 +13,16 @@ interface DeleteTableInput {
 }
 
 export const deleteTable = async ({ tableId, type }: DeleteTableInput) => {
-	const session = await auth();
-	const userId = session?.user?.name;
+	try {
+		const session = await auth();
+		const user = session?.user;
 
-	if (!userId) return 'No se ha encontrado ningun usuario';
+		if (!user || !user.id) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
 
-	await deleteTableQuery({ tableId, type });
+		await deleteTableQuery({ tableId, type });
+	} catch (error) {
+		return errorResponse(ERRORS_MESSAGES.DELETTING_TABLE);
+	}
 
 	revalidatePath('/');
 };

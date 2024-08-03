@@ -9,9 +9,9 @@ type GetProjectTablesInput = {
 
 export const getProjectTables = async ({ projectTitle }: GetProjectTablesInput) => {
 	const session = await auth();
-	const userId = session?.user?.name;
+	const user = session?.user;
 
-	if (!userId) return null;
+	if (!user) return null;
 
 	return await getTablesListQuery({ title: projectTitle });
 };

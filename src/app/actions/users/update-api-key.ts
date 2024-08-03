@@ -22,6 +22,7 @@ export const updateApiKey = async ({ apikey }: UpdateApiKeyInput) => {
 
 		await updateUserApiKeyQuery({ apiKey: apiKeyEncripted, userId: user.id });
 	} catch (error) {
+		console.error(error);
 		return errorResponse(ERRORS_MESSAGES.UPDATING_API_KEY);
 	}
 };

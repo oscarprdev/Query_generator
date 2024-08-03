@@ -9,8 +9,8 @@ export default {
 				const user = await getUserQuery({ userId: credentials.id as string });
 
 				return {
-					name: user?.id,
-					apiKey: user?.apiKey,
+					id: user?.id,
+					apiKey: user?.apiKey || '',
 				};
 			},
 		}),

@@ -16,7 +16,7 @@ export const AsideProjectListSkeleton = () => {
 
 const AsideProjectsList = async () => {
 	const session = await auth();
-	const projects = await getProjectListQuery({ ownerId: session?.user?.name as string });
+	const projects = await getProjectListQuery({ ownerId: session?.user?.id });
 
 	return (
 		<div className="flex w-full flex-col gap-1">

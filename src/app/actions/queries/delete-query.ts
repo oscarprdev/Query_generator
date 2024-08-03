@@ -1,6 +1,8 @@
 'use server';
 
 import { auth } from '@/auth';
+import { ERRORS_MESSAGES } from '@/constants/wordings';
+import { errorResponse } from '@/lib/either';
 import { deleteQueryQuery } from '@/services/queries/delete-query.query';
 import { revalidatePath } from 'next/cache';
 
@@ -9,12 +11,17 @@ interface DeleteQueryInput {
 }
 
 export const deleteQuery = async ({ id }: DeleteQueryInput) => {
-	const session = await auth();
-	const userId = session?.user?.name;
+	try {
+		const session = await auth();
+		const user = session?.user;
 
-	if (!userId) return null;
+		if (!user || !user.id) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
 
-	await deleteQueryQuery({ queryId: id });
+		await deleteQueryQuery({ queryId: id });
+	} catch (error) {
+		console.log(error);
+		return errorResponse(ERRORS_MESSAGES.DELETTING_QUERY);
+	}
 
 	revalidatePath('/');
 };

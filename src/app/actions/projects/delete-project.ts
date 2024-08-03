@@ -1,6 +1,8 @@
 'use server';
 
 import { auth } from '@/auth';
+import { ERRORS_MESSAGES } from '@/constants/wordings';
+import { errorResponse } from '@/lib/either';
 import { deleteProjectQuery } from '@/services/queries/delete-project.query';
 import { revalidatePath } from 'next/cache';
 
@@ -9,12 +11,17 @@ interface DeleteProjectInput {
 }
 
 export const deleteProject = async ({ projectId }: DeleteProjectInput) => {
-	const session = await auth();
-	const userId = session?.user?.name;
+	try {
+		const session = await auth();
+		const user = session?.user;
 
-	if (!userId) return 'No se ha encontrado ningun usuario';
+		if (!user || !user.id) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
 
-	await deleteProjectQuery({ projectId });
+		await deleteProjectQuery({ projectId });
+	} catch (error) {
+		console.error(error);
+		return errorResponse(ERRORS_MESSAGES.DELETTING_PROJECT);
+	}
 
 	revalidatePath('/');
 };
