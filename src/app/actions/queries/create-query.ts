@@ -17,9 +17,10 @@ type CreateQueryInput = {
 	action: QueryAction;
 	code: string;
 	projectTitle: string;
+	apiKey: string | null;
 };
 
-export const createQuery = async ({ title, tables, action, code, projectTitle }: CreateQueryInput) => {
+export const createQuery = async ({ title, tables, action, code, projectTitle, apiKey }: CreateQueryInput) => {
 	try {
 		const session = await auth();
 		const user = session?.user;
@@ -28,7 +29,7 @@ export const createQuery = async ({ title, tables, action, code, projectTitle }:
 
 		const openai = createOpenAI({
 			compatibility: 'strict',
-			apiKey: user.apiKey || OPENAI_API_KEY,
+			apiKey: apiKey || OPENAI_API_KEY,
 		});
 
 		const { text: description } = await generateText({
@@ -42,10 +43,10 @@ export const createQuery = async ({ title, tables, action, code, projectTitle }:
 		if (!project) return errorResponse(ERRORS_MESSAGES.PROJECT_NOT_FOUND);
 
 		await createQueryQuery({ title, tables, action, code, description, projectId: project.id });
-
-		revalidatePath('/');
 	} catch (error) {
 		console.error(error);
 		return errorResponse(ERRORS_MESSAGES.CREATING_QUERIES);
 	}
+
+	revalidatePath('/');
 };

@@ -29,9 +29,15 @@ const ApiKeySettingsForm = ({ handleSubmit }: ApiKeySettingsFormProps) => {
 		},
 	});
 
+	const onSubmit = (values: ApiKeySettingsFormValues) => {
+		handleSubmit(values);
+
+		form.reset();
+	};
+
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(handleSubmit)} className="flex w-full flex-col gap-3">
+			<form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col gap-3">
 				<FormField
 					control={form.control}
 					name="apiKey"

@@ -18,6 +18,7 @@ type GenerateQueryInput = {
 	tables: string[];
 	filters: string[];
 	prompt: string;
+	apiKey: string | null;
 };
 
 export const generateQuery = async ({
@@ -28,6 +29,7 @@ export const generateQuery = async ({
 	tables,
 	filters,
 	prompt,
+	apiKey,
 }: GenerateQueryInput) => {
 	try {
 		const session = await auth();
@@ -46,26 +48,30 @@ export const generateQuery = async ({
 	    Your response will be injected directly into a <code/> html tag. So your response must be only the query needed.
 		Not provide any context or extra information, just stick to the current prompt.
 		The language used to generate the query will be SQL if the table type is PostgreSQL and in case of MongoDb the language will be Javascript
-	`;
+		`;
 
 		const openai = createOpenAI({
 			compatibility: 'strict',
-			apiKey: user.apiKey || OPENAI_API_KEY,
+			apiKey: apiKey || OPENAI_API_KEY,
 		});
 
 		const stream = createStreamableValue('');
 
 		(async () => {
-			const { textStream } = await streamText({
-				model: openai('gpt-4o'),
-				prompt: aIprompt,
-			});
+			try {
+				const { textStream } = await streamText({
+					model: openai('gpt-4o'),
+					prompt: aIprompt,
+				});
 
-			for await (const delta of textStream) {
-				stream.update(delta);
+				for await (const delta of textStream) {
+					stream.update(delta);
+				}
+
+				stream.done();
+			} catch (error) {
+				return errorResponse(ERRORS_MESSAGES.GENERATING_QUERYS);
 			}
-
-			stream.done();
 		})();
 
 		return successResponse({ output: stream.value });

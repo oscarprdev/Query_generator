@@ -5,13 +5,13 @@ import { toast } from '@/components/ui/use-toast';
 import { isError } from '@/lib/either';
 import { createContext, ReactNode, useEffect, useState } from 'react';
 
-interface SessionStorageContext {
+interface AuthSessionContext {
 	user?: string;
 }
 
-export const SessionStorageContext = createContext<SessionStorageContext>({ user: '' });
+export const AuthSessionContext = createContext<AuthSessionContext>({ user: '' });
 
-const SessionStorage = ({ children }: { children: ReactNode }) => {
+const AuthSessionProvider = ({ children }: { children: ReactNode }) => {
 	const [user, setUser] = useState<string>();
 
 	useEffect(() => {
@@ -30,7 +30,7 @@ const SessionStorage = ({ children }: { children: ReactNode }) => {
 
 		handleCreateUser();
 	}, []);
-	return <SessionStorageContext.Provider value={{ user }}>{children}</SessionStorageContext.Provider>;
+	return <AuthSessionContext.Provider value={{ user }}>{children}</AuthSessionContext.Provider>;
 };
 
-export default SessionStorage;
+export default AuthSessionProvider;

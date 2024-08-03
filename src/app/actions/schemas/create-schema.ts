@@ -25,10 +25,10 @@ export const createSchema = async ({ title, table, code, projectTitle }: CreateS
 		if (!project) return errorResponse(ERRORS_MESSAGES.PROJECT_NOT_FOUND);
 
 		await createSchemaQuery({ title, table, code, projectId: project.id });
-
-		revalidatePath('/');
 	} catch (error) {
 		console.error(error);
 		return errorResponse(ERRORS_MESSAGES.CREATING_SCHEMAS);
 	}
+
+	revalidatePath('/');
 };

@@ -9,7 +9,8 @@ const ApiKeyFormInfo = () => {
 			</p>
 			<p className="text-pretty">
 				Si quieres continuar usando la aplicacion introduce tu propia{' '}
-				<span className="text-secondary">OpenAi Api Key</span>. Sera encriptada por motivos de seguridad.
+				<span className="text-secondary">OpenAi Api Key</span>. Sera guardada unicamente en tu local storage por
+				motivos de seguridad.
 			</p>
 		</InfoTooltip>
 	);

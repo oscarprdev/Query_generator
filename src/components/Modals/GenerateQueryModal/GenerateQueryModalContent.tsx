@@ -1,6 +1,6 @@
 'use client';
 
-import React, { startTransition, useEffect, useRef, useState } from 'react';
+import React, { startTransition, useContext, useEffect, useRef, useState } from 'react';
 import { DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
 import QueryForm, { QueryFormValues } from '../../Forms/QueryForm';
 import { Databases, QueryAction } from '@prisma/client';
@@ -17,6 +17,7 @@ import AccordionInfo from '@/components/AccordionInfo/AccordionInfo';
 import { isError } from '@/lib/either';
 import ErrorModalContent from '../shared/ErrorModalContent';
 import { ERRORS_MESSAGES, LOADING_MESSAGES, SUCCESS_MESSAGES } from '@/constants/wordings';
+import { OpenAiApiKeyContext } from '@/providers/OpenAiApiKey';
 
 type GenerateQueryModalContentProps = {
 	projectTitle: string;
@@ -40,6 +41,8 @@ const DEFAULT_MODAL_STATE = { loading: false, success: false, error: false };
 export const maxDuration = 30;
 
 const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalContentProps) => {
+	const { getApiKey } = useContext(OpenAiApiKeyContext);
+
 	const [formSubmitting, setFormSubmitting] = useState(false);
 	const [modalState, setModalState] = useState<ModalContentState>(DEFAULT_MODAL_STATE);
 	const [payload, setPayload] = useState<QueryPayload>();
@@ -63,14 +66,21 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 			filters: values.filters,
 			tables: values.tables,
 			prompt: values.prompt || '',
-		}).finally(() => setQuery(''));
+			apiKey: getApiKey(),
+		}).finally(() => {
+			setQuery('');
+		});
 
-		if (isError(response)) {
-			setQuery(response.error);
+		if (response && isError(response)) {
+			setModalState({ ...DEFAULT_MODAL_STATE, error: true });
 			return;
 		}
 
 		for await (const delta of readStreamableValue(response.success.output)) {
+			if (delta?.length === 0) {
+				setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+			}
+
 			setQuery(currentQuery => `${currentQuery}${delta}`);
 		}
 
@@ -84,7 +94,7 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 		if (!payload || !query) return;
 
 		setModalState({ ...DEFAULT_MODAL_STATE, loading: true });
-		const response = await createQuery({ ...payload, projectTitle, code });
+		const response = await createQuery({ ...payload, projectTitle, code, apiKey: getApiKey() });
 		if (response && isError(response)) {
 			setModalState({ ...DEFAULT_MODAL_STATE, error: true });
 		}
@@ -97,7 +107,9 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 
 	return (
 		<DialogContent
-			className={cn(modalState.success || modalState.loading ? 'sm:max-w-[280px]' : 'sm:max-w-[625px]')}>
+			className={cn(
+				Object.values(modalState).some(val => Boolean(val)) ? 'sm:max-w-[280px]' : 'sm:max-w-[625px]'
+			)}>
 			{modalState.loading ? (
 				<LoadingModalContent text={LOADING_MESSAGES.GENERATING_QUERYS} />
 			) : modalState.success ? (

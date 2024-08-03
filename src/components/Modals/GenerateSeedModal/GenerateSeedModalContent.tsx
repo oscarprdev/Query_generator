@@ -1,4 +1,4 @@
-import React, { startTransition, useEffect, useRef, useState } from 'react';
+import React, { startTransition, useContext, useEffect, useRef, useState } from 'react';
 import { DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
 import { Databases } from '@prisma/client';
 import QueryView from '../../QueryView/QueryView';
@@ -13,9 +13,9 @@ import LoadingModalContent from '../shared/LoadingModalContent';
 import SuccessModalContent from '../shared/SuccessModalContent';
 import AccordionInfo from '@/components/AccordionInfo/AccordionInfo';
 import { isError } from '@/lib/either';
-import { toast } from '@/components/ui/use-toast';
 import ErrorModalContent from '../shared/ErrorModalContent';
 import { ERRORS_MESSAGES, LOADING_MESSAGES, SUCCESS_MESSAGES } from '@/constants/wordings';
+import { OpenAiApiKeyContext } from '@/providers/OpenAiApiKey';
 
 type GenerateSeedModalContentProps = {
 	projectTitle: string;
@@ -36,6 +36,8 @@ type ModalContentState = {
 const DEFAULT_MODAL_STATE = { loading: false, success: false, error: false };
 
 const GenerateSeedModalContent = ({ projectTitle, type }: GenerateSeedModalContentProps) => {
+	const { getApiKey } = useContext(OpenAiApiKeyContext);
+
 	const [formSubmitting, setFormSubmitting] = useState(false);
 	const [modalState, setModalState] = useState<ModalContentState>(DEFAULT_MODAL_STATE);
 	const [payload, setPayload] = useState<SeedPayload>();
@@ -55,7 +57,15 @@ const GenerateSeedModalContent = ({ projectTitle, type }: GenerateSeedModalConte
 			projectTitle,
 			type,
 			table: values.table,
-		}).finally(() => setSeed(''));
+			apiKey: getApiKey(),
+		}).finally(() => {
+			if (seed.length === 0) {
+				setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+				return;
+			}
+
+			setSeed('');
+		});
 
 		if (isError(response)) {
 			setSeed(response.error);
@@ -63,6 +73,10 @@ const GenerateSeedModalContent = ({ projectTitle, type }: GenerateSeedModalConte
 		}
 
 		for await (const delta of readStreamableValue(response.success.output)) {
+			if (delta?.length === 0) {
+				setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+			}
+
 			setSeed(currentSeed => `${currentSeed}${delta}`);
 		}
 
@@ -89,7 +103,9 @@ const GenerateSeedModalContent = ({ projectTitle, type }: GenerateSeedModalConte
 
 	return (
 		<DialogContent
-			className={cn(modalState.success || modalState.loading ? 'sm:max-w-[280px]' : 'sm:max-w-[625px]')}>
+			className={cn(
+				Object.values(modalState).some(val => Boolean(val)) ? 'sm:max-w-[280px]' : 'sm:max-w-[625px]'
+			)}>
 			{modalState.loading && !modalState.success ? (
 				<LoadingModalContent text={LOADING_MESSAGES.GENERATING_SEEDS} />
 			) : modalState.success && !modalState.loading ? (

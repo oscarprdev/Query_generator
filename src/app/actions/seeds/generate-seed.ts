@@ -14,9 +14,10 @@ type GenerateSeedInput = {
 	projectTitle: string;
 	type: Databases;
 	table: string;
+	apiKey: string | null;
 };
 
-export const generateSeed = async ({ projectTitle, table, type }: GenerateSeedInput) => {
+export const generateSeed = async ({ projectTitle, table, type, apiKey }: GenerateSeedInput) => {
 	try {
 		const session = await auth();
 		const user = session?.user;
@@ -41,22 +42,26 @@ export const generateSeed = async ({ projectTitle, table, type }: GenerateSeedIn
 
 		const openai = createOpenAI({
 			compatibility: 'strict',
-			apiKey: user.apiKey || OPENAI_API_KEY,
+			apiKey: apiKey || OPENAI_API_KEY,
 		});
 
 		const stream = createStreamableValue('');
 
 		(async () => {
-			const { textStream } = await streamText({
-				model: openai('gpt-4o'),
-				prompt,
-			});
+			try {
+				const { textStream } = await streamText({
+					model: openai('gpt-4o'),
+					prompt,
+				});
 
-			for await (const delta of textStream) {
-				stream.update(delta);
+				for await (const delta of textStream) {
+					stream.update(delta);
+				}
+
+				stream.done();
+			} catch (error) {
+				return errorResponse(ERRORS_MESSAGES.GENERATING_SEEDS);
 			}
-
-			stream.done();
 		})();
 
 		return successResponse({ output: stream.value });

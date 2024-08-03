@@ -2,7 +2,7 @@
 
 import { DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
 import QueryView from '../../QueryView/QueryView';
-import { ReactNode, startTransition, useEffect, useRef, useState } from 'react';
+import { ReactNode, startTransition, useContext, useEffect, useRef, useState } from 'react';
 import { Databases } from '@prisma/client';
 import { cn } from '@/lib/utils';
 import { Button } from '../../ui/button';
@@ -14,6 +14,7 @@ import LoadingModalContent from './LoadingModalContent';
 import SuccessModalContent from './SuccessModalContent';
 import ErrorModalContent from './ErrorModalContent';
 import { Either, isError } from '@/lib/either';
+import { OpenAiApiKeyContext } from '@/providers/OpenAiApiKey';
 
 export type ModalEntity = Query | Schema | Seed;
 
@@ -22,7 +23,11 @@ type ReviewModalProps = {
 	type: Databases;
 	children: ReactNode;
 	getCode: (id: string) => Promise<ModalEntity | null>;
-	updateCode: (input: { id: string; code: string }) => Promise<Either<string, never> | undefined>;
+	updateCode: (input: {
+		id: string;
+		code: string;
+		apiKey: string | null;
+	}) => Promise<Either<string, never> | undefined>;
 	deleteCode: (input: { id: string }) => Promise<Either<string, never> | undefined>;
 	setModalContent: (input: ModalEntity) => void;
 	labels: {
@@ -68,6 +73,8 @@ const ReviewModal = ({
 	setModalContent,
 	labels,
 }: ReviewModalProps) => {
+	const { getApiKey } = useContext(OpenAiApiKeyContext);
+
 	const [modalState, setModalState] = useState<ModalContentState>(DEFAULT_MODAL_STATE);
 	const [query, setQuery] = useState<string>();
 	const [isCodeDirty, setIsCodeDirty] = useState(false);
@@ -94,7 +101,7 @@ const ReviewModal = ({
 
 	const handleStoreQuery = async (code: string) => {
 		setModalState({ ...DEFAULT_MODAL_STATE, loading: true });
-		const response = await updateCode({ id: queryId, code });
+		const response = await updateCode({ id: queryId, code, apiKey: getApiKey() });
 		if (response && isError(response)) {
 			setModalState({ ...DEFAULT_MODAL_STATE, errorUpdatting: true });
 			return;

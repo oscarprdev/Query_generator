@@ -25,10 +25,10 @@ export const createSeed = async ({ title, table, code, projectTitle }: CreateSee
 		if (!project) return errorResponse(ERRORS_MESSAGES.PROJECT_NOT_FOUND);
 
 		await createSeedQuery({ title, table, code, projectId: project.id });
-
-		revalidatePath('/');
 	} catch (error) {
 		console.log(error);
 		return errorResponse(ERRORS_MESSAGES.CREATING_SEEDS);
 	}
+
+	revalidatePath('/');
 };

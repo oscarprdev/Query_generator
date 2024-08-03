@@ -1,4 +1,4 @@
-import React, { startTransition, useEffect, useRef, useState } from 'react';
+import React, { startTransition, useContext, useEffect, useRef, useState } from 'react';
 import { DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
 import { Databases } from '@prisma/client';
 import QueryView from '../../QueryView/QueryView';
@@ -15,6 +15,7 @@ import AccordionInfo from '@/components/AccordionInfo/AccordionInfo';
 import { isError } from '@/lib/either';
 import ErrorModalContent from '../shared/ErrorModalContent';
 import { ERRORS_MESSAGES, LOADING_MESSAGES, SUCCESS_MESSAGES } from '@/constants/wordings';
+import { OpenAiApiKeyContext } from '@/providers/OpenAiApiKey';
 
 type GenerateSchemaModalContentProps = {
 	projectTitle: string;
@@ -35,6 +36,8 @@ type ModalContentState = {
 const DEFAULT_MODAL_STATE = { loading: false, success: false, error: false };
 
 const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalContentProps) => {
+	const { getApiKey } = useContext(OpenAiApiKeyContext);
+
 	const [formSubmitting, setFormSubmitting] = useState(false);
 	const [modalState, setModalState] = useState<ModalContentState>(DEFAULT_MODAL_STATE);
 	const [payload, setPayload] = useState<SchemaPayload>();
@@ -54,7 +57,15 @@ const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalC
 			projectTitle,
 			type,
 			table: values.table,
-		}).finally(() => setSchema(''));
+			apiKey: getApiKey(),
+		}).finally(() => {
+			if (schema.length === 0) {
+				setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+				return;
+			}
+
+			setSchema('');
+		});
 
 		if (isError(response)) {
 			setSchema(response.error);
@@ -62,6 +73,10 @@ const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalC
 		}
 
 		for await (const delta of readStreamableValue(response.success.output)) {
+			if (delta?.length === 0) {
+				setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+			}
+
 			setSchema(currentSchema => `${currentSchema}${delta}`);
 		}
 
@@ -88,7 +103,9 @@ const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalC
 
 	return (
 		<DialogContent
-			className={cn(modalState.success || modalState.loading ? 'sm:max-w-[280px]' : 'sm:max-w-[625px]')}>
+			className={cn(
+				Object.values(modalState).some(val => Boolean(val)) ? 'sm:max-w-[280px]' : 'sm:max-w-[625px]'
+			)}>
 			{modalState.loading && !modalState.success ? (
 				<LoadingModalContent text={LOADING_MESSAGES.GENERATING_SCHEMAS} />
 			) : modalState.success && !modalState.loading ? (

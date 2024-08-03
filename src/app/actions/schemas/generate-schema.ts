@@ -14,9 +14,10 @@ type GenerateSchemaInput = {
 	projectTitle: string;
 	type: Databases;
 	table: string;
+	apiKey: string | null;
 };
 
-export const generateSchema = async ({ projectTitle, table, type }: GenerateSchemaInput) => {
+export const generateSchema = async ({ projectTitle, table, type, apiKey }: GenerateSchemaInput) => {
 	try {
 		const session = await auth();
 		const user = session?.user;
@@ -38,22 +39,26 @@ export const generateSchema = async ({ projectTitle, table, type }: GenerateSche
 
 		const openai = createOpenAI({
 			compatibility: 'strict',
-			apiKey: user.apiKey || OPENAI_API_KEY,
+			apiKey: apiKey || OPENAI_API_KEY,
 		});
 
 		const stream = createStreamableValue('');
 
 		(async () => {
-			const { textStream } = await streamText({
-				model: openai('gpt-4o'),
-				prompt,
-			});
+			try {
+				const { textStream } = await streamText({
+					model: openai('gpt-4o'),
+					prompt,
+				});
 
-			for await (const delta of textStream) {
-				stream.update(delta);
+				for await (const delta of textStream) {
+					stream.update(delta);
+				}
+
+				stream.done();
+			} catch (error) {
+				return errorResponse(ERRORS_MESSAGES.GENERATING_SCHEMAS);
 			}
-
-			stream.done();
 		})();
 
 		return successResponse({ output: stream.value });

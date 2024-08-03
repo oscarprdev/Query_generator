@@ -4,18 +4,17 @@ import { Project } from '@prisma/client';
 import ProjectSettingsForm, { ProjectSettingsFormValues } from '../Forms/ProjectSettingsForm';
 import { updateProject } from '@/app/actions/projects/update-project';
 import { useRouter } from 'next/navigation';
-import DeleteTableModal from '../Modals/DeleteTableModal/DeleteTableModal';
 import DeleteProjectModal from '../Modals/DeleteProjectModal/DeleteProjectModal';
 import ApiKeySettingsForm, { ApiKeySettingsFormValues } from '../Forms/ApiKeySettingsForm';
-import { updateApiKey } from '@/app/actions/users/update-api-key';
-import { isError } from '@/lib/either';
-import { toast } from '../ui/use-toast';
+import { useContext } from 'react';
+import { OpenAiApiKeyContext } from '@/providers/OpenAiApiKey';
 
 type FactorySettingsProps = {
 	project: Project | null;
 };
 
 const FactorySettings = ({ project }: FactorySettingsProps) => {
+	const { handleApiKey } = useContext(OpenAiApiKeyContext);
 	const router = useRouter();
 
 	const handleUpdateProjectSubmit = async (values: ProjectSettingsFormValues) => {
@@ -24,13 +23,7 @@ const FactorySettings = ({ project }: FactorySettingsProps) => {
 		router.push(`/?project=${values.title}`);
 	};
 	const handleApiKeySubmit = async (values: ApiKeySettingsFormValues) => {
-		const response = await updateApiKey({ apikey: values.apiKey });
-		if (response && isError(response)) {
-			toast({
-				variant: 'destructive',
-				description: response.error,
-			});
-		}
+		handleApiKey(values.apiKey);
 	};
 
 	return (

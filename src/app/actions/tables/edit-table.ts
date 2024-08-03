@@ -29,10 +29,10 @@ export const editTable = async (input: EditTableInput) => {
 		if (!user || !user.id) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
 
 		await editTableQuery(input);
-
-		revalidatePath('/');
 	} catch (error) {
 		console.error(error);
 		return errorResponse(ERRORS_MESSAGES.EDITTING_TABLE);
 	}
+
+	revalidatePath('/');
 };
