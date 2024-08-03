@@ -57,7 +57,7 @@ export const generateSchema = async ({ projectTitle, table, type, apiKey }: Gene
 
 				stream.done();
 			} catch (error) {
-				return errorResponse(ERRORS_MESSAGES.GENERATING_SCHEMAS);
+				stream.error(ERRORS_MESSAGES.GENERATING_SCHEMAS);
 			}
 		})();
 

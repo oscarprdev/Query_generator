@@ -60,7 +60,7 @@ export const generateSeed = async ({ projectTitle, table, type, apiKey }: Genera
 
 				stream.done();
 			} catch (error) {
-				return errorResponse(ERRORS_MESSAGES.GENERATING_SEEDS);
+				stream.error(ERRORS_MESSAGES.GENERATING_SEEDS);
 			}
 		})();
 

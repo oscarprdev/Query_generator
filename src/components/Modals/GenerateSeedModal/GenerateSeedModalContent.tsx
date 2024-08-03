@@ -59,25 +59,20 @@ const GenerateSeedModalContent = ({ projectTitle, type }: GenerateSeedModalConte
 			table: values.table,
 			apiKey: getApiKey(),
 		}).finally(() => {
-			if (seed.length === 0) {
-				setModalState({ ...DEFAULT_MODAL_STATE, error: true });
-				return;
-			}
-
 			setSeed('');
 		});
 
 		if (isError(response)) {
-			setSeed(response.error);
+			setModalState({ ...DEFAULT_MODAL_STATE, error: true });
 			return;
 		}
 
-		for await (const delta of readStreamableValue(response.success.output)) {
-			if (delta?.length === 0) {
-				setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+		try {
+			for await (const delta of readStreamableValue(response.success.output)) {
+				setSeed(currentSeed => `${currentSeed}${delta}`);
 			}
-
-			setSeed(currentSeed => `${currentSeed}${delta}`);
+		} catch (error) {
+			setModalState({ ...DEFAULT_MODAL_STATE, error: true });
 		}
 
 		startTransition(() => {

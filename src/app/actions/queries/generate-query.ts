@@ -70,7 +70,7 @@ export const generateQuery = async ({
 
 				stream.done();
 			} catch (error) {
-				return errorResponse(ERRORS_MESSAGES.GENERATING_QUERYS);
+				stream.error(ERRORS_MESSAGES.GENERATING_QUERYS);
 			}
 		})();
 

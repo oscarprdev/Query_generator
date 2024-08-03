@@ -59,25 +59,21 @@ const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalC
 			table: values.table,
 			apiKey: getApiKey(),
 		}).finally(() => {
-			if (schema.length === 0) {
-				setModalState({ ...DEFAULT_MODAL_STATE, error: true });
-				return;
-			}
-
 			setSchema('');
 		});
 
 		if (isError(response)) {
-			setSchema(response.error);
+			setModalState({ ...DEFAULT_MODAL_STATE, error: true });
 			return;
 		}
 
-		for await (const delta of readStreamableValue(response.success.output)) {
-			if (delta?.length === 0) {
-				setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+		try {
+			for await (const delta of readStreamableValue(response.success.output)) {
+				setSchema(currentSchema => `${currentSchema}${delta}`);
 			}
-
-			setSchema(currentSchema => `${currentSchema}${delta}`);
+		} catch (error) {
+			setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+			return;
 		}
 
 		startTransition(() => {

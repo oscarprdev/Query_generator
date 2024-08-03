@@ -76,12 +76,13 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 			return;
 		}
 
-		for await (const delta of readStreamableValue(response.success.output)) {
-			if (delta?.length === 0) {
-				setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+		try {
+			for await (const delta of readStreamableValue(response.success.output)) {
+				setQuery(currentQuery => `${currentQuery}${delta}`);
 			}
-
-			setQuery(currentQuery => `${currentQuery}${delta}`);
+		} catch (error) {
+			setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+			return;
 		}
 
 		startTransition(() => {
