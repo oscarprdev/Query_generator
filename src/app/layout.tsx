@@ -5,6 +5,7 @@ import Aside from '@/components/Aside/Aside';
 import Header from '@/components/Header/Header';
 import { cn } from '@/lib/utils';
 import SessionStorage from '@/providers/SessionStorage';
+import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
 						{children}
 					</main>
 				</SessionStorage>
+				<Toaster />
 			</body>
 		</html>
 	);

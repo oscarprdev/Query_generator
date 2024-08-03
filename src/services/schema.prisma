@@ -65,7 +65,10 @@ enum MongoConstraint {
 model Users {
     id                String              @id @default(uuid()) 
     
-    projects         Project[]
+    apiKey            String?             @unique
+    aiRequests        Int                 @default(10) 
+
+    projects          Project[]
 }
 
 model Project {

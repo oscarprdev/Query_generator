@@ -10,6 +10,7 @@ export default {
 
 				return {
 					name: user?.id,
+					apiKey: user?.apiKey,
 				};
 			},
 		}),

@@ -2,10 +2,13 @@
 
 import { getTablesListQuery } from '@/services/queries/get-tables-list.query';
 import { $Enums, Databases } from '@prisma/client';
-import { openai } from '@ai-sdk/openai';
+import { createOpenAI } from '@ai-sdk/openai';
 import { streamText } from 'ai';
-import { createStreamableValue, StreamableValue } from 'ai/rsc';
+import { createStreamableValue } from 'ai/rsc';
 import { auth } from '@/auth';
+import { OPENAI_API_KEY } from '@/constants/envs';
+import { errorResponse, successResponse } from '@/lib/either';
+import { ERRORS_MESSAGES } from '@/constants/wordings';
 
 type GenerateQueryInput = {
 	projectTitle: string;
@@ -26,14 +29,15 @@ export const generateQuery = async ({
 	filters,
 	prompt,
 }: GenerateQueryInput) => {
-	const session = await auth();
-	const userId = session?.user?.name;
+	try {
+		const session = await auth();
+		const user = session?.user;
 
-	if (!userId) return { output: 'Usuario no autorizado' as StreamableValue<string, any> };
+		if (!user) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
 
-	const tablesResponse = await getTablesListQuery({ title: projectTitle });
+		const tablesResponse = await getTablesListQuery({ title: projectTitle });
 
-	const aIprompt: string = `
+		const aIprompt: string = `
 	    Your role is to be an experienced backend developer with a huge expertise in generating queries for ${type} database.
 	    So based on these tables: ${JSON.stringify(tablesResponse)} I need you to provide the query needed to ${action} the information
 	    coming from the tables: ${tables.join(', ')} filtered by the values: ${filters.join(', ')}. In addition, take into account that I want also
@@ -44,20 +48,29 @@ export const generateQuery = async ({
 		The language used to generate the query will be SQL if the table type is PostgreSQL and in case of MongoDb the language will be Javascript
 	`;
 
-	const stream = createStreamableValue('');
-
-	(async () => {
-		const { textStream } = await streamText({
-			model: openai('gpt-4o'),
-			prompt: aIprompt,
+		const openai = createOpenAI({
+			compatibility: 'strict',
+			apiKey: user.apiKey || OPENAI_API_KEY,
 		});
 
-		for await (const delta of textStream) {
-			stream.update(delta);
-		}
+		const stream = createStreamableValue('');
 
-		stream.done();
-	})();
+		(async () => {
+			const { textStream } = await streamText({
+				model: openai('gpt-4o'),
+				prompt: aIprompt,
+			});
 
-	return { output: stream.value };
+			for await (const delta of textStream) {
+				stream.update(delta);
+			}
+
+			stream.done();
+		})();
+
+		return successResponse({ output: stream.value });
+	} catch (error) {
+		console.error(error);
+		return errorResponse(ERRORS_MESSAGES.GENERATING_QUERYS);
+	}
 };

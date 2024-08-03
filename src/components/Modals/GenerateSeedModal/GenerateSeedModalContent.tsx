@@ -12,6 +12,10 @@ import SchemaForm, { SchemaFormValues } from '../../Forms/SchemaForm';
 import LoadingModalContent from '../shared/LoadingModalContent';
 import SuccessModalContent from '../shared/SuccessModalContent';
 import AccordionInfo from '@/components/AccordionInfo/AccordionInfo';
+import { isError } from '@/lib/either';
+import { toast } from '@/components/ui/use-toast';
+import ErrorModalContent from '../shared/ErrorModalContent';
+import { ERRORS_MESSAGES, LOADING_MESSAGES, SUCCESS_MESSAGES } from '@/constants/wordings';
 
 type GenerateSeedModalContentProps = {
 	projectTitle: string;
@@ -26,9 +30,10 @@ type SeedPayload = {
 type ModalContentState = {
 	loading: boolean;
 	success: boolean;
+	error: boolean;
 };
 
-const DEFAULT_MODAL_STATE = { loading: false, success: false };
+const DEFAULT_MODAL_STATE = { loading: false, success: false, error: false };
 
 const GenerateSeedModalContent = ({ projectTitle, type }: GenerateSeedModalContentProps) => {
 	const [formSubmitting, setFormSubmitting] = useState(false);
@@ -46,13 +51,18 @@ const GenerateSeedModalContent = ({ projectTitle, type }: GenerateSeedModalConte
 
 	const handleSubmit = async (values: SchemaFormValues) => {
 		setFormSubmitting(true);
-		const { output } = await generateSeed({
+		const response = await generateSeed({
 			projectTitle,
 			type,
 			table: values.table,
 		}).finally(() => setSeed(''));
 
-		for await (const delta of readStreamableValue(output)) {
+		if (isError(response)) {
+			setSeed(response.error);
+			return;
+		}
+
+		for await (const delta of readStreamableValue(response.success.output)) {
 			setSeed(currentSeed => `${currentSeed}${delta}`);
 		}
 
@@ -65,9 +75,12 @@ const GenerateSeedModalContent = ({ projectTitle, type }: GenerateSeedModalConte
 	const handleStoreQuery = async (code: string) => {
 		if (!payload || !seed) return;
 
-		setModalState({ success: false, loading: true });
-		await createSeed({ ...payload, projectTitle, code });
-		setModalState({ success: true, loading: false });
+		setModalState({ ...DEFAULT_MODAL_STATE, loading: true });
+		const response = await createSeed({ ...payload, projectTitle, code });
+		if (response && isError(response)) {
+			setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+		}
+		setModalState({ ...DEFAULT_MODAL_STATE, success: true });
 	};
 
 	const handleReset = () => {
@@ -78,9 +91,11 @@ const GenerateSeedModalContent = ({ projectTitle, type }: GenerateSeedModalConte
 		<DialogContent
 			className={cn(modalState.success || modalState.loading ? 'sm:max-w-[280px]' : 'sm:max-w-[625px]')}>
 			{modalState.loading && !modalState.success ? (
-				<LoadingModalContent text="Guardando semilla ..." />
+				<LoadingModalContent text={LOADING_MESSAGES.GENERATING_SEEDS} />
 			) : modalState.success && !modalState.loading ? (
-				<SuccessModalContent text="Semilla guardada correctamente!" />
+				<SuccessModalContent text={SUCCESS_MESSAGES.GENERATING_SEEDS} />
+			) : modalState.error ? (
+				<ErrorModalContent text={ERRORS_MESSAGES.GENERATING_SEEDS} />
 			) : (
 				<>
 					<DialogHeader>

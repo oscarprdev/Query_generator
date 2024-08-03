@@ -12,6 +12,9 @@ import { IconDots, IconSparkles } from '@tabler/icons-react';
 import LoadingModalContent from '../shared/LoadingModalContent';
 import SuccessModalContent from '../shared/SuccessModalContent';
 import AccordionInfo from '@/components/AccordionInfo/AccordionInfo';
+import { isError } from '@/lib/either';
+import ErrorModalContent from '../shared/ErrorModalContent';
+import { ERRORS_MESSAGES, LOADING_MESSAGES, SUCCESS_MESSAGES } from '@/constants/wordings';
 
 type GenerateSchemaModalContentProps = {
 	projectTitle: string;
@@ -26,9 +29,10 @@ type SchemaPayload = {
 type ModalContentState = {
 	loading: boolean;
 	success: boolean;
+	error: boolean;
 };
 
-const DEFAULT_MODAL_STATE = { loading: false, success: false };
+const DEFAULT_MODAL_STATE = { loading: false, success: false, error: false };
 
 const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalContentProps) => {
 	const [formSubmitting, setFormSubmitting] = useState(false);
@@ -46,13 +50,18 @@ const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalC
 
 	const handleSubmit = async (values: SchemaFormValues) => {
 		setFormSubmitting(true);
-		const { output } = await generateSchema({
+		const response = await generateSchema({
 			projectTitle,
 			type,
 			table: values.table,
 		}).finally(() => setSchema(''));
 
-		for await (const delta of readStreamableValue(output)) {
+		if (isError(response)) {
+			setSchema(response.error);
+			return;
+		}
+
+		for await (const delta of readStreamableValue(response.success.output)) {
 			setSchema(currentSchema => `${currentSchema}${delta}`);
 		}
 
@@ -65,9 +74,12 @@ const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalC
 	const handleStoreQuery = async (code: string) => {
 		if (!payload || !schema) return;
 
-		setModalState({ success: false, loading: true });
-		await createSchema({ ...payload, projectTitle, code });
-		setModalState({ success: true, loading: false });
+		setModalState({ ...DEFAULT_MODAL_STATE, loading: true });
+		const response = await createSchema({ ...payload, projectTitle, code });
+		if (response && isError(response)) {
+			setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+		}
+		setModalState({ ...DEFAULT_MODAL_STATE, success: true });
 	};
 
 	const handleReset = () => {
@@ -78,9 +90,11 @@ const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalC
 		<DialogContent
 			className={cn(modalState.success || modalState.loading ? 'sm:max-w-[280px]' : 'sm:max-w-[625px]')}>
 			{modalState.loading && !modalState.success ? (
-				<LoadingModalContent text="Guardando schema ..." />
+				<LoadingModalContent text={LOADING_MESSAGES.GENERATING_SCHEMAS} />
 			) : modalState.success && !modalState.loading ? (
-				<SuccessModalContent text="Schema guardado correctamente!" />
+				<SuccessModalContent text={SUCCESS_MESSAGES.GENERATING_SCHEMAS} />
+			) : modalState.error ? (
+				<ErrorModalContent text={ERRORS_MESSAGES.GENERATING_SCHEMAS} />
 			) : (
 				<>
 					<DialogHeader>

@@ -14,6 +14,9 @@ import { IconDots, IconSparkles } from '@tabler/icons-react';
 import LoadingModalContent from '../shared/LoadingModalContent';
 import SuccessModalContent from '../shared/SuccessModalContent';
 import AccordionInfo from '@/components/AccordionInfo/AccordionInfo';
+import { isError } from '@/lib/either';
+import ErrorModalContent from '../shared/ErrorModalContent';
+import { ERRORS_MESSAGES, LOADING_MESSAGES, SUCCESS_MESSAGES } from '@/constants/wordings';
 
 type GenerateQueryModalContentProps = {
 	projectTitle: string;
@@ -29,9 +32,10 @@ type QueryPayload = {
 type ModalContentState = {
 	loading: boolean;
 	success: boolean;
+	error: boolean;
 };
 
-const DEFAULT_MODAL_STATE = { loading: false, success: false };
+const DEFAULT_MODAL_STATE = { loading: false, success: false, error: false };
 
 export const maxDuration = 30;
 
@@ -51,7 +55,7 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 
 	const handleSubmit = async (values: QueryFormValues) => {
 		setFormSubmitting(true);
-		const { output } = await generateQuery({
+		const response = await generateQuery({
 			projectTitle,
 			type,
 			title: values.title,
@@ -61,7 +65,12 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 			prompt: values.prompt || '',
 		}).finally(() => setQuery(''));
 
-		for await (const delta of readStreamableValue(output)) {
+		if (isError(response)) {
+			setQuery(response.error);
+			return;
+		}
+
+		for await (const delta of readStreamableValue(response.success.output)) {
 			setQuery(currentQuery => `${currentQuery}${delta}`);
 		}
 
@@ -74,9 +83,12 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 	const handleStoreQuery = async (code: string) => {
 		if (!payload || !query) return;
 
-		setModalState({ success: false, loading: true });
-		await createQuery({ ...payload, projectTitle, code });
-		setModalState({ success: true, loading: false });
+		setModalState({ ...DEFAULT_MODAL_STATE, loading: true });
+		const response = await createQuery({ ...payload, projectTitle, code });
+		if (response && isError(response)) {
+			setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+		}
+		setModalState({ ...DEFAULT_MODAL_STATE, success: true });
 	};
 
 	const handleReset = () => {
@@ -86,10 +98,12 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 	return (
 		<DialogContent
 			className={cn(modalState.success || modalState.loading ? 'sm:max-w-[280px]' : 'sm:max-w-[625px]')}>
-			{modalState.loading && !modalState.success ? (
-				<LoadingModalContent text="Guardando query ..." />
-			) : modalState.success && !modalState.loading ? (
-				<SuccessModalContent text="Query guardada correctamente!" />
+			{modalState.loading ? (
+				<LoadingModalContent text={LOADING_MESSAGES.GENERATING_QUERYS} />
+			) : modalState.success ? (
+				<SuccessModalContent text={SUCCESS_MESSAGES.GENERATING_QUERYS} />
+			) : modalState.error ? (
+				<ErrorModalContent text={ERRORS_MESSAGES.GENERATING_QUERYS} />
 			) : (
 				<>
 					<DialogHeader>

@@ -4,6 +4,8 @@ import { auth } from '@/auth';
 import { getProjectByTitleQuery } from '@/services/queries/get-project.query';
 import { revalidatePath } from 'next/cache';
 import { createSeedQuery } from '@/services/queries/create-seed.query';
+import { errorResponse } from '@/lib/either';
+import { ERRORS_MESSAGES } from '@/constants/wordings';
 
 type CreateSeedInput = {
 	title: string;
@@ -13,15 +15,20 @@ type CreateSeedInput = {
 };
 
 export const createSeed = async ({ title, table, code, projectTitle }: CreateSeedInput) => {
-	const session = await auth();
-	const userId = session?.user?.name;
+	try {
+		const session = await auth();
+		const userId = session?.user?.name;
 
-	if (!userId) return null;
+		if (!userId) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
 
-	const project = await getProjectByTitleQuery({ title: projectTitle });
-	if (!project) return null;
+		const project = await getProjectByTitleQuery({ title: projectTitle });
+		if (!project) return errorResponse(ERRORS_MESSAGES.PROJECT_NOT_FOUND);
 
-	await createSeedQuery({ title, table, code, projectId: project.id });
+		await createSeedQuery({ title, table, code, projectId: project.id });
 
-	revalidatePath('/');
+		revalidatePath('/');
+	} catch (error) {
+		console.log(error);
+		return errorResponse(ERRORS_MESSAGES.CREATING_SEEDS);
+	}
 };
