@@ -1,6 +1,7 @@
 export const ERRORS_MESSAGES = {
 	USER_NOT_AUTH: 'Usuario no autorizado.',
 	PROJECT_NOT_FOUND: 'Proyecto no encontrado.',
+	UPDATING_API_KEY: 'Error actualizando tu OpenAi Api key',
 	GENERATING_QUERYS: 'Error generando query, intentelo mas tarde o prueba con otra OPENAI_API_KEY.',
 	GENERATING_SCHEMAS: 'Error generando esquema, intentelo mas tarde o prueba con otra OPENAI_API_KEY.',
 	GENERATING_SEEDS: 'Error generando semillas, intentelo mas tarde o prueba con otra OPENAI_API_KEY.',

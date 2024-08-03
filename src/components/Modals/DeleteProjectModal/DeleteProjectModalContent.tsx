@@ -7,6 +7,7 @@ import { Button } from '../../ui/button';
 import LoadingModalContent from '../shared/LoadingModalContent';
 import SuccessModalContent from '../shared/SuccessModalContent';
 import { deleteProject } from '@/app/actions/projects/delete-project';
+import { useRouter } from 'next/navigation';
 
 type DeleteProjectModalContentProps = {
 	projectId: string;
@@ -21,12 +22,14 @@ type ModalContentState = {
 const DEFAULT_MODAL_STATE = { loading: false, success: false };
 
 const DeleteProjectModalContent = ({ projectId, title }: DeleteProjectModalContentProps) => {
+	const router = useRouter();
 	const [modalState, setModalState] = useState<ModalContentState>(DEFAULT_MODAL_STATE);
 
 	const handleRemoveTableClick = async () => {
 		setModalState({ loading: true, success: false });
 		await deleteProject({ projectId });
 		setModalState({ loading: false, success: true });
+		router.push('/');
 	};
 
 	return (

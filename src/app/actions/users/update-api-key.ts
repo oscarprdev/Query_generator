@@ -12,12 +12,16 @@ type UpdateApiKeyInput = {
 };
 
 export const updateApiKey = async ({ apikey }: UpdateApiKeyInput) => {
-	const session = await auth();
-	const user = session?.user;
+	try {
+		const session = await auth();
+		const user = session?.user;
 
-	if (!user || !user.id) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
+		if (!user || !user.id) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
 
-	const apiKeyEncripted = await bcrypt.hash(apikey, SALT);
+		const apiKeyEncripted = await bcrypt.hash(apikey, SALT);
 
-	await updateUserApiKeyQuery({ apiKey: apiKeyEncripted, userId: user.id });
+		await updateUserApiKeyQuery({ apiKey: apiKeyEncripted, userId: user.id });
+	} catch (error) {
+		return errorResponse(ERRORS_MESSAGES.UPDATING_API_KEY);
+	}
 };
