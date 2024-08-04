@@ -44,7 +44,7 @@ const ApiKeySettingsForm = ({ handleSubmit }: ApiKeySettingsFormProps) => {
 					render={({ field }) => (
 						<FormItem className="flex-1">
 							<FormLabel className="flex items-center gap-2">
-								<p className="text-zinc-500">OpenAi Api Key</p>
+								<p>OpenAi Api Key</p>
 								<ApiKeyFormInfo />
 							</FormLabel>
 							<FormControl>
