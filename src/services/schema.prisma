@@ -72,7 +72,7 @@ model Users {
 
 model Project {
     id                String              @id @default(uuid()) @unique
-    title             String              @unique
+    title             String              
     createdAt         DateTime            @default(now()) @unique
     updatedAt         DateTime            @updatedAt
 

@@ -28,16 +28,7 @@ const formSchema = z.object({
 		})
 		.max(15, {
 			message: 'El titulo del proyecto no puede tener mas de 15 letras',
-		})
-		.refine(
-			async title => {
-				const tablesStored = await getProjectTables({ projectTitle: title });
-				return tablesStored && tablesStored.some(tab => tab.title.toLowerCase() === title.toLowerCase());
-			},
-			{
-				message: 'El titulo del proyecto tiene que ser unico.',
-			}
-		),
+		}),
 	database: z.nativeEnum(Databases, { message: 'La base de datos seleccionada no es valida' }),
 });
 
