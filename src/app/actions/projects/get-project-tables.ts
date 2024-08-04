@@ -11,7 +11,7 @@ export const getProjectTables = async ({ projectTitle }: GetProjectTablesInput) 
 	const session = await auth();
 	const user = session?.user;
 
-	if (!user) return null;
+	if (!user || !user.id) return null;
 
-	return await getTablesListQuery({ title: projectTitle });
+	return await getTablesListQuery({ title: projectTitle, ownerId: user.id });
 };

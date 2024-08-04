@@ -26,7 +26,7 @@ export const createSeed = async ({ title, table, code, projectTitle }: CreateSee
 
 		await createSeedQuery({ title, table, code, projectId: project.id });
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		return errorResponse(ERRORS_MESSAGES.CREATING_SEEDS);
 	}
 

@@ -5,7 +5,6 @@ interface GetSeedByIdQueryInput {
 }
 
 export const getSeedByIdQuery = async ({ seedId }: GetSeedByIdQueryInput) => {
-	console.log(seedId);
 	return await prisma.seed.findFirst({ where: { id: seedId } });
 };
 

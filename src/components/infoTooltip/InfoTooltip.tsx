@@ -7,7 +7,10 @@ const InfoTooltip = ({ children }: { children: ReactNode }) => {
 		<TooltipProvider>
 			<Tooltip>
 				<TooltipTrigger asChild>
-					<IconInfoCircle size={16} className="text-zinc-500" />
+					<IconInfoCircle
+						size={16}
+						className="cursor-pointer text-zinc-500 duration-200 hover:text-zinc-700"
+					/>
 				</TooltipTrigger>
 				<TooltipContent className="flex max-w-64 flex-col gap-1 text-xs">{children}</TooltipContent>
 			</Tooltip>

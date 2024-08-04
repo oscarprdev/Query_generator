@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Databases } from '@prisma/client';
 import { IconDots } from '@tabler/icons-react';
+import { getProjectTables } from '@/app/actions/projects/get-project-tables';
 
 export type CreateProjectFormValues = {
 	title: string;
@@ -27,7 +28,16 @@ const formSchema = z.object({
 		})
 		.max(15, {
 			message: 'El titulo del proyecto no puede tener mas de 15 letras',
-		}),
+		})
+		.refine(
+			async title => {
+				const tablesStored = await getProjectTables({ projectTitle: title });
+				return tablesStored && tablesStored.some(tab => tab.title.toLowerCase() === title.toLowerCase());
+			},
+			{
+				message: 'El titulo del proyecto tiene que ser unico.',
+			}
+		),
 	database: z.nativeEnum(Databases, { message: 'La base de datos seleccionada no es valida' }),
 });
 
@@ -40,9 +50,13 @@ const CreateProjectForm = ({ handleSubmit }: CreateProjectFormProps) => {
 		},
 	});
 
+	const onSubmit = async (values: CreateProjectFormValues) => {
+		await handleSubmit(values);
+	};
+
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 				<FormField
 					control={form.control}
 					name="title"
@@ -77,6 +91,7 @@ const CreateProjectForm = ({ handleSubmit }: CreateProjectFormProps) => {
 						</FormItem>
 					)}
 				/>
+
 				<Button type="submit">
 					{form.formState.isSubmitting ? (
 						<IconDots size={18} className="min-w-[100px] animate-pulse text-zinc-800" />

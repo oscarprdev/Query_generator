@@ -13,3 +13,19 @@ export const getProjectByTitleQuery = async ({ title }: GetProjectByTitleQueryIn
 		},
 	});
 };
+
+interface GetProjectByTitleAndUserIdQueryInput {
+	title?: string;
+	userId?: string;
+}
+
+export const getProjectByTitleAndUserIdQuery = async ({ title, userId }: GetProjectByTitleAndUserIdQueryInput) => {
+	if (!title || !userId) return null;
+
+	return await prisma.project.findUnique({
+		where: {
+			title,
+			ownerId: userId,
+		},
+	});
+};

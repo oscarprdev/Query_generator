@@ -1,5 +1,6 @@
 'use server';
 
+import { isRedirectError } from 'next/dist/client/components/redirect';
 import { auth, signIn } from '@/auth';
 import { ERRORS_MESSAGES } from '@/constants/wordings';
 import { errorResponse, successResponse } from '@/lib/either';
@@ -20,7 +21,9 @@ export const createUser = async () => {
 
 		return successResponse(user.id);
 	} catch (error) {
-		console.error(error);
-		return errorResponse(ERRORS_MESSAGES.CREATING_USER);
+		if (!isRedirectError(error)) {
+			console.error(error);
+			return errorResponse(ERRORS_MESSAGES.CREATING_USER);
+		}
 	}
 };

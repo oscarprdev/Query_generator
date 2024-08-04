@@ -2,8 +2,12 @@ export const ERRORS_MESSAGES = {
 	CREATING_USER: 'Error creando usuario, intentelo mas tarde.',
 	USER_NOT_AUTH: 'Usuario no autorizado.',
 	PROJECT_NOT_FOUND: 'Proyecto no encontrado.',
+	CREATTING_PROJECT: 'Error creando proyecto.',
+	PROJECT_ALREADY_EXISTS: 'El titulo del proyecto tiene que ser unico',
+	NOT_REQUESTS:
+		'Has superado el limite de requests con la OPENAI API KEY por defecto, introduce una nueva si quieres continuar usando las herramientas de IA',
 	UPDATING_API_KEY: 'Error actualizando tu OpenAi Api key',
-	UPDATING_QUERY: 'Error actualizando query',
+	UPDATING_QUERY: 'Error actualizando query, intentelo mas tarde o prueba con otra OPENAI_API_KEY.',
 	UPDATING_SCHEMA: 'Error actualizando esquema',
 	UPDATING_SEED: 'Error actualizando semilla',
 	UPDATING_PROJECT: 'Error actualizando proyecto',
@@ -27,6 +31,7 @@ export const ERRORS_MESSAGES = {
 };
 
 export const LOADING_MESSAGES = {
+	CREATTING_PROJECT: 'Creando proyecto ...',
 	GENERATING_QUERYS: 'Guardando query ...',
 	GENERATING_SCHEMAS: 'Guardando esquema ...',
 	GENERATING_SEEDS: 'Guardando semilla ...',
@@ -44,6 +49,7 @@ export const LOADING_MESSAGES = {
 };
 
 export const SUCCESS_MESSAGES = {
+	CREATTING_PROJECT: 'Proyecto creado correctamente!',
 	GENERATING_QUERYS: 'Query guardada correctamente!',
 	GENERATING_SCHEMAS: 'Esquema guardado correctamente!',
 	GENERATING_SEEDS: 'Semilla guardado correctamente!',

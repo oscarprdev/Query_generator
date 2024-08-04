@@ -3,12 +3,13 @@ import prisma from '../db';
 
 interface GetTablesListQueryInput {
 	title?: string;
+	ownerId: string;
 }
 
-export const getTablesListQuery = async ({ title }: GetTablesListQueryInput) => {
+export const getTablesListQuery = async ({ title, ownerId }: GetTablesListQueryInput) => {
 	if (!title) return [];
 
-	const project = await prisma.project.findUnique({ where: { title } });
+	const project = await prisma.project.findUnique({ where: { title, ownerId } });
 
 	const database = project?.database;
 

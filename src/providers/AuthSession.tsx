@@ -29,6 +29,7 @@ const AuthSessionProvider = ({ children }: { children: ReactNode }) => {
 		};
 
 		handleCreateUser();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	return <AuthSessionContext.Provider value={{ user }}>{children}</AuthSessionContext.Provider>;
 };

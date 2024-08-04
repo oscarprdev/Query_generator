@@ -22,9 +22,9 @@ export const generateSchema = async ({ projectTitle, table, type, apiKey }: Gene
 		const session = await auth();
 		const user = session?.user;
 
-		if (!user) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
+		if (!user || !user.id) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
 
-		const tablesResponse = await getTablesListQuery({ title: projectTitle });
+		const tablesResponse = await getTablesListQuery({ title: projectTitle, ownerId: user.id });
 		const tableSelected = tablesResponse.filter(tab => tab.title.toLowerCase() === table.toLowerCase());
 
 		const prompt: string = `

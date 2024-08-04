@@ -35,9 +35,9 @@ export const generateQuery = async ({
 		const session = await auth();
 		const user = session?.user;
 
-		if (!user) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
+		if (!user || !user.id) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
 
-		const tablesResponse = await getTablesListQuery({ title: projectTitle });
+		const tablesResponse = await getTablesListQuery({ title: projectTitle, ownerId: user.id });
 
 		const aIprompt: string = `
 	    Your role is to be an experienced backend developer with a huge expertise in generating queries for ${type} database.

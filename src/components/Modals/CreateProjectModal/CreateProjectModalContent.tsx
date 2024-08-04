@@ -5,19 +5,20 @@ import { DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
 import CreateProjectForm, { CreateProjectFormValues } from '../../Forms/CreateProjectForm';
 import { createProject } from '@/app/actions/projects/create-project';
 
-import { cn } from '@/lib/utils';
 import LoadingModalContent from '../shared/LoadingModalContent';
 import SuccessModalContent from '../shared/SuccessModalContent';
 import { useRouter } from 'next/navigation';
 import { isError } from '@/lib/either';
-import { toast } from '@/components/ui/use-toast';
-
-const DEFAULT_MODAL_STATE = { loading: false, success: false };
+import ErrorModalContent from '../shared/ErrorModalContent';
+import { ERRORS_MESSAGES, LOADING_MESSAGES, SUCCESS_MESSAGES } from '@/constants/wordings';
 
 type ModalContentState = {
 	loading: boolean;
 	success: boolean;
+	error: boolean;
 };
+
+const DEFAULT_MODAL_STATE = { loading: false, success: false, error: false };
 
 const CreateProjectModalContent = () => {
 	const router = useRouter();
@@ -26,36 +27,37 @@ const CreateProjectModalContent = () => {
 	const handleSubmit = async ({ title, database }: CreateProjectFormValues) => {
 		if (!database) return;
 
-		setModalState({ loading: true, success: false });
+		setModalState({ ...DEFAULT_MODAL_STATE, loading: true });
 		const response = await createProject({ title, database });
 		if (response && isError(response)) {
-			toast({
-				variant: 'destructive',
-				description: response.error,
-			});
-			return;
+			setModalState({ ...DEFAULT_MODAL_STATE, error: true });
 		}
-		setModalState({ loading: false, success: true });
+		setModalState({ ...DEFAULT_MODAL_STATE, success: true });
 
 		router.push(`/?project=${title}`);
 	};
 
 	return (
-		<DialogContent
-			className={cn(modalState.success || modalState.loading ? 'sm:max-w-[280px]' : 'sm:max-w-[425px]')}>
-			{modalState.loading && !modalState.success ? (
-				<LoadingModalContent text="Creando proyecto ..." />
-			) : modalState.success && !modalState.loading ? (
-				<SuccessModalContent text="Proyecto creado correctamente!" />
+		<>
+			{Object.values(modalState).some(val => Boolean(val)) ? (
+				<DialogContent className={'sm:max-w-[280px]'}>
+					{modalState.loading ? (
+						<LoadingModalContent text={LOADING_MESSAGES.CREATTING_PROJECT} />
+					) : modalState.success ? (
+						<SuccessModalContent text={SUCCESS_MESSAGES.CREATTING_PROJECT} />
+					) : (
+						<ErrorModalContent text={ERRORS_MESSAGES.CREATING_PROJECT} />
+					)}
+				</DialogContent>
 			) : (
-				<>
+				<DialogContent className={'sm:max-w-[425px]'}>
 					<DialogHeader>
 						<DialogTitle>Vamos a crear tu proyecto!</DialogTitle>
 					</DialogHeader>
 					<CreateProjectForm handleSubmit={handleSubmit} />
-				</>
+				</DialogContent>
 			)}
-		</DialogContent>
+		</>
 	);
 };
 

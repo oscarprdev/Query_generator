@@ -10,7 +10,6 @@ export const {
 	callbacks: {
 		async jwt({ token, user }) {
 			if (user) {
-				token.apiKey = user.apiKey;
 				token.id = user.id;
 			}
 
@@ -18,7 +17,6 @@ export const {
 		},
 		session({ session, token }) {
 			if (token && session.user) {
-				session.user.apiKey = token.apiKey as string;
 				session.user.id = token.id as string;
 			}
 

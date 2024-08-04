@@ -19,7 +19,7 @@ export const deleteQuery = async ({ id }: DeleteQueryInput) => {
 
 		await deleteQueryQuery({ queryId: id });
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		return errorResponse(ERRORS_MESSAGES.DELETTING_QUERY);
 	}
 

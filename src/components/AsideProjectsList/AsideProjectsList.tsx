@@ -1,6 +1,5 @@
 import { auth } from '@/auth';
 import { getProjectListQuery } from '@/services/queries/get-project-list.query';
-import Link from 'next/link';
 import AsideProjectListItem from '../AsideProjectListItem/AsideProjectListItem';
 
 export const AsideProjectListSkeleton = () => {
