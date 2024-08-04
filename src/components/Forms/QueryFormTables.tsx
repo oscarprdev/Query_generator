@@ -102,7 +102,7 @@ const QueryFormTables = ({ form, projectTitle }: QueryFormTablesProps) => {
 							))}
 						</SelectContent>
 					</Select>
-					<FormMessage />
+					<FormMessage className="absolute" />
 				</FormItem>
 			)}
 		/>

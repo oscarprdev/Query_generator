@@ -26,7 +26,7 @@ const QueryFormFilters = ({ form, type }: QueryFormFiltersProps) => {
 			setFilters(response.rows.map(row => row.name));
 		};
 
-		if (tables.length > 0) {
+		if (tables && tables.length > 0) {
 			handleTableValues();
 		}
 	}, [type, tables]);
@@ -77,16 +77,18 @@ const QueryFormFilters = ({ form, type }: QueryFormFiltersProps) => {
 							))}
 						</div>
 					</div>
+
 					<p className="absolute -bottom-5 right-1 text-xs text-zinc-600">{field.value.length}/2</p>
 					<Select
 						value={field.value.length > 0 ? field.value.find(fil => fil === filterSelected) : ''}
-						disabled={tables.length === 0 || field.value.length === 2}
+						disabled={tables?.length === 0 || field.value.length === 2}
 						onValueChange={filter => handleSelectFilterChange(filter, field.value)}>
 						<FormControl>
 							<SelectTrigger className="w-full capitalize" disabled={form.formState.isSubmitting}>
 								<SelectValue placeholder="Filtrar por:" />
 							</SelectTrigger>
 						</FormControl>
+
 						<SelectContent side="bottom">
 							{filters.map(filter => (
 								<SelectItem
@@ -99,7 +101,7 @@ const QueryFormFilters = ({ form, type }: QueryFormFiltersProps) => {
 							))}
 						</SelectContent>
 					</Select>
-					<FormMessage />
+					<FormMessage className="absolute" />
 				</FormItem>
 			)}
 		/>

@@ -22,7 +22,7 @@ interface GetProjectByTitleAndUserIdQueryInput {
 export const getProjectByTitleAndUserIdQuery = async ({ title, userId }: GetProjectByTitleAndUserIdQueryInput) => {
 	if (!title || !userId) return null;
 
-	return await prisma.project.findUnique({
+	return await prisma.project.findFirst({
 		where: {
 			title,
 			ownerId: userId,

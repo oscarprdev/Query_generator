@@ -9,7 +9,7 @@ interface GetTablesListQueryInput {
 export const getTablesListQuery = async ({ title, ownerId }: GetTablesListQueryInput) => {
 	if (!title) return [];
 
-	const project = await prisma.project.findUnique({ where: { title, ownerId } });
+	const project = await prisma.project.findFirst({ where: { title, ownerId } });
 
 	const database = project?.database;
 
