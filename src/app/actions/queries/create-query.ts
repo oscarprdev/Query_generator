@@ -25,7 +25,7 @@ export const createQuery = async ({ title, tables, action, code, projectTitle, a
 		const session = await auth();
 		const user = session?.user;
 
-		if (!user) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
+		if (!user || !user.id) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
 
 		const openai = createOpenAI({
 			compatibility: 'strict',

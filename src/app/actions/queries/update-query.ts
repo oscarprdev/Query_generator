@@ -8,6 +8,7 @@ import { updateQueryQuery } from '@/services/queries/create-query.query';
 import { errorResponse } from '@/lib/either';
 import { ERRORS_MESSAGES } from '@/constants/wordings';
 import { OPENAI_API_KEY } from '@/constants/envs';
+import { updateAiRequestsQuery } from '@/services/queries/update-ai-requests.query';
 
 type UpdateQueryInput = {
 	code: string;
@@ -18,9 +19,9 @@ type UpdateQueryInput = {
 export const updateQuery = async ({ id, code, apiKey }: UpdateQueryInput) => {
 	try {
 		const session = await auth();
-		const userId = session?.user;
+		const user = session?.user;
 
-		if (!userId) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
+		if (!user || !user.id) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
 
 		const openai = createOpenAI({
 			compatibility: 'strict',
@@ -33,6 +34,8 @@ export const updateQuery = async ({ id, code, apiKey }: UpdateQueryInput) => {
 	    Tu respuesto no debe ser mas larga de 200 caracteres.
 	    Responde directamente a la pregunta sin aportar ningun contexto por tu parte.`,
 		});
+
+		await updateAiRequestsQuery({ userId: user.id });
 
 		await updateQueryQuery({ code, description, queryId: id });
 	} catch (error) {

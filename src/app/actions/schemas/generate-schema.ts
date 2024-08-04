@@ -10,6 +10,7 @@ import { OPENAI_API_KEY } from '@/constants/envs';
 import { errorResponse, isError, successResponse } from '@/lib/either';
 import { ERRORS_MESSAGES } from '@/constants/wordings';
 import { getAiRequests } from '../shared/get-ai-requests';
+import { updateAiRequestsQuery } from '@/services/queries/update-ai-requests.query';
 
 type GenerateSchemaInput = {
 	projectTitle: string;
@@ -64,6 +65,8 @@ export const generateSchema = async ({ projectTitle, table, type, apiKey }: Gene
 				stream.error(ERRORS_MESSAGES.GENERATING_SCHEMAS);
 			}
 		})();
+
+		await updateAiRequestsQuery({ userId: user.id });
 
 		return successResponse({ output: stream.value });
 	} catch (error) {

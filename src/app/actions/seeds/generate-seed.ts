@@ -9,6 +9,7 @@ import { Databases } from '@prisma/client';
 import { streamText } from 'ai';
 import { createStreamableValue } from 'ai/rsc';
 import { getAiRequests } from '../shared/get-ai-requests';
+import { updateAiRequestsQuery } from '@/services/queries/update-ai-requests.query';
 
 type GenerateSeedInput = {
 	projectTitle: string;
@@ -66,6 +67,8 @@ export const generateSeed = async ({ projectTitle, table, type, apiKey }: Genera
 				stream.error(ERRORS_MESSAGES.GENERATING_SEEDS);
 			}
 		})();
+
+		await updateAiRequestsQuery({ userId: user.id });
 
 		return successResponse({ output: stream.value });
 	} catch (error) {

@@ -11,6 +11,7 @@ import { errorResponse, isError, successResponse } from '@/lib/either';
 import { ERRORS_MESSAGES } from '@/constants/wordings';
 import { getAIrequestsQuery } from '@/services/queries/get-user.query';
 import { getAiRequests } from '../shared/get-ai-requests';
+import { updateAiRequestsQuery } from '@/services/queries/update-ai-requests.query';
 
 type GenerateQueryInput = {
 	projectTitle: string;
@@ -78,6 +79,8 @@ export const generateQuery = async ({
 				stream.error(ERRORS_MESSAGES.GENERATING_QUERYS);
 			}
 		})();
+
+		await updateAiRequestsQuery({ userId: user.id });
 
 		return successResponse({ output: stream.value });
 	} catch (error) {
