@@ -7,8 +7,9 @@ import { createStreamableValue } from 'ai/rsc';
 import { createOpenAI } from '@ai-sdk/openai';
 import { Databases } from '@prisma/client';
 import { OPENAI_API_KEY } from '@/constants/envs';
-import { errorResponse, successResponse } from '@/lib/either';
+import { errorResponse, isError, successResponse } from '@/lib/either';
 import { ERRORS_MESSAGES } from '@/constants/wordings';
+import { getAiRequests } from '../shared/get-ai-requests';
 
 type GenerateSchemaInput = {
 	projectTitle: string;
@@ -23,6 +24,9 @@ export const generateSchema = async ({ projectTitle, table, type, apiKey }: Gene
 		const user = session?.user;
 
 		if (!user || !user.id) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
+
+		const aiResponse = await getAiRequests({ apiKey });
+		if (isError(aiResponse)) return errorResponse(aiResponse.error);
 
 		const tablesResponse = await getTablesListQuery({ title: projectTitle, ownerId: user.id });
 		const tableSelected = tablesResponse.filter(tab => tab.title.toLowerCase() === table.toLowerCase());
@@ -39,7 +43,7 @@ export const generateSchema = async ({ projectTitle, table, type, apiKey }: Gene
 
 		const openai = createOpenAI({
 			compatibility: 'strict',
-			apiKey: apiKey || OPENAI_API_KEY,
+			apiKey: aiResponse.success || '',
 		});
 
 		const stream = createStreamableValue('');

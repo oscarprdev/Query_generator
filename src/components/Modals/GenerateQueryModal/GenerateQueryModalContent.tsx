@@ -33,10 +33,10 @@ type QueryPayload = {
 type ModalContentState = {
 	loading: boolean;
 	success: boolean;
-	error: boolean;
+	error: string | null;
 };
 
-const DEFAULT_MODAL_STATE = { loading: false, success: false, error: false };
+const DEFAULT_MODAL_STATE = { loading: false, success: false, error: null };
 
 export const maxDuration = 30;
 
@@ -72,7 +72,7 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 		});
 
 		if (response && isError(response)) {
-			setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+			setModalState({ ...DEFAULT_MODAL_STATE, error: response.error });
 			return;
 		}
 
@@ -81,7 +81,7 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 				setQuery(currentQuery => `${currentQuery}${delta}`);
 			}
 		} catch (error) {
-			setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+			setModalState({ ...DEFAULT_MODAL_STATE, error: error as string });
 			return;
 		}
 
@@ -97,7 +97,7 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 		setModalState({ ...DEFAULT_MODAL_STATE, loading: true });
 		const response = await createQuery({ ...payload, projectTitle, code, apiKey: getApiKey() });
 		if (response && isError(response)) {
-			setModalState({ ...DEFAULT_MODAL_STATE, error: true });
+			setModalState({ ...DEFAULT_MODAL_STATE, error: response.error });
 		}
 		setModalState({ ...DEFAULT_MODAL_STATE, success: true });
 	};
@@ -116,7 +116,7 @@ const GenerateQueryModalContent = ({ projectTitle, type }: GenerateQueryModalCon
 			) : modalState.success ? (
 				<SuccessModalContent text={SUCCESS_MESSAGES.GENERATING_QUERYS} />
 			) : modalState.error ? (
-				<ErrorModalContent text={ERRORS_MESSAGES.GENERATING_QUERYS} />
+				<ErrorModalContent text={modalState.error} />
 			) : (
 				<>
 					<DialogHeader>

@@ -4,6 +4,9 @@ export const ERRORS_MESSAGES = {
 	PROJECT_NOT_FOUND: 'Proyecto no encontrado.',
 	CREATTING_PROJECT: 'Error creando proyecto.',
 	PROJECT_ALREADY_EXISTS: 'El titulo del proyecto tiene que ser unico',
+	AI_REQUESTS: 'Error obteniendo numero de consultas realizadas usando AI',
+	AI_REQUESTS_NOT_ENOUGH:
+		'Error no tienes suficientes consultas disponibles usando la OPENAI API KEY por defecto, introduzca otra OPENAI API KEY para continuar usando esta aplicacion.',
 	NOT_REQUESTS:
 		'Has superado el limite de requests con la OPENAI API KEY por defecto, introduce una nueva si quieres continuar usando las herramientas de IA',
 	UPDATING_API_KEY: 'Error actualizando tu OpenAi Api key',

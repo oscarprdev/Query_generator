@@ -7,8 +7,10 @@ import { streamText } from 'ai';
 import { createStreamableValue } from 'ai/rsc';
 import { auth } from '@/auth';
 import { OPENAI_API_KEY } from '@/constants/envs';
-import { errorResponse, successResponse } from '@/lib/either';
+import { errorResponse, isError, successResponse } from '@/lib/either';
 import { ERRORS_MESSAGES } from '@/constants/wordings';
+import { getAIrequestsQuery } from '@/services/queries/get-user.query';
+import { getAiRequests } from '../shared/get-ai-requests';
 
 type GenerateQueryInput = {
 	projectTitle: string;
@@ -37,6 +39,9 @@ export const generateQuery = async ({
 
 		if (!user || !user.id) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
 
+		const aiResponse = await getAiRequests({ apiKey });
+		if (isError(aiResponse)) return errorResponse(aiResponse.error);
+
 		const tablesResponse = await getTablesListQuery({ title: projectTitle, ownerId: user.id });
 
 		const aIprompt: string = `
@@ -52,7 +57,7 @@ export const generateQuery = async ({
 
 		const openai = createOpenAI({
 			compatibility: 'strict',
-			apiKey: apiKey || OPENAI_API_KEY,
+			apiKey: aiResponse.success || '',
 		});
 
 		const stream = createStreamableValue('');

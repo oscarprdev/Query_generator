@@ -10,9 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { $Enums, Databases } from '@prisma/client';
 import { IconDots, IconX } from '@tabler/icons-react';
 import { cn } from '@/lib/utils';
-import SchemaFormTables from './SchemaFormTables';
 import TableFormReference from './TableFormReference';
-import { useEffect } from 'react';
 
 export type RowFormValues = {
 	id?: string;

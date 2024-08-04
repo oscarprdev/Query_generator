@@ -1,14 +1,14 @@
 'use server';
 
 import { auth } from '@/auth';
-import { OPENAI_API_KEY } from '@/constants/envs';
 import { ERRORS_MESSAGES } from '@/constants/wordings';
-import { errorResponse, successResponse } from '@/lib/either';
+import { errorResponse, isError, successResponse } from '@/lib/either';
 import { getTablesListQuery } from '@/services/queries/get-tables-list.query';
 import { createOpenAI } from '@ai-sdk/openai';
 import { Databases } from '@prisma/client';
 import { streamText } from 'ai';
 import { createStreamableValue } from 'ai/rsc';
+import { getAiRequests } from '../shared/get-ai-requests';
 
 type GenerateSeedInput = {
 	projectTitle: string;
@@ -22,9 +22,12 @@ export const generateSeed = async ({ projectTitle, table, type, apiKey }: Genera
 		const session = await auth();
 		const user = session?.user;
 
-		if (!user) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
+		if (!user || !user.id) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
 
-		const tablesResponse = await getTablesListQuery({ title: projectTitle });
+		const aiResponse = await getAiRequests({ apiKey });
+		if (isError(aiResponse)) return errorResponse(aiResponse.error);
+
+		const tablesResponse = await getTablesListQuery({ title: projectTitle, ownerId: user.id });
 		const tableSelected = tablesResponse.filter(tab => tab.title.toLowerCase() === table.toLowerCase());
 
 		const prompt: string = `
@@ -42,7 +45,7 @@ export const generateSeed = async ({ projectTitle, table, type, apiKey }: Genera
 
 		const openai = createOpenAI({
 			compatibility: 'strict',
-			apiKey: apiKey || OPENAI_API_KEY,
+			apiKey: aiResponse.success || '',
 		});
 
 		const stream = createStreamableValue('');
