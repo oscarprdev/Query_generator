@@ -9,10 +9,11 @@ import { useForm } from 'react-hook-form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Databases } from '@prisma/client';
 import { IconDots } from '@tabler/icons-react';
-import { getProjectTables } from '@/app/actions/projects/get-project-tables';
+import ImportProjectInput from './ImportProjectInput';
 
 export type CreateProjectFormValues = {
 	title: string;
+	project?: string;
 	database: Databases | null;
 };
 
@@ -29,6 +30,7 @@ const formSchema = z.object({
 		.max(15, {
 			message: 'El titulo del proyecto no puede tener mas de 15 letras',
 		}),
+	project: z.string().optional(),
 	database: z.nativeEnum(Databases, { message: 'La base de datos seleccionada no es valida' }),
 });
 
@@ -61,6 +63,7 @@ const CreateProjectForm = ({ handleSubmit }: CreateProjectFormProps) => {
 						</FormItem>
 					)}
 				/>
+				<ImportProjectInput form={form} />
 				<FormField
 					control={form.control}
 					name="database"
