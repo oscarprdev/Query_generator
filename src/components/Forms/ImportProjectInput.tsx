@@ -94,7 +94,11 @@ const ImportProjectInput = ({ form }: ImportProjectInputProps) => {
 								proyecto. <br />
 								<br />
 								Aqui tienes un JSON de ejemplo:{' '}
-								<a target="blank" href={'/ejemplo.json'} className="text-primary hover:underline">
+								<a
+									download={true}
+									target="blank"
+									href={'/ejemplo.json'}
+									className="text-primary hover:underline">
 									Ejemplo.json
 								</a>
 							</p>
