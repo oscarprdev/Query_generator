@@ -1,0 +1,48 @@
+name: Deployment pipeline
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+        types: [opened, synchronize]
+
+jobs:
+    avoid_redundancy:
+        runs-on: ubuntu-22.04
+        permissions:
+            actions: write
+        timeout-minutes: 2
+        steps:
+            - name: Cancel previous runs
+              uses: styfle/cancel-workflow-action@0.9.1
+              with:
+                  all_but_latest: true
+                  access_token: ${{ github.token }}
+
+    frontend_build:
+        runs-on: ubuntu-22.04
+        defaults:
+            run:
+                working-directory: frontend
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Frontend_build
+              uses: ./.github/actions/build
+
+    frontend_e2e_tests:
+        needs: [frontend_build]
+        runs-on: ubuntu-22.04
+        defaults:
+            run:
+                working-directory: frontend
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Frontend_e2e_tests
+              uses: ./.github/actions/e2e
