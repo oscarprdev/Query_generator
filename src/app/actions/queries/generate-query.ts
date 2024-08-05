@@ -6,10 +6,8 @@ import { createOpenAI } from '@ai-sdk/openai';
 import { streamText } from 'ai';
 import { createStreamableValue } from 'ai/rsc';
 import { auth } from '@/auth';
-import { OPENAI_API_KEY } from '@/constants/envs';
 import { errorResponse, isError, successResponse } from '@/lib/either';
 import { ERRORS_MESSAGES } from '@/constants/wordings';
-import { getAIrequestsQuery } from '@/services/queries/get-user.query';
 import { getAiRequests } from '../shared/get-ai-requests';
 import { updateAiRequestsQuery } from '@/services/queries/update-ai-requests.query';
 
@@ -23,6 +21,8 @@ type GenerateQueryInput = {
 	prompt: string;
 	apiKey: string | null;
 };
+
+export const maxDuration = 30;
 
 export const generateQuery = async ({
 	projectTitle,

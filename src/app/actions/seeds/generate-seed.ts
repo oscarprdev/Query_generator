@@ -9,7 +9,6 @@ import { Databases } from '@prisma/client';
 import { streamText } from 'ai';
 import { createStreamableValue } from 'ai/rsc';
 import { getAiRequests } from '../shared/get-ai-requests';
-import { updateAiRequestsQuery } from '@/services/queries/update-ai-requests.query';
 
 type GenerateSeedInput = {
 	projectTitle: string;
@@ -17,6 +16,8 @@ type GenerateSeedInput = {
 	table: string;
 	apiKey: string | null;
 };
+
+export const maxDuration = 30;
 
 export const generateSeed = async ({ projectTitle, table, type, apiKey }: GenerateSeedInput) => {
 	try {

@@ -18,6 +18,8 @@ type GenerateSchemaInput = {
 	apiKey: string | null;
 };
 
+export const maxDuration = 30;
+
 export const generateSchema = async ({ projectTitle, table, type, apiKey }: GenerateSchemaInput) => {
 	try {
 		const session = await auth();
