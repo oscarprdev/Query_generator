@@ -32,22 +32,22 @@ export const useCreateProject = () => {
 		}
 
 		setIsGenerating(true);
-		const response = await generateProject({ project, database, apiKey });
-
-		if (response && isError(response)) {
-			setIsGenerating(false);
-			return errorResponse(response.error);
-		}
 
 		try {
+			const response = await generateProject({ project, database, apiKey });
+
+			if (response && isError(response)) {
+				setIsGenerating(false);
+				return errorResponse(response.error);
+			}
 			for await (const delta of readStreamableValue(response.success)) {
 				setTables(delta.tables);
 			}
+
+			setData({ isFinished: true, title, database });
 		} catch (error) {
 			return errorResponse('Error generando proyecto con IA');
 		}
-
-		setData({ isFinished: true, title, database });
 	};
 
 	useEffect(() => {

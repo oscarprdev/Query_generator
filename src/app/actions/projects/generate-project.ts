@@ -94,6 +94,6 @@ export const generateProject = async ({ project, database, apiKey }: GeneratePro
 
 		return successResponse(stream.value);
 	} catch (error) {
-		throw new Error(error as string);
+		return errorResponse(error as string);
 	}
 };

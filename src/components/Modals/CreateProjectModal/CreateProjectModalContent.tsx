@@ -18,6 +18,8 @@ type ModalContentState = {
 	error: string | null;
 };
 
+export const maxDuration = 30;
+
 const DEFAULT_MODAL_STATE = { loading: false, success: false, error: null };
 
 const CreateProjectModalContent = () => {
