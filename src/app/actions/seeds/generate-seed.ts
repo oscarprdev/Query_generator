@@ -17,8 +17,6 @@ type GenerateSeedInput = {
 	apiKey: string | null;
 };
 
-export const maxDuration = 30;
-
 export const generateSeed = async ({ projectTitle, table, type, apiKey }: GenerateSeedInput) => {
 	try {
 		const session = await auth();

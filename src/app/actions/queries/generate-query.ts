@@ -22,8 +22,6 @@ type GenerateQueryInput = {
 	apiKey: string | null;
 };
 
-export const maxDuration = 30;
-
 export const generateQuery = async ({
 	projectTitle,
 	type,

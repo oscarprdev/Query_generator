@@ -35,6 +35,7 @@ type ModalContentState = {
 };
 
 const DEFAULT_MODAL_STATE = { loading: false, success: false, error: false };
+export const maxDuration = 30;
 
 const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalContentProps) => {
 	const { getApiKey } = useContext(OpenAiApiKeyContext);

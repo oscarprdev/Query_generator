@@ -15,8 +15,6 @@ type GenerateProjectInput = {
 	apiKey: string | null;
 };
 
-export const maxDuration = 30;
-
 export const generateProject = async ({ project, database, apiKey }: GenerateProjectInput) => {
 	try {
 		const aiResponse = await getAiRequests({ apiKey });
