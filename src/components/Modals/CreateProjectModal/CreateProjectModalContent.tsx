@@ -21,7 +21,7 @@ type ModalContentState = {
 const DEFAULT_MODAL_STATE = { loading: false, success: false, error: null };
 
 const CreateProjectModalContent = () => {
-	const { createProject, isGenerating } = useCreateProject();
+	const { createProject, isGenerating, tables } = useCreateProject();
 	const { getApiKey } = useContext(OpenAiApiKeyContext);
 
 	const [modalState, setModalState] = useState<ModalContentState>(DEFAULT_MODAL_STATE);
@@ -43,7 +43,7 @@ const CreateProjectModalContent = () => {
 			{Object.values(modalState).some(val => Boolean(val)) ? (
 				<DialogContent className={'sm:max-w-[280px]'}>
 					{isGenerating ? (
-						<LoadingModalContent text={'Generando proyecto con IA...'} />
+						<LoadingModalContent text={`Generando proyecto con IA...  tablas creadas: ${tables.length}`} />
 					) : modalState.loading ? (
 						<LoadingModalContent text={LOADING_MESSAGES.CREATTING_PROJECT} />
 					) : modalState.success ? (

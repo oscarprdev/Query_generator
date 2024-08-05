@@ -65,5 +65,5 @@ export const useCreateProject = () => {
 		}
 	}, [tables, data]);
 
-	return { createProject, isGenerating };
+	return { createProject, isGenerating, tables };
 };
