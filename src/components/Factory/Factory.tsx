@@ -20,7 +20,7 @@ const Factory = ({ isVisible, projectTitle, projectType, toggleVisibility, child
 	return (
 		<section
 			className={cn(
-				'absolute bottom-0 right-5 flex w-[80vw] min-w-[550px] max-w-[700px] flex-col rounded-t-xl border border-border bg-background shadow-md duration-300',
+				'absolute bottom-0 right-5 flex w-[80vw] min-w-[550px] max-w-[670px] flex-col rounded-t-xl border border-border bg-background shadow-md duration-300',
 				isVisible && projectTitle ? 'h-[78vh]' : 'h-[60px]'
 			)}>
 			<header className="flex w-full items-center justify-between border-b border-border px-5 py-2">

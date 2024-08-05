@@ -34,6 +34,7 @@ enum PostgresType {
     boolean
     date
     json
+    timestamp
     any
 }
 
@@ -45,6 +46,7 @@ enum MongoType {
     date
     object
     array
+    timestamp
     any
 }
 
@@ -100,7 +102,7 @@ model Project {
 model PostgreTable {
     id                String              @id @default(uuid()) @unique
     title             String              @unique
-    createdAt         DateTime            @default(now()) @unique
+    createdAt         DateTime            @default(now())
     updatedAt         DateTime            @updatedAt
 
     rows              PostgreRow[]
@@ -112,7 +114,7 @@ model PostgreTable {
 model MongoTable {
     id                String              @id @default(uuid()) @unique
     title             String              @unique
-    createdAt         DateTime            @default(now()) @unique
+    createdAt         DateTime            @default(now())
     updatedAt         DateTime            @updatedAt
 
     rows              MongoRow[]
@@ -152,7 +154,7 @@ model Query {
     tables           String  
     action           QueryAction
     code             String
-    createdAt        DateTime            @default(now()) @unique
+    createdAt        DateTime            @default(now())
 
     projectId        String           
     project          Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -163,7 +165,7 @@ model Schema {
     title            String        
     table            String  
     code             String
-    createdAt        DateTime            @default(now()) @unique
+    createdAt        DateTime            @default(now())
 
     projectId        String           
     project          Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -174,7 +176,7 @@ model Seed {
     title            String        
     table            String  
     code             String
-    createdAt        DateTime            @default(now()) @unique
+    createdAt        DateTime            @default(now())
 
     projectId        String           
     project          Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)

@@ -4,7 +4,7 @@ import AsideProjectsList, { AsideProjectListSkeleton } from '../AsideProjectsLis
 
 const Aside = () => {
 	return (
-		<aside className="flex h-full w-1/5 min-w-[200px] flex-col items-start border-r border-border bg-background px-5 py-5">
+		<aside className="flex h-full w-1/6 min-w-[200px] flex-col items-start border-r border-border bg-background px-5 py-5">
 			<Suspense fallback={<AsideProjectListSkeleton />}>
 				<AsideProjectsList />
 			</Suspense>

@@ -23,7 +23,7 @@ export const getTablesListQuery = async ({ title, ownerId }: GetTablesListQueryI
 					rows: true,
 				},
 				orderBy: {
-					createdAt: 'asc',
+					createdAt: 'desc',
 				},
 			});
 		case Databases.mongoDb:
@@ -35,7 +35,7 @@ export const getTablesListQuery = async ({ title, ownerId }: GetTablesListQueryI
 					rows: true,
 				},
 				orderBy: {
-					createdAt: 'asc',
+					createdAt: 'desc',
 				},
 			});
 		default:
