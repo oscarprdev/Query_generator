@@ -5,6 +5,7 @@ import { UseFormReturn } from 'react-hook-form';
 import { CreateProjectFormValues } from './CreateProjectForm';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
+import InfoTooltip from '../infoTooltip/InfoTooltip';
 
 type ImportProjectInputProps = {
 	form: UseFormReturn<CreateProjectFormValues, any, undefined>;
@@ -85,7 +86,20 @@ const ImportProjectInput = ({ form }: ImportProjectInputProps) => {
 			name="project"
 			render={({ field }) => (
 				<FormItem className="flex flex-col gap-2">
-					<FormLabel>Importar proyecto</FormLabel>
+					<FormLabel className="flex items-center gap-2">
+						Importar proyecto{' '}
+						<InfoTooltip>
+							<p className="w-full text-pretty text-xs">
+								El fichero importado sera analizado para generar automaticamente las tablas de tu
+								proyecto. <br />
+								<br />
+								Aqui tienes un JSON de ejemplo:{' '}
+								<a target="blank" href={'/ejemplo.json'} className="text-primary hover:underline">
+									Ejemplo.json
+								</a>
+							</p>
+						</InfoTooltip>
+					</FormLabel>
 					<FormControl onDragEnter={handleDrag} onDrop={handleDrop}>
 						<div className="flex items-center gap-3">
 							<label

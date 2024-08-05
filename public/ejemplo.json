@@ -1,0 +1,109 @@
+{
+	"tables": [
+		{
+			"id": 1,
+			"name": "Users",
+			"rows": [
+				{
+					"id": "0b865c7f-ef55-4135-813c-a5fa656a3f25",
+					"name": "jhon",
+					"email": "jhon@example.com",
+					"age": 29,
+					"address": "123 Main St",
+					"createdAt": "2024-08-04 07:55:31.113",
+					"updatedAt": "2024-08-04 07:55:31.113"
+				},
+				{
+					"id": "3b4c123a-d4e5-4c63-9e6f-2e2a47b6f1c3",
+					"name": "linda",
+					"email": "linda@example.com",
+					"age": 34,
+					"address": "456 Elm St",
+					"createdAt": "2024-08-04 08:01:12.234",
+					"updatedAt": "2024-08-04 08:01:12.234"
+				},
+				{
+					"id": "5c6f789d-2a7e-490b-a7ec-d4e91f3b8d69",
+					"name": "john",
+					"email": "john@example.com",
+					"age": 45,
+					"address": "789 Maple Ave",
+					"createdAt": "2024-08-04 08:15:45.678",
+					"updatedAt": "2024-08-04 08:15:45.678"
+				}
+			]
+		},
+		{
+			"id": 2,
+			"name": "Books",
+			"rows": [
+				{
+					"id": "0b865c7f-ef55-4135-813c-a5fa656a3f25",
+					"title": "Book 1",
+					"author": "Author A",
+					"genre": "Fiction",
+					"publishedDate": "2023-05-01",
+					"createdAt": "2024-08-04 07:55:31.113",
+					"updatedAt": "2024-08-04 07:55:31.113"
+				},
+				{
+					"id": "60268744-94da-4002-8f37-14bcc197a77b",
+					"title": "Book 2",
+					"author": "Author B",
+					"genre": "Non-fiction",
+					"publishedDate": "2022-11-12",
+					"createdAt": "2024-08-04 07:42:37.61",
+					"updatedAt": "2024-08-04 07:42:37.61"
+				}
+			]
+		},
+		{
+			"id": 3,
+			"name": "Writers",
+			"rows": [
+				{
+					"id": "a4dcb8f4-1234-4d3c-9e4b-60c4d5f4e6b7",
+					"name": "Writer 1",
+					"nationality": "American",
+					"birthdate": "1975-04-23",
+					"numberOfBooks": 10,
+					"createdAt": "2024-08-04 09:01:23.456",
+					"updatedAt": "2024-08-04 09:01:23.456"
+				},
+				{
+					"id": "b7c8d9e0-4567-4e8b-90ab-12345d6e7f8a",
+					"name": "Writer 2",
+					"nationality": "British",
+					"birthdate": "1980-07-12",
+					"numberOfBooks": 5,
+					"createdAt": "2024-08-04 09:15:34.567",
+					"updatedAt": "2024-08-04 09:15:34.567"
+				}
+			]
+		},
+		{
+			"id": 4,
+			"name": "Library",
+			"rows": [
+				{
+					"id": "c1d2e3f4-7890-4abc-def1-234567890ab1",
+					"name": "Central Library",
+					"location": "Downtown",
+					"establishedYear": 1901,
+					"numberOfBooks": 200000,
+					"createdAt": "2024-08-04 10:23:45.678",
+					"updatedAt": "2024-08-04 10:23:45.678"
+				},
+				{
+					"id": "d5e6f7g8-1234-4def-5678-90abcdef1234",
+					"name": "Westside Library",
+					"location": "West End",
+					"establishedYear": 1954,
+					"numberOfBooks": 50000,
+					"createdAt": "2024-08-04 10:45:56.789",
+					"updatedAt": "2024-08-04 10:45:56.789"
+				}
+			]
+		}
+	]
+}

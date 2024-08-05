@@ -55,7 +55,9 @@ const CreateProjectForm = ({ handleSubmit }: CreateProjectFormProps) => {
 					name="title"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Titulo del proyecto</FormLabel>
+							<FormLabel className="flex items-center gap-2">
+								Titulo del proyecto <p className="text-xs text-zinc-600">Requerido</p>
+							</FormLabel>
 							<FormControl>
 								<Input required placeholder="Proyecto" {...field} />
 							</FormControl>
@@ -63,13 +65,15 @@ const CreateProjectForm = ({ handleSubmit }: CreateProjectFormProps) => {
 						</FormItem>
 					)}
 				/>
-				<ImportProjectInput form={form} />
+
 				<FormField
 					control={form.control}
 					name="database"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Tipo de base de datos</FormLabel>
+							<FormLabel className="flex items-center gap-2">
+								Tipo de base de datos <p className="text-xs text-zinc-600">Requerido</p>
+							</FormLabel>
 							<Select onValueChange={field.onChange}>
 								<FormControl>
 									<SelectTrigger>
@@ -85,7 +89,7 @@ const CreateProjectForm = ({ handleSubmit }: CreateProjectFormProps) => {
 						</FormItem>
 					)}
 				/>
-
+				<ImportProjectInput form={form} />
 				<Button type="submit">
 					{form.formState.isSubmitting ? (
 						<IconDots size={18} className="min-w-[100px] animate-pulse text-zinc-800" />
