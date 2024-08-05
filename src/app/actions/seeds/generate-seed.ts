@@ -49,8 +49,6 @@ export const generateSeed = async ({ projectTitle, table, type, apiKey }: Genera
 			apiKey: aiResponse.success || '',
 		});
 
-		await updateAiRequestsQuery({ userId: user.id });
-
 		const stream = createStreamableValue('');
 
 		(async () => {
