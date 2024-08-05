@@ -12,7 +12,9 @@ const CreateProjectModal = () => {
 	return (
 		<Dialog onOpenChange={e => setModalOpened(e)}>
 			<DialogTrigger asChild>
-				<Button className="z-5 absolute right-2 top-5 flex items-center gap-2 text-sm">
+				<Button
+					data-testid="create-project-button"
+					className="z-5 absolute right-2 top-5 flex items-center gap-2 text-sm">
 					<IconPlus size={18} />
 					Crear proyecto
 				</Button>

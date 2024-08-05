@@ -8,7 +8,8 @@
 		"start": "next start",
 		"lint": "next lint",
 		"format": "prettier --write . --config ./.prettierrc",
-		"postinstall": "prisma generate"
+		"postinstall": "prisma generate",
+		"test:e2e": "npx playwright test --trace on"
 	},
 	"prisma": {
 		"schema": "./src/services/schema.prisma"
@@ -17,6 +18,7 @@
 		"@ai-sdk/openai": "^0.0.40",
 		"@hookform/resolvers": "^3.9.0",
 		"@neondatabase/serverless": "^0.9.4",
+		"@playwright/test": "^1.45.3",
 		"@prisma/adapter-neon": "^5.17.0",
 		"@prisma/client": "^5.17.0",
 		"@radix-ui/react-accordion": "^1.2.0",

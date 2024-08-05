@@ -7,6 +7,7 @@ const Footer = () => {
 			<h5 className="text-center text-xs text-zinc-500">
 				Hecho con ♥️ por{' '}
 				<Link
+					data-testid="aside-footer-link"
 					href={'https://github.com/oscarprdev'}
 					target="blank"
 					className="font-bold hover:text-primary hover:underline">

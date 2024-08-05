@@ -10,13 +10,18 @@ const Header = async () => {
 	const user = session?.user;
 
 	return (
-		<header className="sticky top-0 flex w-screen items-center justify-between border-b border-border bg-background px-10 py-5">
+		<header
+			data-testid="app-header"
+			className="sticky top-0 flex w-screen items-center justify-between border-b border-border bg-background px-10 py-5">
 			<div className="flex items-center gap-2">
 				<IconCloudStorm className="text-primary" size={32} />
-				<h1 className="text-sm text-primary">AI Query</h1>
+				<h1 data-testid="app-title" className="text-sm text-primary">
+					AI Query
+				</h1>
 			</div>
 
 			<Link
+				data-testid="app-header-link"
 				href={'https://github.com/midudev/hackaton-vercel-2024'}
 				target="blank"
 				className="rounded-lg bg-gradient-to-r from-secondary to-secondaryLight px-5 py-2 text-xs font-bold text-white">

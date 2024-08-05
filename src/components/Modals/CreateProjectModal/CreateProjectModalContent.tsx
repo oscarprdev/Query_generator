@@ -57,9 +57,9 @@ const CreateProjectModalContent = () => {
 					)}
 				</DialogContent>
 			) : (
-				<DialogContent className={'sm:max-w-[425px]'}>
+				<DialogContent data-testid="create-project-modal" className={'sm:max-w-[425px]'}>
 					<DialogHeader>
-						<DialogTitle>Vamos a crear tu proyecto!</DialogTitle>
+						<DialogTitle data-testid="create-project-modal-title">Vamos a crear tu proyecto!</DialogTitle>
 					</DialogHeader>
 					<CreateProjectForm handleSubmit={handleSubmit} />
 				</DialogContent>

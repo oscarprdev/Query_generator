@@ -49,7 +49,7 @@ const CreateProjectForm = ({ handleSubmit }: CreateProjectFormProps) => {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+			<form data-testid="create-project-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 				<FormField
 					control={form.control}
 					name="title"
@@ -59,7 +59,12 @@ const CreateProjectForm = ({ handleSubmit }: CreateProjectFormProps) => {
 								Titulo del proyecto <p className="text-xs text-zinc-600">Requerido</p>
 							</FormLabel>
 							<FormControl>
-								<Input required placeholder="Proyecto" {...field} />
+								<Input
+									data-testid="create-project-form-title"
+									required
+									placeholder="Proyecto"
+									{...field}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -76,13 +81,17 @@ const CreateProjectForm = ({ handleSubmit }: CreateProjectFormProps) => {
 							</FormLabel>
 							<Select onValueChange={field.onChange}>
 								<FormControl>
-									<SelectTrigger>
+									<SelectTrigger data-testid="create-project-form-database">
 										<SelectValue placeholder="Selecciona tu DB" />
 									</SelectTrigger>
 								</FormControl>
-								<SelectContent>
-									<SelectItem value={Databases.postgreSQL}>PostgreSQL</SelectItem>
-									<SelectItem value={Databases.mongoDb}>MongoDB</SelectItem>
+								<SelectContent data-testid="create-project-form-database-select-content">
+									<SelectItem data-testid="create-project-form-select-1" value={Databases.postgreSQL}>
+										PostgreSQL
+									</SelectItem>
+									<SelectItem data-testid="create-project-form-select-2" value={Databases.mongoDb}>
+										MongoDB
+									</SelectItem>
 								</SelectContent>
 							</Select>
 							<FormMessage />
@@ -90,7 +99,10 @@ const CreateProjectForm = ({ handleSubmit }: CreateProjectFormProps) => {
 					)}
 				/>
 				<ImportProjectInput form={form} />
-				<Button type="submit">
+				<Button
+					data-testid="create-project-form-submit-btn"
+					type="submit"
+					disabled={form.formState.isSubmitting}>
 					{form.formState.isSubmitting ? (
 						<IconDots size={18} className="min-w-[100px] animate-pulse text-zinc-800" />
 					) : (

@@ -18,6 +18,7 @@ const RequestsCounter = async ({ userId }: RequestsCounterProps) => {
 				{typeof response?.aiRequests === 'number' && (
 					<TooltipTrigger
 						asChild
+						data-testid="request-counter-tooltip"
 						className={cn(
 							response.aiRequests === 0
 								? 'text-red-500 hover:text-red-800'
@@ -30,7 +31,10 @@ const RequestsCounter = async ({ userId }: RequestsCounterProps) => {
 						</div>
 					</TooltipTrigger>
 				)}
-				<TooltipContent side="left" className="z-50 flex max-w-64 flex-col gap-1 text-xs text-zinc-400">
+				<TooltipContent
+					data-testid="request-counter-tooltip-content"
+					side="left"
+					className="z-50 flex max-w-64 flex-col gap-1 text-xs text-zinc-400">
 					{response?.aiRequests === 0 ? (
 						<p>
 							No te quedan suficientes consultas disponibles usando la OPENAI API KEY por defecto,

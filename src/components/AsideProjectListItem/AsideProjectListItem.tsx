@@ -16,6 +16,7 @@ const AsideProjectListItem = ({ title }: AsideProjectListItemProps) => {
 
 	return (
 		<Link
+			data-testid={`aside-project-${title}`}
 			href={`?project=${title}`}
 			className={cn(
 				isSelected
