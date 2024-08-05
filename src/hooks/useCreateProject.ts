@@ -26,6 +26,8 @@ export const useCreateProject = () => {
 
 		if (!project) {
 			await createSingleProject({ title, database });
+
+			router.push(`/?project=${title}`);
 			return;
 		}
 
