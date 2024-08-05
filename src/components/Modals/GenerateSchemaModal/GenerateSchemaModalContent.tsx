@@ -34,6 +34,8 @@ type ModalContentState = {
 	error: boolean;
 };
 
+export const maxDuration = 30;
+
 const DEFAULT_MODAL_STATE = { loading: false, success: false, error: false };
 
 const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalContentProps) => {
