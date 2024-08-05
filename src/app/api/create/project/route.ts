@@ -15,8 +15,6 @@ interface CreateProjectInput {
 	apiKey: string | null;
 }
 
-export const runtime = 'nodejs';
-
 export async function POST(request: NextRequest) {
 	try {
 		const { title, database, project, apiKey }: CreateProjectInput = await request.json();

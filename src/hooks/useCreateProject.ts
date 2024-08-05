@@ -1,6 +1,8 @@
-import { API_URL } from '@/constants/envs';
-import { ERRORS_MESSAGES } from '@/constants/wordings';
-import { errorResponse } from '@/lib/either';
+import { createGeneratedProject } from '@/app/actions/projects/create-generated-project';
+import { createSingleProject } from '@/app/actions/projects/create-project';
+import { generateProject } from '@/app/actions/projects/generate-project';
+import { RowInput } from '@/app/actions/tables/create-table';
+import { errorResponse, isError } from '@/lib/either';
 import { Databases } from '@prisma/client';
 
 interface CreateProjectInput {
@@ -11,18 +13,23 @@ interface CreateProjectInput {
 }
 
 export const useCreateProject = () => {
-	const createProject = async (input: CreateProjectInput) => {
-		try {
-			const response = await fetch(`${API_URL}/api/create/project`, {
-				method: 'POST',
-				body: JSON.stringify(input),
-			});
+	const createProject = async ({ title, database, project, apiKey }: CreateProjectInput) => {
+		if (!project) {
+			await createSingleProject({ title, database });
+			return;
+		}
 
-			const jsonResponse = await response.json();
-			console.log(jsonResponse);
-		} catch (error) {
-			console.error(error);
-			return errorResponse(ERRORS_MESSAGES.CREATING_PROJECT);
+		if (project) {
+			const response = await generateProject({ project, database, apiKey });
+			if (response && isError(response)) {
+				return errorResponse(response.error);
+			}
+
+			await createGeneratedProject({
+				title,
+				database,
+				tables: response.success.tables.map(tab => ({ title: tab.title, rows: tab.rows as RowInput[] })),
+			});
 		}
 	};
 

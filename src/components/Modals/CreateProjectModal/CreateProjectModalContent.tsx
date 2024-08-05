@@ -31,6 +31,7 @@ const CreateProjectModalContent = () => {
 		if (!database) return;
 
 		setModalState({ ...DEFAULT_MODAL_STATE, loading: true });
+
 		const response = await createProject({ title, database, project, apiKey: getApiKey() });
 		if (response && isError(response)) {
 			setModalState({ ...DEFAULT_MODAL_STATE, error: response.error });
