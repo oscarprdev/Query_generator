@@ -1,10 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 export default defineConfig({
-	globalSetup: './global.setup.js',
 	testDir: './src/tests/e2e',
 	/* Run tests in files in parallel */
 	fullyParallel: true,
