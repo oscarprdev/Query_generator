@@ -1,11 +1,11 @@
 'use server';
 
 import { errorResponse, isError, successResponse } from '@/lib/either';
-import { getAiRequests } from '../shared/get-ai-requests';
 import { createOpenAI } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
 import { z } from 'zod';
 import { $Enums, Databases } from '@prisma/client';
+import { getAiRequests } from '@/app/actions/shared/get-ai-requests';
 
 type GenerateProjectInput = {
 	project: string;
@@ -14,7 +14,7 @@ type GenerateProjectInput = {
 	apiKey: string | null;
 };
 
-export const generateProject = async ({ project, database, userId, apiKey }: GenerateProjectInput) => {
+export const generateProject = async ({ project, database, apiKey }: GenerateProjectInput) => {
 	try {
 		const aiResponse = await getAiRequests({ apiKey });
 		if (isError(aiResponse)) return errorResponse(aiResponse.error);
@@ -76,8 +76,6 @@ export const generateProject = async ({ project, database, userId, apiKey }: Gen
 			Regarding the table title, provide an appropiate table title based on the JSON data for each table provided.
 			`,
 		});
-
-		console.log(object.tables);
 
 		return successResponse(object);
 	} catch (error) {

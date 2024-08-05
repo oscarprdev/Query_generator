@@ -10,7 +10,10 @@ const Header = async () => {
 
 	return (
 		<header className="sticky top-0 flex w-screen items-center justify-between border-b border-border bg-background px-10 py-5">
-			<IconCloudStorm className="text-primary" size={32} />
+			<div className="flex items-center gap-2">
+				<IconCloudStorm className="text-primary" size={32} />
+				<h1 className="text-sm text-primary">AI Query</h1>
+			</div>
 			{user && user.id && <RequestsCounter userId={user.id} />}
 		</header>
 	);

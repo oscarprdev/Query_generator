@@ -1,15 +1,12 @@
-'use server';
-
+import { RowInput } from '@/app/actions/tables/create-table';
 import { auth } from '@/auth';
 import { ERRORS_MESSAGES } from '@/constants/wordings';
+import { generateProject } from '@/lib/ai';
 import { errorResponse, isError } from '@/lib/either';
 import { createProjectQuery } from '@/services/queries/create-project.query';
-import { getProjectListQuery } from '@/services/queries/get-project-list.query';
-import { $Enums, Databases, MongoRow, MongoTable, PostgreRow, PostgreTable } from '@prisma/client';
-import { revalidatePath } from 'next/cache';
-import { generateProject } from './generate-project';
 import { createTableQuery } from '@/services/queries/create-table.query';
-import { RowInput } from '../tables/create-table';
+import { Databases } from '@prisma/client';
+import { NextRequest, NextResponse } from 'next/server';
 
 interface CreateProjectInput {
 	title: string;
@@ -17,9 +14,10 @@ interface CreateProjectInput {
 	project?: string;
 	apiKey: string | null;
 }
-
-export const createProject = async ({ title, database, project, apiKey }: CreateProjectInput) => {
+export async function POST(request: NextRequest) {
 	try {
+		const { title, database, project, apiKey }: CreateProjectInput = await request.json();
+
 		const session = await auth();
 		const user = session?.user;
 
@@ -44,14 +42,19 @@ export const createProject = async ({ title, database, project, apiKey }: Create
 				)
 			);
 
-			return;
+			return NextResponse.json({ status: 201 });
 		}
 
 		await createProjectQuery({ ownerId: user.id, title, database });
-	} catch (error) {
-		console.error(error);
-		errorResponse(ERRORS_MESSAGES.CREATING_PROJECT);
-	}
 
-	revalidatePath('/');
-};
+		return NextResponse.json({ status: 201 });
+	} catch (error) {
+		return NextResponse.json(
+			{ error },
+			{
+				status: 500,
+				statusText: ERRORS_MESSAGES.CREATING_PROJECT,
+			}
+		);
+	}
+}

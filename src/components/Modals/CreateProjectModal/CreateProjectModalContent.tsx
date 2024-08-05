@@ -3,8 +3,6 @@
 import React, { useContext, useState } from 'react';
 import { DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';
 import CreateProjectForm, { CreateProjectFormValues } from '../../Forms/CreateProjectForm';
-import { createProject } from '@/app/actions/projects/create-project';
-
 import LoadingModalContent from '../shared/LoadingModalContent';
 import SuccessModalContent from '../shared/SuccessModalContent';
 import { useRouter } from 'next/navigation';
@@ -12,6 +10,7 @@ import { isError } from '@/lib/either';
 import ErrorModalContent from '../shared/ErrorModalContent';
 import { LOADING_MESSAGES, SUCCESS_MESSAGES } from '@/constants/wordings';
 import { OpenAiApiKeyContext } from '@/providers/OpenAiApiKey';
+import { useCreateProject } from '@/hooks/useCreateProject';
 
 type ModalContentState = {
 	loading: boolean;
@@ -22,6 +21,7 @@ type ModalContentState = {
 const DEFAULT_MODAL_STATE = { loading: false, success: false, error: null };
 
 const CreateProjectModalContent = () => {
+	const { createProject } = useCreateProject();
 	const { getApiKey } = useContext(OpenAiApiKeyContext);
 
 	const router = useRouter();
