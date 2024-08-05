@@ -2,7 +2,7 @@ import { RowInput } from '@/app/actions/tables/create-table';
 import { auth } from '@/auth';
 import { ERRORS_MESSAGES } from '@/constants/wordings';
 import { generateProject } from '@/lib/ai';
-import { errorResponse, isError } from '@/lib/either';
+import { isError } from '@/lib/either';
 import { createProjectQuery } from '@/services/queries/create-project.query';
 import { createTableQuery } from '@/services/queries/create-table.query';
 import { Databases } from '@prisma/client';
@@ -21,11 +21,11 @@ export async function POST(request: NextRequest) {
 		const session = await auth();
 		const user = session?.user;
 
-		if (!user || !user.id) return errorResponse(ERRORS_MESSAGES.USER_NOT_AUTH);
+		if (!user || !user.id) throw new Error(ERRORS_MESSAGES.USER_NOT_AUTH);
 		if (project) {
 			const response = await generateProject({ project, database, userId: user.id, apiKey });
 			if (response && isError(response)) {
-				return errorResponse(response.error);
+				throw new Error(response.error);
 			}
 
 			const tables = response.success.tables;
