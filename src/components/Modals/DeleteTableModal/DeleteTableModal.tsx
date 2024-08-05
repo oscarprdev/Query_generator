@@ -5,7 +5,10 @@ import { Databases } from '@prisma/client';
 import DeleteTableModalContent from './DeleteTableModalContent';
 
 type DeleteTableModalProps = {
-	project;
+	tableId: string;
+	type: Databases;
+	title: string;
+	isOpened: boolean;
 	toggleModal: (open: boolean) => void;
 };
 
