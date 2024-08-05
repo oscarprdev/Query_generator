@@ -56,7 +56,7 @@ export const SUCCESS_MESSAGES = {
 	CREATTING_PROJECT: 'Proyecto creado correctamente!',
 	GENERATING_QUERYS: 'Query guardada correctamente!',
 	GENERATING_SCHEMAS: 'Esquema guardado correctamente!',
-	GENERATING_SEEDS: 'Semilla guardado correctamente!',
+	GENERATING_SEEDS: 'Semilla guardada correctamente!',
 	DELETTING_PROJECT: 'Proyecto eliminado correctamente!',
 	DELETTING_TABLE: 'Tabla eliminada correctamente!',
 	EDITTING_QUERY: 'Query editada correctamente!',

@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI Query
 
-## Getting Started
+![image](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![image](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![image](https://img.shields.io/badge/Nextjs-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Descripcion
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Con AI Query, puedes crear, guardar, modificar y visualizar tablas de tu base de datos de forma intuitiva. La aplicación usa inteligencia artificial para facilitar la realización de consultas, generando automáticamente querys, esquemas y datos de prueba (semillas) para tus tablas sin necesidad de conocimientos profundos en base de datos.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Características principales de AI Query:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Gestión de Tablas: Crea, guarda, modifica y visualiza tablas de tu base de datos de manera fácil y rápida.
+Consultas Inteligentes: Utiliza IA para realizar consultas avanzadas y obtener querys optimizadas.
+- Generación de Esquemas y Semillas: Obtén automáticamente esquemas de base de datos y datos de prueba (semillas) para facilitar el desarrollo de aplicaciones.
+- Importación JSON: Importa tus tablas en formato JSON para crear automáticamente tu proyecto y empezar a trabajar de inmediato.
+- Interfaz Intuitiva: Una interfaz de usuario amigable y fácil de usar que hace que la gestión de bases de datos sea accesible para todos.
 
-## Learn More
+## Stack
 
-To learn more about Next.js, take a look at the following resources:
+ - Typescript
+ - Nextjs
+ - Tailwind
+ - Authjs
+ - Prisma
+ - Neondb - PostgreSQL
+ 
+## Demo
 
--   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
--   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
