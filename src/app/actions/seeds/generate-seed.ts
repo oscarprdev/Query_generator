@@ -36,7 +36,7 @@ export const generateSeed = async ({ projectTitle, table, type, apiKey }: Genera
         So based on the table rows: ${JSON.stringify(tableSelected[0].rows)} I want you to provide the seed for the database: ${type}
         with each field following the table ${tableSelected[0].title}, with its types, constraints and defaultValues.
 
-        The seed provided must have maximum 5 items, fullfilled with randomized data according to the fields provided above.
+        The seed provided must have maximum 3 items, fullfilled with randomized data according to the fields provided above.
         The data provided must be as much realistic as possible, avoiding generic values, so the data provided could be based on real databases.
 
         Your response will be injected directly into a <code/> html tag. So your response must be only the code to create the seed asked.
@@ -48,6 +48,8 @@ export const generateSeed = async ({ projectTitle, table, type, apiKey }: Genera
 			compatibility: 'strict',
 			apiKey: aiResponse.success || '',
 		});
+
+		await updateAiRequestsQuery({ userId: user.id });
 
 		const stream = createStreamableValue('');
 
@@ -67,8 +69,6 @@ export const generateSeed = async ({ projectTitle, table, type, apiKey }: Genera
 				stream.error(ERRORS_MESSAGES.GENERATING_SEEDS);
 			}
 		})();
-
-		await updateAiRequestsQuery({ userId: user.id });
 
 		return successResponse({ output: stream.value });
 	} catch (error) {
