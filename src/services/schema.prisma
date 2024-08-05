@@ -101,7 +101,7 @@ model Project {
 
 model PostgreTable {
     id                String              @id @default(uuid()) @unique
-    title             String              @unique
+    title             String             
     createdAt         DateTime            @default(now())
     updatedAt         DateTime            @updatedAt
 
@@ -113,7 +113,7 @@ model PostgreTable {
 
 model MongoTable {
     id                String              @id @default(uuid()) @unique
-    title             String              @unique
+    title             String             
     createdAt         DateTime            @default(now())
     updatedAt         DateTime            @updatedAt
 

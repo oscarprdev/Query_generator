@@ -9,18 +9,19 @@ import { Databases } from '@prisma/client';
 import { FormControl, FormField, FormItem, FormMessage } from '../ui/form';
 
 type QueryFormFiltersProps = {
+	projectTitle: string;
 	form: UseFormReturn<QueryFormValues, any, undefined>;
 	type: Databases;
 };
 
-const QueryFormFilters = ({ form, type }: QueryFormFiltersProps) => {
+const QueryFormFilters = ({ projectTitle, form, type }: QueryFormFiltersProps) => {
 	const [filters, setFilters] = useState<string[]>([]);
 	const [filterSelected, setFilterSelected] = useState<string>();
 	const tables = form.watch('tables');
 
 	useEffect(() => {
 		const handleTableValues = async () => {
-			const response = await getTableValues({ title: tables[0], type });
+			const response = await getTableValues({ projectTitle, title: tables[0], type });
 			if (!response) return;
 
 			setFilters(response.rows.map(row => row.name));

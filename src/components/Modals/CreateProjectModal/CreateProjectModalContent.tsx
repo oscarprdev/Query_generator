@@ -21,10 +21,9 @@ type ModalContentState = {
 const DEFAULT_MODAL_STATE = { loading: false, success: false, error: null };
 
 const CreateProjectModalContent = () => {
-	const { createProject } = useCreateProject();
+	const { createProject, isGenerating } = useCreateProject();
 	const { getApiKey } = useContext(OpenAiApiKeyContext);
 
-	const router = useRouter();
 	const [modalState, setModalState] = useState<ModalContentState>(DEFAULT_MODAL_STATE);
 
 	const handleSubmit = async ({ title, database, project }: CreateProjectFormValues) => {
@@ -37,15 +36,15 @@ const CreateProjectModalContent = () => {
 			setModalState({ ...DEFAULT_MODAL_STATE, error: response.error });
 		}
 		setModalState({ ...DEFAULT_MODAL_STATE, success: true });
-
-		router.push(`/?project=${title}`);
 	};
 
 	return (
 		<>
 			{Object.values(modalState).some(val => Boolean(val)) ? (
 				<DialogContent className={'sm:max-w-[280px]'}>
-					{modalState.loading ? (
+					{isGenerating ? (
+						<LoadingModalContent text={'Generando proyecto con IA...'} />
+					) : modalState.loading ? (
 						<LoadingModalContent text={LOADING_MESSAGES.CREATTING_PROJECT} />
 					) : modalState.success ? (
 						<SuccessModalContent text={SUCCESS_MESSAGES.CREATTING_PROJECT} />

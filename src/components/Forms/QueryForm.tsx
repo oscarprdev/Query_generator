@@ -95,7 +95,7 @@ const QueryForm = ({ handleSubmit, handleReset, defaultValues, projectTitle, typ
 						)}
 					/>
 					<QueryFormTables projectTitle={projectTitle} form={form} />
-					<QueryFormFilters type={type} form={form} />
+					<QueryFormFilters type={type} form={form} projectTitle={projectTitle} />
 				</div>
 				<FormField
 					control={form.control}

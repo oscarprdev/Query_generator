@@ -7,14 +7,17 @@ import { createProjectQuery } from '@/services/queries/create-project.query';
 import { createTableQuery } from '@/services/queries/create-table.query';
 import { Databases } from '@prisma/client';
 import { RowInput } from '../tables/create-table';
+import { revalidatePath } from 'next/cache';
+
+export type TableInput = {
+	title: string;
+	rows: RowInput[];
+};
 
 interface CreateGeneratedProjectInput {
 	title: string;
 	database: Databases;
-	tables: {
-		title: string;
-		rows: RowInput[];
-	}[];
+	tables: TableInput[];
 }
 
 export const createGeneratedProject = async ({ title, database, tables }: CreateGeneratedProjectInput) => {
@@ -25,14 +28,18 @@ export const createGeneratedProject = async ({ title, database, tables }: Create
 
 	const projectCreated = await createProjectQuery({ ownerId: user.id, title, database });
 
+	const uniqueTables = Array.from(new Set(tables));
+
 	await Promise.all(
-		tables.map(table =>
+		uniqueTables.map(table =>
 			createTableQuery({
 				projectId: projectCreated.id,
 				title: table.title,
 				type: database,
-				rows: table.rows,
+				rows: table.rows.map(row => ({ ...row, value: `${row.value}` })),
 			})
 		)
 	);
+
+	revalidatePath('/');
 };
