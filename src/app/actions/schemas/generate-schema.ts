@@ -6,7 +6,6 @@ import { streamText } from 'ai';
 import { createStreamableValue } from 'ai/rsc';
 import { createOpenAI } from '@ai-sdk/openai';
 import { Databases } from '@prisma/client';
-import { OPENAI_API_KEY } from '@/constants/envs';
 import { errorResponse, isError, successResponse } from '@/lib/either';
 import { ERRORS_MESSAGES } from '@/constants/wordings';
 import { getAiRequests } from '../shared/get-ai-requests';

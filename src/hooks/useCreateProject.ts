@@ -39,8 +39,12 @@ export const useCreateProject = () => {
 			return errorResponse(response.error);
 		}
 
-		for await (const delta of readStreamableValue(response.success)) {
-			setTables(delta.tables);
+		try {
+			for await (const delta of readStreamableValue(response.success)) {
+				setTables(delta.tables);
+			}
+		} catch (error) {
+			return errorResponse('Error generando proyecto con IA');
 		}
 
 		setData({ isFinished: true, title, database });

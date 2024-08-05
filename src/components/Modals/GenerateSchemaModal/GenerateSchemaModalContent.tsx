@@ -16,6 +16,7 @@ import { isError } from '@/lib/either';
 import ErrorModalContent from '../shared/ErrorModalContent';
 import { ERRORS_MESSAGES, LOADING_MESSAGES, SUCCESS_MESSAGES } from '@/constants/wordings';
 import { OpenAiApiKeyContext } from '@/providers/OpenAiApiKey';
+import { updateAiRequests } from '@/app/actions/users/update-ai-request';
 
 type GenerateSchemaModalContentProps = {
 	projectTitle: string;
@@ -75,6 +76,8 @@ const GenerateSchemaModalContent = ({ projectTitle, type }: GenerateSchemaModalC
 			setModalState({ ...DEFAULT_MODAL_STATE, error: true });
 			return;
 		}
+
+		await updateAiRequests();
 
 		startTransition(() => {
 			setPayload({ title: values.title, table: values.table });
