@@ -43,7 +43,9 @@ const CreateProjectModalContent = () => {
 			{Object.values(modalState).some(val => Boolean(val)) ? (
 				<DialogContent className={'sm:max-w-[280px]'}>
 					{isGenerating ? (
-						<LoadingModalContent text={`Generando proyecto con IA...  tablas creadas: ${tables.length}`} />
+						<LoadingModalContent
+							text={`Generando proyecto con IA...  tablas creadas: ${tables ? tables.length : 0}`}
+						/>
 					) : modalState.loading ? (
 						<LoadingModalContent text={LOADING_MESSAGES.CREATTING_PROJECT} />
 					) : modalState.success ? (

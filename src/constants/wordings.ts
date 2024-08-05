@@ -14,6 +14,7 @@ export const ERRORS_MESSAGES = {
 	UPDATING_SCHEMA: 'Error actualizando esquema',
 	UPDATING_SEED: 'Error actualizando semilla',
 	UPDATING_PROJECT: 'Error actualizando proyecto',
+	GENERATING_PROJECT: 'Error generando el projecto, intentelo mas tarde o prueba con otra OPENAI_API_KEY.',
 	GENERATING_QUERYS: 'Error generando query, intentelo mas tarde o prueba con otra OPENAI_API_KEY.',
 	GENERATING_SCHEMAS: 'Error generando esquema, intentelo mas tarde o prueba con otra OPENAI_API_KEY.',
 	GENERATING_SEEDS: 'Error generando semillas, intentelo mas tarde o prueba con otra OPENAI_API_KEY.',

@@ -3,10 +3,11 @@
 import { errorResponse, isError, successResponse } from '@/lib/either';
 import { getAiRequests } from '../shared/get-ai-requests';
 import { createOpenAI } from '@ai-sdk/openai';
-import { generateObject, streamObject } from 'ai';
+import { streamObject } from 'ai';
 import { z } from 'zod';
 import { $Enums, Databases } from '@prisma/client';
 import { createStreamableValue } from 'ai/rsc';
+import { ERRORS_MESSAGES } from '@/constants/wordings';
 
 type GenerateProjectInput = {
 	project: string;
@@ -66,25 +67,31 @@ export const generateProject = async ({ project, database, apiKey }: GeneratePro
 
 		const stream = createStreamableValue();
 		(async () => {
-			const { partialObjectStream } = await streamObject({
-				model: openai('gpt-4o'),
-				schema: z.object({
-					tables,
-				}),
-				prompt: ` 
+			try {
+				const { partialObjectStream } = await streamObject({
+					model: openai('gpt-4o'),
+					schema: z.object({
+						tables,
+					}),
+					prompt: ` 
 			Your role is to be an experienced backend developer with a huge expertise in generating queries for ${database} database.
 			Based on this JSON file: ${project} I want you to provide the tables and rows that you can detect on the file. 
 			It is mandatory to follow the structured data needed on the output based strictly on the JSON file provided.
             The rows value is just used as reference, the number of tables must be the same as the tables array length.
 			Regarding the table title, provide an appropiate table title based on the JSON data for each table provided.
 			`,
-			});
+				});
 
-			for await (const partialObject of partialObjectStream) {
-				stream.update(partialObject);
+				for await (const partialObject of partialObjectStream) {
+					stream.update(partialObject);
+				}
+
+				stream.error;
+
+				stream.done();
+			} catch (error) {
+				stream.error(ERRORS_MESSAGES.GENERATING_PROJECT);
 			}
-
-			stream.done();
 		})();
 
 		return successResponse(stream.value);
