@@ -21,7 +21,7 @@ const QueryItem = ({ queryId, type, title, description, action, createdAt }: Que
 				<p className="truncate text-sm text-zinc-500">{capitalizeStr(description)}</p>
 				<div className="mt-2 flex w-full items-center justify-between">
 					<div className="flex items-center gap-2">
-						<Badge variant={'primary'} className="capitalize">
+						<Badge variant={'primary'} className="truncate capitalize">
 							{action}
 						</Badge>
 					</div>

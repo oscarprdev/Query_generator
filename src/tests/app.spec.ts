@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import { test } from './fixtures/app.fixture';
 
 test.describe('App', () => {
-	test.beforeEach(async ({ navigateToApp }) => {
+	test.beforeEach(async ({ page, navigateToApp }) => {
 		await navigateToApp();
 	});
 

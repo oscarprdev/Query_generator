@@ -78,7 +78,7 @@ export const generateProject = async ({ project, database, apiKey }: GeneratePro
 			Based on this JSON file: ${project} I want you to provide the tables and rows that you can detect on the file. 
 			It is mandatory to follow the structured data needed on the output based strictly on the JSON file provided.
             The rows value is just used as reference, the number of tables must be the same as the tables array length.
-			Regarding the table title, provide an appropiate table title based on the JSON data for each table provided.
+			Regarding the table title, provide an appropiate table title based on the JSON data for each table provided in only one word.
 			`,
 				});
 

@@ -14,7 +14,8 @@ export const test = base.extend<AppFixture>({
 	},
 	navigateToApp: async ({ page }, use) => {
 		await use(async (): Promise<void> => {
-			await page.goto(`http://localhost:3000/`);
+			await page.goto(process.env.AUTH_SECRET || '');
+			await page.goto(`/`);
 		});
 	},
 	setRoute: async ({ page }, use) => {
