@@ -86,8 +86,6 @@ export const generateProject = async ({ project, database, apiKey }: GeneratePro
 					stream.update(partialObject);
 				}
 
-				stream.error;
-
 				stream.done();
 			} catch (error) {
 				stream.error(ERRORS_MESSAGES.GENERATING_PROJECT);
