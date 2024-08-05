@@ -9,7 +9,7 @@
 		"lint": "next lint",
 		"format": "prettier --write . --config ./.prettierrc",
 		"postinstall": "prisma generate",
-		"test:e2e": "npx playwright test"
+		"test:e2e": "npx playwright test --dotenv"
 	},
 	"prisma": {
 		"schema": "./src/services/schema.prisma"
