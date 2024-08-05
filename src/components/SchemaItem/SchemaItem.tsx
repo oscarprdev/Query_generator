@@ -19,7 +19,7 @@ const SchemaItem = ({ schemaId, title, table, createdAt, type }: SchemaItemProps
 				<p className="text-md text-zinc-400">{capitalizeStr(title)}</p>
 				<div className="mt-2 flex w-full items-center justify-between">
 					<div className="flex items-center gap-2">
-						<Badge key={table} variant={'primary'}>
+						<Badge key={table} variant={'primary'} className="truncate">
 							{table}
 						</Badge>
 					</div>
