@@ -26,6 +26,14 @@ Consultas Inteligentes: Utiliza IA para realizar consultas avanzadas y obtener q
  - Prisma
  - Neondb - PostgreSQL
  
-## Demo
+## Capturas de pantalla
+<img width="1469" alt="Captura de pantalla 2024-08-05 a las 21 16 50" src="https://github.com/user-attachments/assets/da73cea9-084c-449a-8d47-9ee00c603123">
+
+<img width="1469" alt="Captura de pantalla 2024-08-05 a las 21 17 18" src="https://github.com/user-attachments/assets/a88fadc7-ab6d-4c8f-b344-301c82ca7c93">
+
+<img width="1469" alt="Captura de pantalla 2024-08-05 a las 21 20 12" src="https://github.com/user-attachments/assets/fcbdcb59-997b-4822-9ea6-8128acbcb188">
+
+
+
 
 
